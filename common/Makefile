@@ -26,6 +26,7 @@ include $(TOPDIR)/config.mk
 LIB	= $(obj)libcommon.o
 
 # core
+COBJS-$(CONFIG_CNC1800L_TEST) += test.o
 COBJS-y += main.o
 COBJS-y += console.o
 COBJS-y += command.o
@@ -45,7 +46,7 @@ COBJS-$(CONFIG_CMD_BOOTM) += cmd_bootm.o
 COBJS-y += cmd_help.o
 COBJS-y += cmd_nvedit.o
 COBJS-y += cmd_version.o
-
+COBJS-$(CONFIG_RSA) += cmd_rsa.o
 # environment
 COBJS-y += env_common.o
 COBJS-$(CONFIG_ENV_IS_IN_DATAFLASH) += env_dataflash.o
@@ -157,6 +158,7 @@ ifdef CONFIG_CMD_USB
 COBJS-y += cmd_usb.o
 COBJS-y += usb.o
 COBJS-$(CONFIG_USB_STORAGE) += usb_storage.o
+COBJS-$(CONFIG_AUTO_UPDATE) += cmd_update.o
 endif
 COBJS-$(CONFIG_CMD_XIMG) += cmd_ximg.o
 COBJS-$(CONFIG_YAFFS2) += cmd_yaffs2.o
@@ -174,6 +176,10 @@ COBJS-$(CONFIG_MODEM_SUPPORT) += modem.o
 COBJS-$(CONFIG_UPDATE_TFTP) += update.o
 COBJS-$(CONFIG_USB_KEYBOARD) += usb_kbd.o
 
+COBJS-$(CONFIG_CMD_CSLOGO) += cmd_cslogo.o
+COBJS-$(CONFIG_CMD_FPC) += cmd_fpc.o
+COBJS-$(CONFIG_CMD_CALL_EXTERNAL_PROC) += cmd_call_external_proc.o
+COBJS-$(CONFIG_CMD_UPGRADE) += cmd_upgrade.o
 
 COBJS	:= $(sort $(COBJS-y))
 XCOBJS	:= $(sort $(XCOBJS-y))

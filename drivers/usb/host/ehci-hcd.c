@@ -48,7 +48,7 @@ static struct descriptor {
 		0x29,		/* bDescriptorType: hub descriptor */
 		2,		/* bNrPorts -- runtime modified */
 		0,		/* wHubCharacteristics */
-		0xff,		/* bPwrOn2PwrGood */
+		10,		/* bPwrOn2PwrGood */
 		0,		/* bHubCntrCurrent */
 		{},		/* Device removable */
 		{}		/* at most 7 ports! XXX */
@@ -461,7 +461,6 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
 	/* Check that the TD processing happened */
 	if (token & 0x80) {
 		printf("EHCI timed out on TD - token=%#x\n", token);
-		goto fail;
 	}
 
 	/* Disable async schedule. */
@@ -848,6 +847,7 @@ int usb_lowlevel_init(void)
 	cmd = ehci_readl(&hcor->or_configflag);
 	cmd |= FLAG_CF;
 	ehci_writel(&hcor->or_configflag, cmd);
+
 	/* unblock posted write */
 	cmd = ehci_readl(&hcor->or_usbcmd);
 	wait_ms(5);

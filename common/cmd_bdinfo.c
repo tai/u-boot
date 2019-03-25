@@ -31,6 +31,29 @@ DECLARE_GLOBAL_DATA_PTR;
 
 static void print_num(const char *, ulong);
 
+#if defined(CONFIG_SN_DEVID)
+static char device_id[10];
+static char *calculate_dev_id(unsigned int unique_id, char *sn)
+{
+	char *alphabet = "ybndrfg8ejkmcpqxot1uwisza345h769";
+	unsigned int l0, l1, l2, l3;
+	l0 = (unique_id & 0xff) | ((sn[12]&0x03) << 8);
+	l1 = ((unique_id >> 8) & 0xff ) | ((sn[11]&0x03) << 8);
+	l2 = ((unique_id >> 16) & 0xff ) | ((sn[10]&0x03) << 8);
+	l3 = ((unique_id >> 24) && 0xff) | ((sn[9]&0x03) << 8);
+	device_id[0] = alphabet[l0 & 0x1f];
+	device_id[1] = alphabet[(l0 >> 5) & 0x1f];
+	device_id[2] = alphabet[l1 & 0x1f];
+	device_id[3] = alphabet[(l1 >> 5) & 0x1f];
+	device_id[4] = alphabet[l2 & 0x1f];
+	device_id[5] = alphabet[(l2 >> 5) & 0x1f];
+	device_id[6] = alphabet[l3 & 0x1f];
+	device_id[7] = alphabet[(l3 >> 5) & 0x1f];
+	device_id[8] = 0;
+	return device_id;
+}
+#endif
+
 #if !(defined(CONFIG_ARM) || defined(CONFIG_M68K)) || defined(CONFIG_CMD_NET)
 static void print_eth(int idx);
 #endif
@@ -353,6 +376,19 @@ int do_bdinfo(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	print_num("irq_sp", gd->irq_sp);	/* irq stack pointer */
 	print_num("sp start ", gd->start_addr_sp);
 	print_num("FB base  ", gd->fb_base);
+#if defined(CONFIG_SN_DEVID)
+	do{
+		char serial_number[14];
+		unsigned int unique_id;
+		
+		unique_id = *((volatile unsigned int*)0xfffff014);
+		eeprom_read(CONFIG_SYS_I2C_EEPROM_ADDR, 0x50, (unsigned char *)serial_number, 13);
+		serial_number[13] = 0;
+		printf("SN          = %s\n", serial_number); 
+		print_num("Unique ID", unique_id);
+		printf("Device ID   = %s\n", calculate_dev_id(unique_id, serial_number)); 
+	}while(0);
+#endif
 	return 0;
 }
 

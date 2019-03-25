@@ -48,11 +48,20 @@ static uchar env_get_char_init (int index);
 #define MK_STR(x)	XMK_STR(x)
 
 uchar default_environment[] = {
+#ifdef	CONFIG_DISPLAY_LOGO
+	"display_logo="	CONFIG_DISPLAY_LOGO			"\0"
+#endif
 #ifdef	CONFIG_BOOTARGS
 	"bootargs="	CONFIG_BOOTARGS			"\0"
 #endif
 #ifdef	CONFIG_BOOTCOMMAND
 	"bootcmd="	CONFIG_BOOTCOMMAND		"\0"
+#endif
+#if defined(CONFIG_CHECK_IP_KERNEL_UPDATE)
+	"check_ip_kernel_update="	CONFIG_CHECK_IP_KERNEL_UPDATE		"\0"
+#endif
+#if defined(CONFIG_BOOT_IP_KERNEL_UPDATE)
+	"boot_ip_kernel_update="	CONFIG_BOOT_IP_KERNEL_UPDATE		"\0"
 #endif
 #ifdef	CONFIG_RAMBOOTCOMMAND
 	"ramboot="	CONFIG_RAMBOOTCOMMAND		"\0"

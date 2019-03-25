@@ -146,7 +146,7 @@ else
 	> config.h		# Create new config file
 fi
 echo "/* Automatically generated - do not edit */" >>config.h
-
+echo "#include <config_target_names.h>" >>config.h
 for i in ${TARGETS} ; do
 	i="`echo ${i} | sed '/=/ {s/=/\t/;q } ; { s/$/\t1/ }'`"
 	echo "#define CONFIG_${i}" >>config.h ;
@@ -154,6 +154,7 @@ done
 
 cat << EOF >> config.h
 #define CONFIG_BOARDDIR board/$BOARDDIR
+#include <config_target_specific.h>
 #include <config_cmd_defaults.h>
 #include <config_defaults.h>
 #include <configs/${CONFIG_NAME}.h>

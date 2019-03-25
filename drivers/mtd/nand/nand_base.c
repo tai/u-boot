@@ -88,8 +88,8 @@ static struct nand_ecclayout nand_oob_64 = {
 		   48, 49, 50, 51, 52, 53, 54, 55,
 		   56, 57, 58, 59, 60, 61, 62, 63},
 	.oobfree = {
-		{.offset = 2,
-		 .length = 38}}
+		{.offset = 0,
+		 .length = 40}}
 };
 
 static struct nand_ecclayout nand_oob_128 = {

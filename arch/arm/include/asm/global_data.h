@@ -73,6 +73,16 @@ typedef	struct	global_data {
 #if !(defined(CONFIG_SYS_NO_ICACHE) && defined(CONFIG_SYS_NO_DCACHE))
 	unsigned long	tlb_addr;
 #endif
+
+#if defined(CONFIG_SPI_FLASH_CNC1800L)
+	sfinf_t 	*sf_inf;
+	unsigned char 	sf_alen;
+	unsigned char 	sf_boot;
+	unsigned 	sf_rspd;
+	unsigned 	sf_wspd;
+	unsigned 	sf_size;
+#endif
+
 	void		**jt;		/* jump table */
 	char		env_buf[32];	/* buffer for getenv() before reloc. */
 } gd_t;

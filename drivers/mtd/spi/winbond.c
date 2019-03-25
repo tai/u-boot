@@ -48,6 +48,14 @@ to_winbond_spi_flash(struct spi_flash *flash)
 
 static const struct winbond_spi_flash_params winbond_spi_flash_table[] = {
 	{
+		.id			= 0x3014,
+		.l2_page_size		= 8,
+		.pages_per_sector	= 16,
+		.sectors_per_block	= 16,
+		.nr_blocks		= 16,
+		.name			= "W25D80",
+	},  
+	{
 		.id			= 0x3015,
 		.l2_page_size		= 8,
 		.pages_per_sector	= 16,
@@ -70,6 +78,14 @@ static const struct winbond_spi_flash_params winbond_spi_flash_table[] = {
 		.sectors_per_block	= 16,
 		.nr_blocks		= 128,
 		.name			= "W25X64",
+	},
+	{
+		.id			= 0x4014,
+		.l2_page_size		= 8,
+		.pages_per_sector	= 16,
+		.sectors_per_block	= 16,
+		.nr_blocks		= 16,
+		.name			= "W25Q80",
 	},
 	{
 		.id			= 0x4015,
@@ -105,6 +121,7 @@ static const struct winbond_spi_flash_params winbond_spi_flash_table[] = {
 	},
 };
 
+#if 0
 static int winbond_write(struct spi_flash *flash,
 		u32 offset, size_t len, const void *buf)
 {
@@ -175,6 +192,7 @@ static int winbond_erase(struct spi_flash *flash, u32 offset, size_t len)
 	return spi_flash_cmd_erase(flash, CMD_W25_SE, offset, len);
 }
 
+#endif
 struct spi_flash *spi_flash_probe_winbond(struct spi_slave *spi, u8 *idcode)
 {
 	const struct winbond_spi_flash_params *params;
@@ -207,9 +225,9 @@ struct spi_flash *spi_flash_probe_winbond(struct spi_slave *spi, u8 *idcode)
 	/* Assuming power-of-two page size initially. */
 	page_size = 1 << params->l2_page_size;
 
-	stm->flash.write = winbond_write;
-	stm->flash.erase = winbond_erase;
-	stm->flash.read = spi_flash_cmd_read_fast;
+	/* stm->flash.write = winbond_write; */
+	/* stm->flash.erase = winbond_erase; */
+	/* stm->flash.read = spi_flash_cmd_read_fast; */
 	stm->flash.sector_size = (1 << stm->params->l2_page_size) *
 		stm->params->pages_per_sector;
 	stm->flash.size = page_size * params->pages_per_sector

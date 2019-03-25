@@ -4,6 +4,11 @@
 #ifndef __ASSEMBLY__
 
 #include <common.h>
+typedef enum _CLOCK_RESET_
+{
+  _do_reset =0,
+  _do_set   =1,
+}CLOCK_RESET;
 
 /* These are declarations of exported functions available in C code */
 unsigned long get_version(void);
@@ -33,6 +38,7 @@ int i2c_read (uchar, uint, int , uchar* , int);
 #include <spi.h>
 
 void app_startup(char * const *);
+void clock_hdmi_reset(CLOCK_RESET ResetOrSet);
 
 #endif    /* ifndef __ASSEMBLY__ */
 

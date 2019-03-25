@@ -1,0 +1,11 @@
+#ifndef _CONFIG_TARGET_NAMES_
+#define _CONFIG_TARGET_NAMES_
+
+#define CNC1800L_EVB			0
+#define CNC1800L_HDK			1
+#define CNC1800L_6611L			2
+#define CNC1800L_1GX8			3
+#define CNC1800L_NETGEAR_1_0	4
+
+#endif
+

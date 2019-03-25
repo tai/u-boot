@@ -214,6 +214,7 @@
 #define USB_PORT_FEAT_C_SUSPEND      18
 #define USB_PORT_FEAT_C_OVER_CURRENT 19
 #define USB_PORT_FEAT_C_RESET        20
+#define USB_PORT_FEAT_TEST           21
 
 /* wPortStatus bits */
 #define USB_PORT_STAT_CONNECTION    0x0001

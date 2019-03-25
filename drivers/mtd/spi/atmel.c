@@ -111,6 +111,7 @@ static const struct atmel_spi_flash_params atmel_spi_flash_table[] = {
 	},
 };
 
+#if 0
 static int at45_wait_ready(struct spi_flash *flash, unsigned long timeout)
 {
 	struct spi_slave *spi = flash->spi;
@@ -450,6 +451,7 @@ out:
 	return ret;
 }
 
+#endif
 struct spi_flash *spi_flash_probe_atmel(struct spi_slave *spi, u8 *idcode)
 {
 	const struct atmel_spi_flash_params *params;
@@ -487,6 +489,7 @@ struct spi_flash *spi_flash_probe_atmel(struct spi_slave *spi, u8 *idcode)
 
 	family = idcode[1] >> 5;
 
+#if 0
 	switch (family) {
 	case DF_FAMILY_AT45:
 		/*
@@ -521,6 +524,7 @@ struct spi_flash *spi_flash_probe_atmel(struct spi_slave *spi, u8 *idcode)
 		debug("SF: Unsupported DataFlash family %u\n", family);
 		goto err;
 	}
+#endif
 
 	asf->flash.sector_size = page_size;
 	asf->flash.size = page_size * params->pages_per_block

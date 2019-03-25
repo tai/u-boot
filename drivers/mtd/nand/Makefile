@@ -33,6 +33,7 @@ COBJS-y += nand_ecc.o
 COBJS-y += nand_ids.o
 COBJS-y += nand_util.o
 
+COBJS-$(CONFIG_NAND_CNC1800L) += cnc1800l_nand.o
 COBJS-$(CONFIG_NAND_ATMEL) += atmel_nand.o
 COBJS-$(CONFIG_DRIVER_NAND_BFIN) += bfin_nand.o
 COBJS-$(CONFIG_NAND_DAVINCI) += davinci_nand.o

@@ -32,7 +32,6 @@
 #include <part.h>
 #include <fat.h>
 
-
 int do_fat_fsload (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 	long size;
@@ -73,6 +72,7 @@ int do_fat_fsload (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		count = simple_strtoul(argv[5], NULL, 16);
 	else
 		count = 0;
+
 	size = file_fat_read(argv[4], (unsigned char *)offset, count);
 
 	if(size==-1) {

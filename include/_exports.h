@@ -30,3 +30,6 @@ EXPORT_FUNC(spi_free_slave)
 EXPORT_FUNC(spi_claim_bus)
 EXPORT_FUNC(spi_release_bus)
 EXPORT_FUNC(spi_xfer)
+EXPORT_FUNC(memset)
+EXPORT_FUNC(clock_hdmi_reset)
+

@@ -193,6 +193,10 @@ static int read_nand_cached(u32 off, u32 size, u_char *buf)
 			}
 
 			retlen = NAND_CACHE_SIZE;
+			if (nand_block_isbad(&nand_info[id->num], nand_cache_off)){
+				printf("Skipping bad block @ 0x%08x\n", nand_cache_off);
+				return -1;
+			}
 			if (nand_read(&nand_info[id->num], nand_cache_off,
 						&retlen, nand_cache) != 0 ||
 					retlen != NAND_CACHE_SIZE) {

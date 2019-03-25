@@ -102,11 +102,20 @@ env_t environment __PPCENV__ = {
 	1,		/* Flags: valid */
 #endif
 	{
+#if defined(CONFIG_DISPLAY_LOGO)
+	"display_logo="	CONFIG_DISPLAY_LOGO			"\0"
+#endif
 #if defined(CONFIG_BOOTARGS)
 	"bootargs="	CONFIG_BOOTARGS			"\0"
 #endif
 #if defined(CONFIG_BOOTCOMMAND)
 	"bootcmd="	CONFIG_BOOTCOMMAND		"\0"
+#endif
+#if defined(CONFIG_CHECK_IP_KERNEL_UPDATE)
+	"check_ip_kernel_update="	CONFIG_CHECK_IP_KERNEL_UPDATE		"\0"
+#endif
+#if defined(CONFIG_BOOT_IP_KERNEL_UPDATE)
+	"boot_ip_kernel_update="	CONFIG_BOOT_IP_KERNEL_UPDATE		"\0"
 #endif
 #if defined(CONFIG_RAMBOOTCOMMAND)
 	"ramboot="	CONFIG_RAMBOOTCOMMAND		"\0"
