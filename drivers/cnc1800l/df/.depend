@@ -1,0 +1,11 @@
+df.o: df.c \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/linux/types.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/linux/config.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/linux/posix_types.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/linux/stddef.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/asm/posix_types.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/asm/types.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/configs/cnc1800l.h \
+ /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/include/config_cmd_default.h \
+ tve0_1800.h tve1_1800.h df_reg_def.h df_reg_fmt.h \
+ ../../../board/cavium/cnc1800l/power_clock.h df.h

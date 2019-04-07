@@ -1,0 +1,1902 @@
+Archive member included because of file (symbol)
+
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+                              arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o (__aeabi_uidiv)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+                              common/libcommon.o (__aeabi_idiv)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+                              drivers/mtd/nand/libnand.o (__aeabi_llsr)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+                              drivers/mtd/nand/libnand.o (__aeabi_lasr)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+                              drivers/mmc/libmmc.o (__aeabi_llsl)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+                              common/libcommon.o (__aeabi_uldivmod)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+                              /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+                              /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o) (__gnu_uldivmod_helper)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+                              /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o) (__divdi3)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+                              /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o) (__udivdi3)
+/opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+                              /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o) (__clzsi2)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+                0x00000000                . = 0x0
+                0x00000000                . = ALIGN (0x4)
+
+.text           0x02000000    0x39d80
+ arch/arm/cpu/arm1176/start.o(.text)
+ .text          0x02000000      0x480 arch/arm/cpu/arm1176/start.o
+                0x02000000                _start
+                0x02000040                _end_vect
+                0x02000040                _TEXT_BASE
+                0x02000048                _bss_start_ofs
+                0x0200004c                _bss_end_ofs
+                0x02000050                _end_ofs
+                0x02000054                IRQ_STACK_START_IN
+                0x020000c4                relocate_code
+ *(.text)
+ .text          0x02000480      0x1e0 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+                0x02000498                set_timer
+                0x020004a8                get_tbclk
+                0x020004dc                reset_timer_masked
+                0x02000500                reset_timer
+                0x02000504                timer_init
+                0x02000544                __udelay
+                0x02000578                get_timer_u
+                0x0200059c                get_ticks_u
+                0x020005b0                get_timer
+                0x020005d4                get_ticks
+                0x020005e8                debug_enable
+                0x020005f8                debug_disable
+                0x02000620                reset_cpu
+ .text          0x02000660       0x24 arch/arm/cpu/arm1176/libarm1176.o
+                0x02000660                cleanup_before_linux
+ .text          0x02000684      0xa08 arch/arm/lib/libarm.o
+                0x02000684                coloured_LED_init
+                0x02000684                __coloured_LED_init
+                0x02000688                red_LED_on
+                0x02000688                __red_LED_on
+                0x0200068c                __red_LED_off
+                0x0200068c                red_LED_off
+                0x02000690                green_LED_on
+                0x02000690                __green_LED_on
+                0x02000694                __green_LED_off
+                0x02000694                green_LED_off
+                0x02000698                __yellow_LED_on
+                0x02000698                yellow_LED_on
+                0x0200069c                __yellow_LED_off
+                0x0200069c                yellow_LED_off
+                0x020006a0                blue_LED_on
+                0x020006a0                __blue_LED_on
+                0x020006a4                blue_LED_off
+                0x020006a4                __blue_LED_off
+                0x020006a8                __dram_init_banksize
+                0x020006c4                hang
+                0x02000780                board_init_f
+                0x0200089c                board_init_r
+                0x02000a70                do_bootm_linux
+                0x02000c34                arch_lmb_reserve
+                0x02000c58                flush_cache
+                0x02000d50                icache_enable
+                0x02000d58                icache_status
+                0x02000d6c                dcache_enable
+                0x02000d74                dcache_status
+                0x02000dcc                dcache_disable
+                0x02000dd4                icache_disable
+                0x02000ddc                interrupt_init
+                0x02000df8                enable_interrupts
+                0x02000dfc                disable_interrupts
+                0x02000e04                show_regs
+                0x02000f44                bad_mode
+                0x02000f60                do_irq
+                0x02000f84                do_fiq
+                0x02000fa8                do_not_used
+                0x02000fcc                do_data_abort
+                0x02000ff0                do_prefetch_abort
+                0x02001014                do_software_interrupt
+                0x02001038                do_undefined_instruction
+                0x0200105c                do_reset
+ .text          0x0200108c    0x15e50 common/libcommon.o
+                0x020010a4                do_bdinfo
+                0x020011c8                do_go_exec
+                0x020011e0                do_go
+                0x02001274                arch_preboot_os
+                0x02001274                __arch_preboot_os
+                0x02001364                do_iminfo
+                0x020013d0                do_bootd
+                0x02001b80                do_bootm_subcommand
+                0x02001dcc                do_bootm
+                0x02002068                SecHWGetRSAEnable
+                0x02002080                hex_print
+                0x02002084                read_free_running_clock
+                0x020020c4                measure_time_ms
+                0x02002250                check_write_to_code_area
+                0x02002368                Sec1800l_crypto
+                0x020024c0                Img_Crypto
+                0x020027d4                ImgHybRsa_Verify
+                0x02002830                Img_Authenticate
+                0x02002a64                ImgRsa_Verify
+                0x02002b58                Sec1800l_BootM
+                0x02002fc4                do_esp1800l_flash_util
+                0x02003ab0                ConfigureLogoCommand
+                0x02003c94                EraseSplashRegion
+                0x02003ce0                ProgramSplashImageToNandFlash
+                0x02003db0                ReadSplashFile
+                0x02003e30                do_burnsplash
+                0x02003f4c                do_debug
+                0x02003f94                do_dcache
+                0x02004008                do_icache
+                0x0200407c                do_coninfo
+                0x02004164                go_hdmi_bin
+                0x020042e4                do_cslogo
+                0x020045bc                do_echo
+                0x0200463c                eeprom_init
+                0x0200464c                eeprom_probe
+                0x02004658                eeprom_write
+                0x020046cc                eeprom_read
+                0x02004740                do_eeprom
+                0x02004858                do_exit
+                0x02004888                do_fat_fsinfo
+                0x0200495c                do_fat_ls
+                0x02004a60                do_fat_fsload
+                0x02004be0                fpc_led_enable
+                0x02004c04                fpc_led_disp
+                0x02004c24                do_enagpio2
+                0x02004c40                do_fpcraw
+                0x02004c68                fpc_init_show
+                0x02004cd0                do_fpc_led
+                0x02004ce4                do_gpio
+                0x02004e00                do_help
+                0x02004e64                i2c_init_board
+                0x02004e64                __def_i2c_init_board
+                0x02004e68                __def_i2c_get_bus_speed
+                0x02004e74                __def_i2c_set_bus_speed
+                0x02005814                binary_test
+                0x020059d0                do_itest
+                0x02005b04                mtdparts_init
+                0x02005ce0                do_jffs2_fsinfo
+                0x02005d3c                do_jffs2_ls
+                0x02005d94                do_jffs2_fsload
+                0x02005ecc                ktrans
+                0x02005eec                chk1
+                0x02005f58                k_data_init
+                0x02005f78                k_data_save
+                0x02005f9c                k_data_restore
+                0x02005fc0                k_data_char
+                0x02006010                send_pad
+                0x02006040                s1_sendpacket
+                0x0200606c                handle_send_packet
+                0x02006230                send_nack
+                0x02006290                send_ack
+                0x02006410                do_load_serial_bin
+                0x02006a5c                do_load_serial
+                0x02006be8                do_mem_crc
+                0x02006c8c                do_mem_base
+                0x02006cd0                do_mem_mtest
+                0x02006e70                do_mem_loop
+                0x02006f68                do_mem_cp
+                0x02007038                do_mem_cmp
+                0x020071c4                do_mem_mw
+                0x020073f4                do_mem_nm
+                0x02007418                do_mem_mm
+                0x0200743c                do_mem_md
+                0x02007514                do_sleep
+                0x02007594                do_mmcops
+                0x020079b8                do_mmcinfo
+                0x02007ba4                do_nandboot
+                0x02008098                do_nand
+                0x02008a90                do_ping
+                0x02008e1c                do_nfs
+                0x02008e28                do_dhcp
+                0x02008e34                do_tftpb
+                0x02008e40                do_bootp
+                0x02008e4c                get_env_id
+                0x02009164                envmatch
+                0x020091c4                getenv_f
+                0x0200927c                do_env_save
+                0x020092a8                getenv
+                0x020093b0                do_env_print
+                0x02009438                _do_env_set
+                0x020097e4                do_env_set
+                0x02009800                setenv
+                0x02009a7c                do_env_edit
+                0x02009ae4                do_cuid
+                0x02009b90                SecOTPRead
+                0x02009ca0                SecHWGetNUID
+                0x02009cac                do_read_otp_uid
+                0x02009d28                do_pswdsec
+                0x02009d7c                Sec_SetNvRam
+                0x02009e44                do_setsecenv
+                0x02009f5c                dispsecenv
+                0x0200a094                Sec_SaveToFlash
+                0x0200a2b8                do_savesecenv
+                0x0200a2bc                Sec_NvramPrint
+                0x0200a340                do_printsecenv
+                0x0200a380                sec_set_default_env
+                0x0200a4d0                sec_env_relocate
+                0x0200a5e4                do_set_sec_defaults
+                0x0200a6e8                do_sflasher
+                0x0200a7a8                do_sflashwr
+                0x0200a824                do_sflashre
+                0x0200a8a0                do_sfinfo
+                0x0200a944                source
+                0x0200aa70                do_source
+                0x0200aab4                do_false
+                0x0200aabc                do_true
+                0x0200aac4                do_test
+                0x0200af2c                MGC_HdrcReadUlpiReg
+                0x0200af78                MGC_Load_DMA
+                0x0200afa8                do_update
+                0x0200afb8                MGC_CheckReg
+                0x0200b1c0                MGC_HdrcWriteUlpiReg
+                0x0200b280                MGC_CheckIntr
+                0x0200b518                MGC_ReadFIFO_DMA
+                0x0200b5b0                usb_get_descriptor2
+                0x0200b654                sleep
+                0x0200b688                MGC_simpletest
+                0x0200b744                do_usbtest_md
+                0x0200b76c                MGC_init2
+                0x0200b824                do_usbinit
+                0x0200b844                stoupper
+                0x0200b870                stolower
+                0x0200b89c                AutoFirmwareUpgrade
+                0x0200b8b4                StopUsbService
+                0x0200b8f0                StartUsbService
+                0x0200b930                EraseNANDUBootRegion
+                0x0200b99c                EraseNetHdRegion
+                0x0200b9e8                EraseSPIUBootRegion
+                0x0200ba30                ReadBootLoaderBinFile
+                0x0200bacc                ubootBootAddrs
+                0x0200bbac                ProgramUBootToSPIFlash
+                0x0200bc38                ReadNetHdBinFile
+                0x0200bcb8                get_extension
+                0x0200bcf8                ProgramUBootToNANDFlash
+                0x0200be20                ProgramNetHdToNandFlash
+                0x0200bf44                do_upgrade
+                0x0200c138                usb_get_class_desc
+                0x0200c1e0                usb_display_ep_desc
+                0x0200c2a0                usb_display_class_sub
+                0x0200c414                do_usbboot
+                0x0200c7b4                usb_show_tree_graph
+                0x0200c9d4                usb_show_tree
+                0x0200ca08                usb_display_desc
+                0x0200cb34                usb_display_string
+                0x0200cb74                usb_display_if_desc
+                0x0200cbfc                usb_display_conf_desc
+                0x0200cca8                usb_display_config
+                0x0200cd38                do_usb
+                0x0200d274                do_version
+                0x0200d2ac                do_imgextract
+                0x0200d584                cmd_get_data_size
+                0x0200d5d4                cmd_usage
+                0x0200d630                var_complete
+                0x0200d6b8                find_cmd_tbl
+                0x0200d754                find_cmd
+                0x0200d77c                _do_help
+                0x0200d8f8                cmd_auto_complete
+                0x0200de1c                fgetc
+                0x0200de44                ftstc
+                0x0200de6c                fputc
+                0x0200de94                fputs
+                0x0200debc                disable_ctrlc
+                0x0200ded4                had_ctrlc
+                0x0200dee4                clear_ctrlc
+                0x0200def8                dbg
+                0x0200df04                console_init_f
+                0x0200df14                search_device
+                0x0200df3c                console_assign
+                0x0200df7c                fprintf
+                0x0200dfc8                puts
+                0x0200dfe4                vprintf
+                0x0200e01c                printf
+                0x0200e060                stdio_print_current_devices
+                0x0200e118                console_init_r
+                0x0200e1f8                serial_printf
+                0x0200e23c                putc
+                0x0200e258                tstc
+                0x0200e270                getc
+                0x0200e288                ctrlc
+                0x0200e2d4                malloc_usable_size
+                0x0200e318                mallopt
+                0x0200e37c                mem_malloc_init
+                0x0200e3a0                sbrk
+                0x0200e3fc                malloc_trim
+                0x0200e4c8                free
+                0x0200e6f4                cfree
+                0x0200e6f8                malloc
+                0x0200ecd8                memalign
+                0x0200ede4                pvalloc
+                0x0200edfc                valloc
+                0x0200ee08                calloc
+                0x0200eee8                realloc
+                0x0200f32c                env_get_addr
+                0x0200f350                env_get_char_memory
+                0x0200f360                env_complete
+                0x0200f430                set_default_env
+                0x0200f4d4                env_relocate
+                0x0200f504                env_import
+                0x0200f5d8                env_get_char
+                0x0200f608                env_get_char_spec
+                0x0200f614                env_init
+                0x0200f630                saveenv
+                0x0200f6fc                env_relocate_spec
+                0x0200f748                get_version
+                0x0200f750                jumptable_init
+                0x0200fa3c                simple_itoa
+                0x0200fb60                mapset
+                0x0200fb98                do_showvar
+                0x0200fc88                u_boot_hush_start
+                0x0200fcfc                new_pipe
+                0x0200ffec                unset_local_var
+                0x020101b0                reserved_word
+                0x0201045c                set_local_var
+                0x0201060c                update_ifs_map
+                0x0201067c                get_local_var
+                0x02010ec8                parse_file_outer
+                0x02010f0c                parse_string_outer
+                0x020117cc                image_multi_count
+                0x020117f4                get_table_entry_name
+                0x02011820                genimg_get_os_name
+                0x02011838                genimg_get_arch_name
+                0x02011850                genimg_get_type_name
+                0x02011868                genimg_get_comp_name
+                0x02011880                genimg_get_image
+                0x02011884                genimg_has_config
+                0x0201188c                getenv_yesno
+                0x020118b0                getenv_bootm_low
+                0x020118d8                get_table_entry_id
+                0x02011924                genimg_get_comp_id
+                0x0201193c                genimg_get_type_id
+                0x02011954                genimg_get_arch_id
+                0x0201196c                genimg_get_os_id
+                0x020119a8                genimg_get_format
+                0x020119cc                image_multi_getimg
+                0x02011a54                genimg_print_size
+                0x02011a84                image_print_contents
+                0x02011c18                memmove_wd
+                0x02011c24                boot_ramdisk_high
+                0x02011d44                getenv_bootm_size
+                0x02011da0                getenv_bootm_mapsize
+                0x02011dd0                image_check_dcrc
+                0x02011e18                image_check_hcrc
+                0x02011e68                boot_get_ramdisk
+                0x020120b8                __show_boot_progress
+                0x020120b8                show_boot_progress
+                0x020120bc                SetGpioPinInInputMode
+                0x020120e8                SetGpioPinInOutputMode
+                0x02012114                GpioHigh
+                0x02012140                GpioLow
+                0x0201216c                BootBlinkLedOn
+                0x0201217c                BootBlinkLedOff
+                0x0201218c                BootBlinkLedSetGpioMode
+                0x0201219c                parse_line
+                0x02012228                do_run
+                0x02012298                run_command
+                0x0201287c                readline_into_buffer
+                0x02013158                readline
+                0x02013174                main_loop
+                0x020133a0                get_ram_size
+                0x02013510                srec_decode
+                0x02013780                stdio_get_list
+                0x0201378c                stdio_clone
+                0x020137d4                stdio_get_by_name
+                0x02013828                stdio_register
+                0x02013868                stdio_init
+                0x02013904                usb_disable_asynch
+                0x02013924                usb_maxpacket
+                0x020139b0                usb_set_maxpacket
+                0x02013a14                usb_get_dev_index
+                0x02013a44                usb_hub_reset
+                0x02013a58                usb_hub_allocate
+                0x02013a9c                usb_alloc_new_device
+                0x02013b38                usb_parse_config
+                0x02013c88                usb_submit_int_msg
+                0x02013c8c                usb_stop
+                0x02013cc8                wait_ms
+                0x02013cec                usb_bulk_msg
+                0x02013d50                usb_control_msg
+                0x02013e1c                usb_get_port_status
+                0x02013e78                usb_get_hub_status
+                0x02013ec8                usb_set_port_feature
+                0x02013f24                usb_clear_port_feature
+                0x02013f80                usb_clear_hub_feature
+                0x02013fd4                usb_get_hub_descriptor
+                0x02014030                usb_get_string
+                0x020141b8                usb_string
+                0x020142b4                usb_get_class_descriptor
+                0x02014324                usb_get_report
+                0x02014394                usb_set_idle
+                0x020143f8                usb_set_protocol
+                0x02014454                usb_set_configuration
+                0x020144bc                usb_set_interface
+                0x0201457c                usb_set_address
+                0x020145bc                usb_get_descriptor
+                0x02014624                usb_get_configuration_no
+                0x020146bc                usb_clear_halt
+                0x02014850                usb_hub_port_connect_change
+                0x02014940                usb_hub_configure
+                0x02014b5c                usb_hub_probe
+                0x02014bb8                usb_new_device
+                0x02014e58                usb_scan_devices
+                0x02014ed0                usb_init
+                0x02014f68                usb_stor_get_dev
+                0x02014fa8                usb_storage_probe
+                0x020151d4                usb_stor_BBB_clear_endpt_stall
+                0x020153f8                usb_stor_CB_comdat
+                0x0201564c                usb_stor_BBB_comdat
+                0x02015724                usb_stor_BBB_transport
+                0x020158e4                usb_stor_CBI_get_status
+                0x020159c8                usb_stor_CB_transport
+                0x02015bb0                usb_stor_info
+                0x02015c20                usb_show_progress
+                0x02015d78                usb_stor_write
+                0x02015f64                usb_stor_get_info
+                0x02016188                usb_stor_scan
+                0x0201638c                usb_stor_read
+                0x02016578                parse_num
+                0x020166a4                xyzModem_error
+                0x020166c4                xyzModem_stream_close
+                0x02016714                CYGACC_COMM_IF_PUTC
+                0x0201671c                CYGACC_COMM_IF_GETC_TIMEOUT
+                0x02016798                xyzModem_stream_terminate
+                0x02016aec                xyzModem_stream_read
+                0x02016d80                xyzModem_stream_open
+ .text          0x02016edc      0x894 disk/libdisk.o
+                0x02016edc                get_partition_info
+                0x02016f00                init_part
+                0x02016f1c                get_dev
+                0x02016f84                print_part
+                0x0201706c                dev_print
+                0x020172c4                test_part_dos
+                0x02017540                get_partition_info_dos
+                0x02017744                print_part_dos
+ .text          0x02017770     0x17c8 drivers/cnc1800l/crypto/libcrypto.o
+                0x02017770                SEC_Reset
+                0x020177a8                SEC_init
+                0x0201784c                SEC_term
+                0x0201786c                CHL_Init
+                0x020179a0                GetCryptoIV
+                0x02017b84                CHL_Enable_In_Interrupt
+                0x02017bbc                CHL_Set_In_Threshold
+                0x02017bec                CHL_Set_Out_Threshold
+                0x02017c1c                CHL_Enable_Out_Interrupt
+                0x02017c5c                CHL_Enable_End_Interrupt
+                0x02017c90                CHL_Disable_In_Interrupt
+                0x02017cc8                CHL_Disable_Out_Interrupt
+                0x02017d08                CHL_Disable_End_Interrupt
+                0x02017d3c                GetCryptoDone
+                0x02017de4                Update_CHL_InWr_Pointer
+                0x02017e2c                Get_CHL_InRe_Pointer
+                0x02017e74                Update_CHL_OutRe_Pointer
+                0x02017ec0                Get_CHL_OutWr_Pointer
+                0x02017f08                CHL_Check_OutBuffer_DataSize
+                0x02017f9c                CHL_Check_InBuffer_FreeSize
+                0x02017ff4                Block_CHL_Write_Data
+                0x02018068                Stream_CHL_Write_Data
+                0x0201820c                Stream_CHL_Read_Data
+                0x020183e4                Block_CHL_Read_Data
+                0x0201846c                SetBlockCHLMode
+                0x02018508                CHL_Flush
+                0x020185e4                CHL_Stop
+                0x02018668                CHL_Start
+                0x0201874c                SetCryptoMode
+                0x020188fc                CHL_Dump_Regs
+                0x02018ac8                PV_read
+                0x02018c38                SetHostKey
+                0x02018ecc                do_crypto
+ .text          0x02018f38      0xd94 drivers/cnc1800l/df/libdf.o
+                0x02018f38                __df_update_start
+                0x02018f4c                __df_update_end
+                0x02018f60                DFSetOutIFVideoFmt
+                0x02019200                DFOutIFEna
+                0x02019240                DFSetZOrder
+                0x020192a4                DFSetBackGroud
+                0x02019314                DFGfxSetAlpha
+                0x020193a4                DFGfxGetAlpha
+                0x0201940c                DFGfxSetColorKey
+                0x02019498                DFGfxColorKeyEna
+                0x020194e4                pinmux_set_dac1mode
+                0x0201956c                DFGfxEna
+                0x0201968c                gfx_init
+                0x02019aa8                InitTVE0Raw
+                0x02019bc0                InitTVE1Raw
+ .text          0x02019ccc      0x178 drivers/gpio/libgpio.o
+                0x02019ccc                gpio_hw_set_direct
+                0x02019d7c                gpio_hw_read
+                0x02019dcc                gpio_hw_write
+ .text          0x02019e44      0x8e4 drivers/i2c/libi2c.o
+                0x02019e44                i2c_probe
+                0x02019f24                i2c_read
+                0x0201a238                i2c_write
+                0x0201a510                i2c_init
+                0x0201a5b8                i2c_set_bus_speed
+                0x0201a680                i2c_get_bus_speed
+                0x0201a6bc                i2c_reg_write
+                0x0201a6f0                i2c_reg_read
+ .text          0x0201a728     0x1cd4 drivers/mmc/libmmc.o
+                0x0201a750                __board_mmc_getcd
+                0x0201a750                board_mmc_getcd
+                0x0201a758                mmc_send_cmd
+                0x0201a768                mmc_set_blocklen
+                0x0201a79c                mmc_send_ext_csd
+                0x0201a7ec                sd_switch
+                0x0201a858                mmc_set_ios
+                0x0201a868                mmc_set_clock
+                0x0201a888                mmc_set_bus_width
+                0x0201a890                mmc_send_if_cond
+                0x0201a90c                cpu_mmc_init
+                0x0201a90c                board_mmc_init
+                0x0201a914                get_mmc_num
+                0x0201a924                print_mmc_devices
+                0x0201a98c                mmc_initialize
+                0x0201a9d8                find_mmc_device
+                0x0201aa20                mmc_get_dev
+                0x0201aa34                sd_change_freq
+                0x0201ac00                sd_send_op_cond
+                0x0201ad44                mmc_go_idle
+                0x0201ad94                mmc_send_op_cond
+                0x0201aed8                mmc_send_status
+                0x0201b114                mmc_switch
+                0x0201b16c                mmc_switch_part
+                0x0201b1a8                mmc_change_freq
+                0x0201b25c                mmc_startup
+                0x0201b7d0                mmc_init
+                0x0201b880                mmc_read_blocks
+                0x0201b9f8                mmc_register
+                0x0201bbbc                mshci_fifo_deinit
+                0x0201c338                cnc1800l_mshci_init
+ .text          0x0201c3fc     0x6da8 drivers/mtd/nand/libnand.o
+                0x0201c3fc                nand_init
+                0x0201d6a0                nand_release
+                0x0201d6c8                nand_scan_tail
+                0x0201e0f8                nand_scan_ident
+                0x0201e6d8                nand_scan
+                0x0201eff8                nand_erase_nand
+                0x0201f4c4                nand_wait_ready
+                0x0202029c                nand_parallel_read_decrypt
+                0x020209c4                nand_isbad_bbt
+                0x02021950                nand_update_bbt
+                0x02021c24                nand_scan_bbt
+                0x020220a0                nand_default_bbt
+                0x02022164                nand_calculate_ecc
+                0x02022258                nand_correct_data
+                0x0202243c                nand_read_skip_bad
+                0x0202261c                nand_write_skip_bad
+                0x020228d4                nand_erase_opts
+                0x02022f84                board_nand_init
+ .text          0x020231a4     0x1000 drivers/mtd/spi/libspi_flash.o
+                0x020231a4                spi__init
+                0x020232ec                seeprom_erase
+                0x02023464                seeprom_write
+                0x02023978                seeprom_read
+                0x02023b30                spi_flash_probe_winbond
+                0x02023bd0                spi_flash_probe_stmicro
+                0x02023c54                spi_flash_probe_sst
+                0x02023cd0                spi_flash_probe_spansion
+                0x02023d74                spi_fram_probe_ramtron
+                0x02023dfc                spi_flash_probe_macronix
+                0x02023eac                spi_flash_probe_eon
+                0x02023f08                spi_flash_probe_atmel
+                0x02023f9c                seeprom_probe
+ .text          0x020241a4      0x50c drivers/net/libnet.o
+                0x02024228                eth_send
+                0x02024320                eth_rx
+                0x02024400                eth_halt
+                0x02024404                eth_init
+                0x0202454c                cn100_eth_readmac
+ .text          0x020246b0        0x0 drivers/pcmcia/libpcmcia.o
+ .text          0x020246b0        0x0 drivers/rtc/librtc.o
+ .text          0x020246b0      0x254 drivers/serial/libserial.o
+                0x020246b0                NS16550_init
+                0x020246fc                NS16550_reinit
+                0x0202474c                NS16550_putc
+                0x02024760                NS16550_getc
+                0x02024778                NS16550_tstc
+                0x020247ac                _serial_setbrg
+                0x020247d8                serial_setbrg
+                0x020247e0                _serial_tstc
+                0x020247f4                serial_tstc
+                0x020247fc                _serial_getc
+                0x02024818                serial_getc
+                0x02024820                _serial_putc_raw
+                0x0202483c                serial_putc_raw
+                0x02024844                _serial_putc
+                0x02024888                serial_putc
+                0x02024890                _serial_puts
+                0x020248c0                serial_puts
+                0x020248c8                serial_init
+ .text          0x02024904     0x1838 drivers/usb/host/libusb_host.o
+                0x0202498c                rh_check_port_status
+                0x02024de0                usb_lowlevel_init
+                0x02024f4c                usb_lowlevel_stop
+                0x02024f78                sohci_submit_job
+                0x020259dc                usb_event_poll
+                0x020259e0                submit_common_msg
+                0x02025b24                submit_int_msg
+                0x02025b40                submit_control_msg
+                0x02026100                submit_bulk_msg
+                0x02026118                usb_cpu_init
+                0x02026130                usb_cpu_stop
+                0x02026138                usb_cpu_init_fail
+ .text          0x0202613c     0x17c0 fs/fat/libfat.o
+                0x0202684c                file_fat_detectfs
+                0x020269ac                do_fat_read
+                0x02027418                file_fat_read
+                0x02027450                file_fat_ls
+                0x02027460                fat_register_device
+                0x02027574                file_getfsname
+                0x0202758c                file_read
+                0x0202762c                file_ls
+                0x020276b8                file_detectfs
+                0x020276f8                file_cd
+ .text          0x020278fc     0x235c fs/jffs2/libjffs2.o
+                0x020278fc                rtime_decompress
+                0x020279b8                rubin_do_decompress
+                0x02027aa0                dynrubin_decompress
+                0x02027ad8                zlib_decompress
+                0x02027af0                mkmodestr
+                0x02027c34                jffs2_1pass_rescan_needed
+                0x02027db0                jffs2_free_cache
+                0x020283c0                jffs2_1pass_info
+                0x02028794                jffs2_1pass_load
+                0x020292fc                jffs2_1pass_ls
+                0x02029348                cramfs_memset
+                0x0202936c                pull_bits
+                0x020293c4                pull_bit
+                0x020296c0                decompress_block
+ .text          0x02029c58     0x86d0 lib/libgeneric.o
+                0x02029c58                crc7
+                0x02029c88                cyg_crc16
+                0x02029cd0                crc32_no_comp
+                0x02029e84                crc32
+                0x02029e98                crc32_wd
+                0x02029e9c                print_size
+                0x02029fd4                display_options
+                0x02029ff4                print_buffer
+                0x0202a160                __div64_32
+                0x0202a234                zunzip
+                0x0202a33c                gunzip
+                0x0202a3f0                zfree
+                0x0202a3f8                zalloc
+                0x0202a408                hdestroy_r
+                0x0202a47c                hcreate_r
+                0x0202a524                hexport_r
+                0x0202a770                hsearch_r
+                0x0202aa50                hdelete_r
+                0x0202aad8                himport_r
+                0x0202ad30                hmatch_r
+                0x0202add0                hstrstr_r
+                0x0202ae7c                lmb_dump_all
+                0x0202aee0                lmb_init
+                0x0202b0d0                lmb_add
+                0x0202b0d4                lmb_free
+                0x0202b1c8                lmb_reserve
+                0x0202b1d0                lmb_overlaps_region
+                0x0202b234                __lmb_alloc_base
+                0x0202b344                lmb_is_reserved
+                0x0202b3a0                board_lmb_reserve
+                0x0202b3a0                __board_lmb_reserve
+                0x0202b3a4                __arch_lmb_reserve
+                0x0202b3a8                lmb_alloc_base
+                0x0202b3dc                lmb_alloc
+                0x0202b3e4                ldiv
+                0x0202c064                md5_wd
+                0x0202c0a8                md5
+                0x0202c0ec                string_to_ip
+                0x0202c164                qsort
+                0x0202c288                strcmp_compar
+                0x0202c294                sha256_starts
+                0x0202c304                sha256_process
+                0x0202e730                sha256_update
+                0x0202e7f4                sha256_finish
+                0x0202e9a0                sha256
+                0x0202e9f8                mpi_init
+                0x0202ea34                mpi_lsb
+                0x0202ea88                mpi_msb
+                0x0202eae8                mpi_size
+                0x0202eafc                mpi_shift_r
+                0x0202ebc0                mpi_cmp_abs
+                0x0202ec94                mpi_cmp_mpi
+                0x0202eda0                mpi_cmp_int
+                0x0202f200                mpi_swap
+                0x0202f3d8                mpi_write_binary
+                0x0202f44c                mpi_grow
+                0x0202f49c                mpi_shift_l
+                0x0202f598                mpi_lset
+                0x0202f5ec                mpi_read_binary
+                0x0202f69c                mpi_copy
+                0x0202f730                mpi_add_abs
+                0x0202f854                mpi_free
+                0x0202f8a4                mpi_mul_mpi
+                0x0202fa28                mpi_mul_int
+                0x0202fa58                mpi_sub_abs
+                0x0202fb30                mpi_sub_mpi
+                0x0202fbb4                mpi_sub_int
+                0x0202fbf8                mpi_add_mpi
+                0x0202fc78                mpi_add_int
+                0x0202fcbc                mpi_mod_int
+                0x0202fd70                mpi_div_mpi
+                0x02030360                mpi_mod_mpi
+                0x020303f4                mpi_exp_mod
+                0x0203073c                mpi_div_int
+                0x020307ac                rsa_free
+                0x020307dc                rsa_init
+                0x0203082c                rsa_public
+                0x02030910                rsa_pkcs1_verify
+                0x02030a20                rsa_check_pubkey
+                0x02030ba0                HybridSignatureVerify
+                0x02030bf0                SignatureVerify
+                0x02030c64                SHAVerify
+                0x02030cdc                UpdateExternalRSAKey
+                0x02030cf0                x_memset
+                0x02030d1c                x_memcpy
+                0x02030d44                x_memcmp
+                0x02030d9c                udivsi3
+                0x02030dec                strcpy
+                0x02030e08                strncpy
+                0x02030e30                strcat
+                0x02030e60                strncat
+                0x02030ebc                strcmp
+                0x02030eec                strncmp
+                0x02030f34                strchr
+                0x02030f60                strlen
+                0x02030f80                strrchr
+                0x02030fb8                strnlen
+                0x02030fe0                strspn
+                0x02031024                strpbrk
+                0x0203105c                strtok
+                0x020310d8                strsep
+                0x0203110c                strswab
+                0x02031154                memset
+                0x020311c8                bcopy
+                0x020311f0                memcpy
+                0x0203125c                memmove
+                0x020312b8                memcmp
+                0x020312f0                memscan
+                0x02031320                strstr
+                0x02031380                memchr
+                0x020313ac                strdup
+                0x020313e0                strmhz
+                0x0203144c                udelay
+                0x020314bc                simple_strtoul
+                0x02031574                simple_strtol
+                0x0203159c                ustrtoul
+                0x02031610                simple_strtoull
+                0x02031814                panic
+                0x02031c90                vsprintf
+                0x0203228c                sprintf
+                0x020322b0                strict_strtoul
+ .text          0x02032328     0x2650 lib/zlib/libz.o
+                0x02032328                inflate_fast
+                0x02032830                inflate_table
+                0x02032da0                inflateReset
+                0x02032e18                inflateInit2_
+                0x02032f18                inflateInit_
+                0x02032f2c                inflateEnd
+                0x02032f90                adler32
+                0x02033298                zcfree
+                0x020332a0                zcalloc
+                0x020332a8                inflate
+ .text          0x02034978     0x32ec net/libnet.o
+                0x020350d8                BootpRequest
+                0x02035284                DhcpRequest
+                0x020352d0                eth_initialize
+                0x020352e0                eth_setenv_enetaddr
+                0x02035318                eth_parse_enetaddr
+                0x02035370                eth_getenv_enetaddr
+                0x020353c8                eth_getenv_enetaddr_by_index
+                0x0203543c                NetSetHandler
+                0x02035468                NetCksum
+                0x020354b0                NetCksumOk
+                0x020354d4                copy_filename
+                0x0203552c                string_to_VLAN
+                0x02035578                getenv_VLAN
+                0x02035588                NetEthHdrSize
+                0x020355cc                VLAN_to_string
+                0x02035628                ip_to_string
+                0x02035678                random_port
+                0x02035694                NetSetTimeout
+                0x020356cc                NetSetIP
+                0x020357c4                NetSetEther
+                0x020358b0                NetSendPacket
+                0x020358b4                NetReceive
+                0x02035d64                ArpRequest
+                0x02035e4c                PingSend
+                0x02035f84                NetSendUDPPacket
+                0x020360c4                NetStartAgain
+                0x0203618c                ArpTimeoutCheck
+                0x0203622c                NetLoop
+                0x02036de0                NfsStart
+                0x02037628                TftpStart
+ .text          0x02037c64     0x1460 board/cavium/cnc1800l/libcnc1800l.o
+                0x02037c64                flash_init
+                0x02037c98                peripheral_pinmux_enable
+                0x02037cc0                board_late_init
+                0x02037cc8                dram_init_banksize
+                0x02037ce4                board_eth_init
+                0x02037cec                dram_init
+                0x02037d0c                board_init
+                0x02037d44                clock_disp_reset
+                0x02037d68                clock_dispsys_pllmode
+                0x02037d6c                clock_dispset_dac0mode
+                0x02037d90                clock_dispset_dac1mode
+                0x02037db4                clock_ddcset_clockmode
+                0x02037e04                clock_cecset_clockmode
+                0x02037e44                clock_audio_clockena
+                0x02037e64                clock_xportInput_clocksel
+                0x02037e7c                power_usb0phy_down
+                0x02037e9c                power_usb1phy_down
+                0x02037ebc                power_audio_on
+                0x02037ed8                clock_usb1phy_bypassenable
+                0x02037ef0                clock_usb1phy_bypassdisable
+                0x02037f08                clock_ddr_reset
+                0x02037f30                clock_audio_reset
+                0x02037f58                clock_hdmi_reset
+                0x02037f78                clock_coda_reset
+                0x02037f98                clock_usbphy_reset
+                0x02037fb8                clock_vib_reset
+                0x02037fd8                clock_tve0_reset
+                0x02037ff8                clock_tve1_reset
+                0x02038018                clock_disp0_reset
+                0x02038038                clock_disp1_reset
+                0x02038058                clock_df_reset
+                0x02038078                clock_gfx_reset
+                0x02038098                clock_video_reset
+                0x020380b8                clock_crypto_reset
+                0x020380d8                clock_usb_reset
+                0x020380f8                clock_ether_reset
+                0x02038118                clock_xport_reset
+                0x02038138                clock_video_clockena
+                0x02038158                clock_vib_clockena
+                0x02038178                clock_coda_clockena
+                0x02038198                clock_gfx_clockena
+                0x020381b8                clock_crypto_clockena
+                0x020381d8                clock_tms_clockena
+                0x020381f8                clock_cec_clockena
+                0x02038218                clock_video_setClock
+                0x02038298                clock_audio_setclock
+                0x0203832c                clock_hdmiset_clockmode
+                0x020383e8                clock_disptve_pllmode
+                0x0203843c                clock_dispset_clockmoderaw
+                0x020385c8                clock_dispset_clockmode2
+                0x020385d0                clock_dispset_clockmode1
+                0x020385dc                clock_dispset_clockmode0
+                0x02038608                decrypt
+                0x02038630                au_do_update
+                0x02038a60                au_check_header_valid
+                0x02038b98                au_check_cksum_valid
+                0x02038c00                do_auto_update
+                0x0203906c                lowlevel_init
+ .text          0x020390c4       0x20 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+                0x020390c4                __aeabi_unwind_cpp_pr0
+                0x020390c8                raise
+ .text          0x020390e4      0x114 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+                0x020390e4                __udivsi3
+                0x020390e4                __aeabi_uidiv
+                0x020391d8                __aeabi_uidivmod
+ .text          0x020391f8      0x148 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+                0x020391f8                __aeabi_idiv
+                0x020391f8                __divsi3
+                0x02039320                __aeabi_idivmod
+ .text          0x02039340       0x1c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+                0x02039340                __aeabi_llsr
+                0x02039340                __lshrdi3
+ .text          0x0203935c       0x1c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+                0x0203935c                __ashrdi3
+                0x0203935c                __aeabi_lasr
+ .text          0x02039378       0x1c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+                0x02039378                __ashldi3
+                0x02039378                __aeabi_llsl
+ .text          0x02039394       0x3c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+                0x02039394                __aeabi_uldivmod
+ .text          0x020393d0       0x14 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+                0x020393d0                __aeabi_ldiv0
+                0x020393d0                __aeabi_idiv0
+ .text          0x020393e4       0x88 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+                0x020393e4                __gnu_uldivmod_helper
+                0x02039428                __gnu_ldivmod_helper
+ .text          0x0203946c      0x490 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+                0x0203946c                __divdi3
+ .text          0x020398fc      0x43c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+                0x020398fc                __udivdi3
+ .text          0x02039d38       0x48 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+                0x02039d38                __clzsi2
+
+.glue_7         0x02039d80        0x0
+ .glue_7        0x00000000        0x0 linker stubs
+
+.glue_7t        0x02039d80        0x0
+ .glue_7t       0x00000000        0x0 linker stubs
+
+.vfp11_veneer   0x02039d80        0x0
+ .vfp11_veneer  0x00000000        0x0 linker stubs
+
+.v4_bx          0x02039d80        0x0
+ .v4_bx         0x00000000        0x0 linker stubs
+                0x02039d80                . = ALIGN (0x4)
+
+.rodata         0x02039d80    0x10186
+ *(SORT(.rodata*))
+ .rodata        0x02039d80       0xb0 arch/arm/lib/libarm.o
+                0x02039d80                version_string
+ .rodata        0x02039e30      0x5f0 common/libcommon.o
+ .rodata        0x0203a420       0x10 disk/libdisk.o
+ .rodata        0x0203a430        0xc drivers/cnc1800l/crypto/libcrypto.o
+ .rodata        0x0203a43c     0x23e4 drivers/cnc1800l/df/libdf.o
+ .rodata        0x0203c820       0x50 drivers/mmc/libmmc.o
+ .rodata        0x0203c870      0x6ac drivers/mtd/nand/libnand.o
+                0x0203ca64                nand_flash_ids
+                0x0203cecc                nand_manuf_ids
+ .rodata        0x0203cf1c      0x354 drivers/mtd/spi/libspi_flash.o
+ .rodata        0x0203d270       0x10 drivers/serial/libserial.o
+ .rodata        0x0203d280       0x80 drivers/usb/host/libusb_host.o
+ .rodata        0x0203d300       0x18 fs/fat/libfat.o
+ .rodata        0x0203d318       0xd8 fs/jffs2/libjffs2.o
+ .rodata        0x0203d3f0      0x840 lib/libgeneric.o
+                0x0203d3f0                crc7_syndrome_table
+                0x0203daf0                _ctype
+                0x0203dc0c                hex_asc
+ .rodata        0x0203dc30      0x9d0 lib/zlib/libz.o
+                0x0203e5d8                z_errmsg
+ .rodata        0x0203e600       0xac board/cavium/cnc1800l/libcnc1800l.o
+ .rodata        0x0203e6ac        0x7 net/libnet.o
+ .rodata.str1.1
+                0x0203e6b3      0x37e arch/arm/lib/libarm.o
+                                0x3a2 (size before relaxing)
+ .rodata.str1.1
+                0x0203ea31     0x7ac6 common/libcommon.o
+                               0x854d (size before relaxing)
+ .rodata.str1.1
+                0x020464f7      0x2b5 disk/libdisk.o
+                                0x2db (size before relaxing)
+ .rodata.str1.1
+                0x020467ac      0x137 drivers/cnc1800l/crypto/libcrypto.o
+                                0x14f (size before relaxing)
+ .rodata.str1.1
+                0x020468e3      0x908 drivers/cnc1800l/df/libdf.o
+ .rodata.str1.1
+                0x020471eb       0x25 drivers/i2c/libi2c.o
+ .rodata.str1.1
+                0x02047210      0x2d9 drivers/mmc/libmmc.o
+                                0x2ec (size before relaxing)
+ .rodata.str1.1
+                0x020474e9      0xce1 drivers/mtd/nand/libnand.o
+                                0xd4e (size before relaxing)
+ .rodata.str1.1
+                0x020481ca      0x53c drivers/mtd/spi/libspi_flash.o
+                                0x542 (size before relaxing)
+ .rodata.str1.1
+                0x02048706       0x39 drivers/net/libnet.o
+                                 0x41 (size before relaxing)
+ .rodata.str1.1
+                0x0204873f      0x7de drivers/usb/host/libusb_host.o
+ .rodata.str1.1
+                0x02048f1d      0x195 fs/fat/libfat.o
+                                0x1ca (size before relaxing)
+ .rodata.str1.1
+                0x020490b2      0x310 fs/jffs2/libjffs2.o
+                                0x323 (size before relaxing)
+ .rodata.str1.1
+                0x020493c2      0x12b lib/libgeneric.o
+                                0x13d (size before relaxing)
+ .rodata.str1.1
+                0x020494ed      0x21c lib/zlib/libz.o
+                                0x21d (size before relaxing)
+ .rodata.str1.1
+                0x02049709      0x577 net/libnet.o
+                                0x6e4 (size before relaxing)
+ .rodata.str1.1
+                0x02049c80      0x26b board/cavium/cnc1800l/libcnc1800l.o
+                                0x2a2 (size before relaxing)
+ .rodata.str1.1
+                0x02049eeb       0x1b /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.hash           0x02049f08       0x40
+ .hash          0x02049f08       0x40 arch/arm/cpu/arm1176/start.o
+
+.ARM.extab      0x02049f48        0x0
+ .ARM.extab     0x02049f48        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .ARM.extab     0x02049f48        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .ARM.extab     0x02049f48        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+
+.ARM.exidx      0x02049f48       0x20
+ .ARM.exidx     0x02049f48        0x8 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+                                 0x10 (size before relaxing)
+ .ARM.exidx     0x02049f50        0x8 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .ARM.exidx     0x02049f58       0x10 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+                                  0x8 (size before relaxing)
+                0x02049f68                . = ALIGN (0x4)
+
+.data           0x02049f68     0x3b44
+ *(.data)
+ .data          0x02049f68        0x0 arch/arm/cpu/arm1176/start.o
+ .data          0x02049f68        0x0 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .data          0x02049f68        0x0 arch/arm/cpu/arm1176/libarm1176.o
+ .data          0x02049f68       0x24 arch/arm/lib/libarm.o
+                0x02049f68                init_sequence
+ .data          0x02049f8c      0xfc4 common/libcommon.o
+                0x0204a050                FlashImgHdr
+                0x0204a804                load_addr
+                0x0204a810                usb_stor_curr_dev
+                0x0204a814                blob_pKey
+                0x0204a914                pKey
+                0x0204ae28                default_environment
+                0x0204ae88                env_name_spec
+                0x0204af38                mBootBlinkLed
+                0x0204af40                stdio_names
+                0x0204af4c                BLINK_COUNT3
+ .data          0x0204af50        0x0 disk/libdisk.o
+ .data          0x0204af50        0x0 drivers/cnc1800l/crypto/libcrypto.o
+ .data          0x0204af50       0x20 drivers/cnc1800l/df/libdf.o
+                0x0204af50                df_output_config
+ .data          0x0204af70        0x0 drivers/gpio/libgpio.o
+ .data          0x0204af70        0x1 drivers/i2c/libi2c.o
+ *fill*         0x0204af71        0x3 00
+ .data          0x0204af74        0x4 drivers/mmc/libmmc.o
+ .data          0x0204af78      0xa38 drivers/mtd/nand/libnand.o
+                0x0204af78                nand_curr_device
+                0x0204b89c                BLINK_COUNT1
+ .data          0x0204b9b0      0x400 drivers/mtd/spi/libspi_flash.o
+                0x0204bdac                alen
+ .data          0x0204bdb0        0x0 drivers/net/libnet.o
+ .data          0x0204bdb0        0x0 drivers/pcmcia/libpcmcia.o
+ .data          0x0204bdb0        0x0 drivers/rtc/librtc.o
+ .data          0x0204bdb0        0x0 drivers/serial/libserial.o
+ .data          0x0204bdb0       0x50 drivers/usb/host/libusb_host.o
+ .data          0x0204be00      0x208 fs/fat/libfat.o
+                0x0204be08                file_cwd
+ .data          0x0204c008        0x0 fs/jffs2/libjffs2.o
+ .data          0x0204c008       0x48 lib/libgeneric.o
+                0x0204c008                BLINK_COUNT2
+ .data          0x0204c050        0x0 lib/zlib/libz.o
+ .data          0x0204c050       0x28 net/libnet.o
+                0x0204c050                NetOurVLAN
+                0x0204c052                NetOurNativeVLAN
+                0x0204c054                NetBcastAddr
+                0x0204c06c                TftpRRQTimeoutCountMax
+                0x0204c074                TftpRRQTimeoutMSecs
+ .data          0x0204c078     0x1a34 board/cavium/cnc1800l/libcnc1800l.o
+                0x0204da88                aufl_layout
+                0x0204daa0                autype
+ .data          0x0204daac        0x0 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+ .data          0x0204daac        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+
+.got            0x0204daac        0x0
+ .got           0x00000000        0x0 arch/arm/cpu/arm1176/start.o
+
+.got.plt        0x0204daac        0xc
+ .got.plt       0x0204daac        0xc arch/arm/cpu/arm1176/start.o
+                0x0204daac                _GLOBAL_OFFSET_TABLE_
+                0x0204dab8                . = .
+                0x0204dab8                __u_boot_cmd_start = .
+
+.u_boot_cmd     0x0204dab8      0x9a0
+ *(.u_boot_cmd)
+ .u_boot_cmd    0x0204dab8      0x9a0 common/libcommon.o
+                0x0204dab8                __u_boot_cmd_bdinfo
+                0x0204dad4                __u_boot_cmd_go
+                0x0204daf0                __u_boot_cmd_reset
+                0x0204db0c                __u_boot_cmd_bootm
+                0x0204db28                __u_boot_cmd_boot
+                0x0204db44                __u_boot_cmd_bootd
+                0x0204db60                __u_boot_cmd_iminfo
+                0x0204db7c                __u_boot_cmd_cryptotest
+                0x0204db98                __u_boot_cmd_timexfer
+                0x0204dbb4                __u_boot_cmd_boots
+                0x0204dbd0                __u_boot_cmd_esp1800l_flash_util
+                0x0204dbec                __u_boot_cmd_xrsa_verify
+                0x0204dc08                __u_boot_cmd_burnsplash
+                0x0204dc24                __u_boot_cmd_icache
+                0x0204dc40                __u_boot_cmd_dcache
+                0x0204dc5c                __u_boot_cmd_debug
+                0x0204dc78                __u_boot_cmd_coninfo
+                0x0204dc94                __u_boot_cmd_logo
+                0x0204dcb0                __u_boot_cmd_echo
+                0x0204dccc                __u_boot_cmd_eeprom
+                0x0204dce8                __u_boot_cmd_exit
+                0x0204dd04                __u_boot_cmd_fatload
+                0x0204dd20                __u_boot_cmd_fatls
+                0x0204dd3c                __u_boot_cmd_fatinfo
+                0x0204dd58                __u_boot_cmd_fpcd
+                0x0204dd74                __u_boot_cmd_fpcraw
+                0x0204dd90                __u_boot_cmd_disled
+                0x0204ddac                __u_boot_cmd_gpio
+                0x0204ddc8                __u_boot_cmd_help
+                0x0204dde4                __u_boot_cmd_question_mark
+                0x0204de00                __u_boot_cmd_i2c
+                0x0204de1c                __u_boot_cmd_itest
+                0x0204de38                __u_boot_cmd_fsload
+                0x0204de54                __u_boot_cmd_ls
+                0x0204de70                __u_boot_cmd_fsinfo
+                0x0204de8c                __u_boot_cmd_loads
+                0x0204dea8                __u_boot_cmd_loadb
+                0x0204dec4                __u_boot_cmd_loady
+                0x0204dee0                __u_boot_cmd_md
+                0x0204defc                __u_boot_cmd_mm
+                0x0204df18                __u_boot_cmd_nm
+                0x0204df34                __u_boot_cmd_mw
+                0x0204df50                __u_boot_cmd_cp
+                0x0204df6c                __u_boot_cmd_cmp
+                0x0204df88                __u_boot_cmd_crc32
+                0x0204dfa4                __u_boot_cmd_base
+                0x0204dfc0                __u_boot_cmd_loop
+                0x0204dfdc                __u_boot_cmd_mtest
+                0x0204dff8                __u_boot_cmd_sleep
+                0x0204e014                __u_boot_cmd_mmcinfo
+                0x0204e030                __u_boot_cmd_mmc
+                0x0204e04c                __u_boot_cmd_nand
+                0x0204e068                __u_boot_cmd_nboot
+                0x0204e084                __u_boot_cmd_bootp
+                0x0204e0a0                __u_boot_cmd_tftpboot
+                0x0204e0bc                __u_boot_cmd_dhcp
+                0x0204e0d8                __u_boot_cmd_nfs
+                0x0204e0f4                __u_boot_cmd_ping
+                0x0204e110                __u_boot_cmd_saveenv
+                0x0204e12c                __u_boot_cmd_env
+                0x0204e148                __u_boot_cmd_editenv
+                0x0204e164                __u_boot_cmd_printenv
+                0x0204e180                __u_boot_cmd_setenv
+                0x0204e19c                __u_boot_cmd_run
+                0x0204e1b8                __u_boot_cmd_readotpuid
+                0x0204e1d4                __u_boot_cmd_cuid
+                0x0204e1f0                __u_boot_cmd_printsecenv
+                0x0204e20c                __u_boot_cmd_setsecenv
+                0x0204e228                __u_boot_cmd_savesecenv
+                0x0204e244                __u_boot_cmd_pswdsec
+                0x0204e260                __u_boot_cmd_secinit
+                0x0204e27c                __u_boot_cmd_nvram_set_defaults
+                0x0204e298                __u_boot_cmd_sfre
+                0x0204e2b4                __u_boot_cmd_sfwr
+                0x0204e2d0                __u_boot_cmd_sfer
+                0x0204e2ec                __u_boot_cmd_sfinfo
+                0x0204e308                __u_boot_cmd_source
+                0x0204e324                __u_boot_cmd_test
+                0x0204e340                __u_boot_cmd_false
+                0x0204e35c                __u_boot_cmd_true
+                0x0204e378                __u_boot_cmd_usbtest
+                0x0204e394                __u_boot_cmd_update
+                0x0204e3b0                __u_boot_cmd_upgrade
+                0x0204e3cc                __u_boot_cmd_usb
+                0x0204e3e8                __u_boot_cmd_usbboot
+                0x0204e404                __u_boot_cmd_version
+                0x0204e420                __u_boot_cmd_imxtract
+                0x0204e43c                __u_boot_cmd_showvar
+                0x0204e458                __u_boot_cmd_end = .
+                0x0204e458                . = ALIGN (0x4)
+
+.rel.dyn        0x0204e458     0x7790
+                0x0204e458                __rel_dyn_start = .
+ *(.rel*)
+ .rel.got       0x00000000        0x0 arch/arm/cpu/arm1176/start.o
+ .rel.plt       0x00000000        0x0 arch/arm/cpu/arm1176/start.o
+ .rel.text      0x0204e458     0x5170 arch/arm/cpu/arm1176/start.o
+ .rel.rodata    0x020535c8      0xda8 arch/arm/cpu/arm1176/start.o
+ .rel.data      0x02054370      0xd90 arch/arm/cpu/arm1176/start.o
+ .rel.u_boot_cmd
+                0x02055100      0xae8 arch/arm/cpu/arm1176/start.o
+                0x02055be8                __rel_dyn_end = .
+
+.dynsym         0x02055be8       0xb0
+                0x02055be8                __dynsym_start = .
+ *(.dynsym)
+ .dynsym        0x02055be8       0xb0 arch/arm/cpu/arm1176/start.o
+                0x02055c98                _end = .
+
+.bss            0x0204e458   0x144644
+                0x0204e458                __bss_start = .
+ *(.bss)
+ .bss           0x0204e458        0x0 arch/arm/cpu/arm1176/start.o
+ .bss           0x0204e458        0x8 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .bss           0x0204e460        0x0 arch/arm/cpu/arm1176/libarm1176.o
+ .bss           0x0204e460        0x8 arch/arm/lib/libarm.o
+                0x0204e460                monitor_flash_len
+ .bss           0x0204e468     0xf534 common/libcommon.o
+                0x0204e594                kluge_flag_to_fix_bug3394
+                0x0204e59c                distImage
+                0x0204e6cc                actImage
+                0x0204e91c                CryptoType
+                0x0204e920                CryptoKeyType
+                0x0204e924                eActImgType
+                0x0204e92c                screen_h
+                0x0204e930                GFXLINEPITCHSIZE
+                0x0204e934                pixel_width
+                0x0204e938                picture_color_mode
+                0x0204e93c                screen_w
+                0x0204e940                GFX2BASEADDRESS
+                0x0204e960                current_mtd_dev
+                0x0204e964                current_mtd_partnum
+                0x0204e978                os_data_init
+                0x0204e988                os_data_char
+                0x0204e98c                his_quote
+                0x0204e990                his_pad_count
+                0x0204e994                his_pad_char
+                0x0204e995                his_eol
+                0x0204e998                send_ptr
+                0x0204e99c                send_parms
+                0x0204e9e8                secure_environment
+                0x020509ec                sec_env_htbl
+                0x02050d1c                mem_malloc_start
+                0x02050d20                mem_malloc_end
+                0x02050d24                mem_malloc_brk
+                0x02050d58                env_htab
+                0x02050d64                config_env_offset
+                0x02050d68                env_ptr
+                0x02050fbc                last_return_code
+                0x02050fc0                nesting_level
+                0x02050fd0                hist_num
+                0x02050fd4                hist_lines
+                0x020523e8                hist_list
+                0x02052438                console_buffer
+                0x02052578                stdio_devices
+                0x0205cf90                usb_started
+                0x0205d1c4                gBlinkCount3
+ .bss           0x0205d99c        0x0 disk/libdisk.o
+ *fill*         0x0205d99c        0x4 00
+ .bss           0x0205d9a0       0xf0 drivers/cnc1800l/crypto/libcrypto.o
+                0x0205d9a0                channel_info
+ .bss           0x0205da90      0x230 drivers/cnc1800l/df/libdf.o
+                0x0205da90                dfreg
+                0x0205dcbc                gfxid
+ .bss           0x0205dcc0        0x0 drivers/gpio/libgpio.o
+ .bss           0x0205dcc0       0x1c drivers/i2c/libi2c.o
+ *fill*         0x0205dcdc        0x4 00
+ .bss           0x0205dce0   0x100158 drivers/mmc/libmmc.o
+                0x0215dce8                mmc_channel
+                0x0215de00                mmc_host
+ .bss           0x0215de38      0x1e8 drivers/mtd/nand/libnand.o
+                0x0215de38                nand_info
+                0x0215e000                accum_pgrd
+                0x0215e004                accum_ecccalc
+                0x0215e008                accum_correct
+                0x0215e00c                accum_busy_wait_time
+                0x0215e010                accum_page_read_time
+                0x0215e018                accum_wait
+ .bss           0x0215e020        0x0 drivers/mtd/spi/libspi_flash.o
+ .bss           0x0215e020      0x410 drivers/net/libnet.o
+                0x0215e020                tx_buffer_t
+                0x0215e02c                tx_buffer
+                0x0215e030                rx_buffer
+ .bss           0x0215e430        0x0 drivers/pcmcia/libpcmcia.o
+ .bss           0x0215e430        0x0 drivers/rtc/librtc.o
+ .bss           0x0215e430        0x0 drivers/serial/libserial.o
+ *fill*         0x0215e430       0xd0 00
+ .bss           0x0215e500     0x1500 drivers/usb/host/libusb_host.o
+                0x0215e500                ptd
+                0x0215e64c                phcca
+                0x0215e700                ghcca
+                0x0215e800                ohci_dev
+                0x0215e9a0                gtd
+                0x0215f9e4                devgone
+ .bss           0x0215fa00    0x30008 fs/fat/libfat.o
+                0x0215fa08                get_vfatname_block
+                0x0216fa08                do_fat_read_block
+                0x0217fa08                get_dentfromdir_block
+ .bss           0x0218fa08        0x4 fs/jffs2/libjffs2.o
+ .bss           0x0218fa0c      0x110 lib/libgeneric.o
+                0x0218fa0c                mpt2FuncBootBlinkLedOn
+                0x0218fa10                mpt2FuncBootBlinkLedOff
+                0x0218fa14                errno
+                0x0218fb18                ___strtok
+ .bss           0x0218fb1c        0x0 lib/zlib/libz.o
+ .bss           0x0218fb1c     0x2f50 net/libnet.o
+                0x0218fb1c                dhcp_leasetime
+                0x0218fb20                NetDHCPServerIP
+                0x0218fb24                BootpID
+                0x0218fb28                dhcp_state
+                0x0218fb2c                BootpTry
+                0x0218fb30                NetState
+                0x0218fb38                NetPingIP
+                0x0218fb48                NetIPID
+                0x0218fb4c                NetOurIP
+                0x0218fb50                NetOurEther
+                0x0218fb58                NetRxPacket
+                0x0218fb5c                NetRxPacketLen
+                0x0218fb60                NetArpWaitPacketIP
+                0x0218fb64                NetArpWaitPacketMAC
+                0x0218fb68                NetArpWaitReplyIP
+                0x0218fb6c                NetArpWaitTxPacket
+                0x0218fb70                NetArpWaitTxPacketSize
+                0x0218fb74                NetTxPacket
+                0x0218fb78                NetOurSubnetMask
+                0x0218fb7c                NetOurGatewayIP
+                0x0218fb88                NetEtherNullAddr
+                0x0218fb90                NetArpWaitTry
+                0x0218fb94                NetArpWaitTimerStart
+                0x0218fb9c                PktBuf
+                0x021919bc                NetRxPackets
+                0x021919cc                NetArpWaitPacketBuf
+                0x02191ff0                NetServerIP
+                0x02191ff4                NetBootFileXferSize
+                0x02191ff8                NetOurNISDomain
+                0x02192018                NetOurHostName
+                0x02192038                NetOurRootPath
+                0x02192078                NetOurDNSIP
+                0x0219207c                NetBootFileSize
+                0x02192080                NetServerEther
+                0x02192088                BootFile
+ .bss           0x02192a6c       0x30 board/cavium/cnc1800l/libcnc1800l.o
+                0x02192a6c                audio_pll
+                0x02192a7c                nand_already_erase
+                0x02192a7d                bootargs_len
+                0x02192a7e                bootcmd_len
+                0x02192a80                aufile
+                0x02192a8c                ausize
+ .bss           0x02192a9c        0x0 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+ .bss           0x02192a9c        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+                0x02192a9c                . = ALIGN (0x4)
+                0x02192a9c                __bss_end__ = .
+
+.dynbss         0x02192a9c        0x0
+ .dynbss        0x00000000        0x0 arch/arm/cpu/arm1176/start.o
+
+/DISCARD/
+ *(.dynstr*)
+ *(.dynamic*)
+ *(.plt*)
+ *(.interp*)
+ *(.gnu*)
+Address of section .text set to 0x2000000
+LOAD arch/arm/cpu/arm1176/start.o
+START GROUP
+LOAD api/libapi.o
+LOAD arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+LOAD arch/arm/cpu/arm1176/libarm1176.o
+LOAD arch/arm/lib/libarm.o
+LOAD common/libcommon.o
+LOAD disk/libdisk.o
+LOAD drivers/bios_emulator/libatibiosemu.o
+LOAD drivers/block/libblock.o
+LOAD drivers/cnc1800l/crypto/libcrypto.o
+LOAD drivers/cnc1800l/df/libdf.o
+LOAD drivers/cnc1800l/tuner/libtuner.o
+LOAD drivers/cnc1800l/xport/libxport.o
+LOAD drivers/dma/libdma.o
+LOAD drivers/fpga/libfpga.o
+LOAD drivers/gpio/libgpio.o
+LOAD drivers/hwmon/libhwmon.o
+LOAD drivers/i2c/libi2c.o
+LOAD drivers/input/libinput.o
+LOAD drivers/misc/libmisc.o
+LOAD drivers/mmc/libmmc.o
+LOAD drivers/mtd/libmtd.o
+LOAD drivers/mtd/nand/libnand.o
+LOAD drivers/mtd/onenand/libonenand.o
+LOAD drivers/mtd/spi/libspi_flash.o
+LOAD drivers/mtd/ubi/libubi.o
+LOAD drivers/net/libnet.o
+LOAD drivers/net/phy/libphy.o
+LOAD drivers/pci/libpci.o
+LOAD drivers/pcmcia/libpcmcia.o
+LOAD drivers/power/libpower.o
+LOAD drivers/rtc/librtc.o
+LOAD drivers/serial/libserial.o
+LOAD drivers/spi/libspi.o
+LOAD drivers/twserial/libtws.o
+LOAD drivers/usb/eth/libusb_eth.o
+LOAD drivers/usb/gadget/libusb_gadget.o
+LOAD drivers/usb/host/libusb_host.o
+LOAD drivers/usb/musb/libusb_musb.o
+LOAD drivers/usb/phy/libusb_phy.o
+LOAD drivers/video/libvideo.o
+LOAD drivers/watchdog/libwatchdog.o
+LOAD fs/cramfs/libcramfs.o
+LOAD fs/ext2/libext2fs.o
+LOAD fs/fat/libfat.o
+LOAD fs/fdos/libfdos.o
+LOAD fs/jffs2/libjffs2.o
+LOAD fs/reiserfs/libreiserfs.o
+LOAD fs/ubifs/libubifs.o
+LOAD fs/yaffs2/libyaffs2.o
+LOAD lib/libfdt/libfdt.o
+LOAD lib/libgeneric.o
+LOAD lib/lzma/liblzma.o
+LOAD lib/lzo/liblzo.o
+LOAD lib/zlib/libz.o
+LOAD net/libnet.o
+LOAD post/libpost.o
+LOAD board/cavium/cnc1800l/libcnc1800l.o
+END GROUP
+LOAD /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+LOAD /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a
+OUTPUT(u-boot elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x28
+ .ARM.attributes
+                0x00000000       0x1c arch/arm/cpu/arm1176/start.o
+ .ARM.attributes
+                0x0000001c       0x2a arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .ARM.attributes
+                0x00000046       0x2c arch/arm/cpu/arm1176/libarm1176.o
+ .ARM.attributes
+                0x00000072       0x2c arch/arm/lib/libarm.o
+ .ARM.attributes
+                0x0000009e       0x2c common/libcommon.o
+ .ARM.attributes
+                0x000000ca       0x2c disk/libdisk.o
+ .ARM.attributes
+                0x000000f6       0x2c drivers/cnc1800l/crypto/libcrypto.o
+ .ARM.attributes
+                0x00000122       0x2c drivers/cnc1800l/df/libdf.o
+ .ARM.attributes
+                0x0000014e       0x2c drivers/gpio/libgpio.o
+ .ARM.attributes
+                0x0000017a       0x2c drivers/i2c/libi2c.o
+ .ARM.attributes
+                0x000001a6       0x2c drivers/mmc/libmmc.o
+ .ARM.attributes
+                0x000001d2       0x2c drivers/mtd/nand/libnand.o
+ .ARM.attributes
+                0x000001fe       0x2c drivers/mtd/spi/libspi_flash.o
+ .ARM.attributes
+                0x0000022a       0x2c drivers/net/libnet.o
+ .ARM.attributes
+                0x00000256       0x2c drivers/pcmcia/libpcmcia.o
+ .ARM.attributes
+                0x00000282       0x2c drivers/rtc/librtc.o
+ .ARM.attributes
+                0x000002ae       0x2c drivers/serial/libserial.o
+ .ARM.attributes
+                0x000002da       0x2c drivers/usb/host/libusb_host.o
+ .ARM.attributes
+                0x00000306       0x2c fs/fat/libfat.o
+ .ARM.attributes
+                0x00000332       0x2c fs/jffs2/libjffs2.o
+ .ARM.attributes
+                0x0000035e       0x2c lib/libgeneric.o
+ .ARM.attributes
+                0x0000038a       0x2c lib/zlib/libz.o
+ .ARM.attributes
+                0x000003b6       0x2c net/libnet.o
+ .ARM.attributes
+                0x000003e2       0x2a board/cavium/cnc1800l/libcnc1800l.o
+ .ARM.attributes
+                0x0000040c       0x2c /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+ .ARM.attributes
+                0x00000438       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+ .ARM.attributes
+                0x00000456       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+ .ARM.attributes
+                0x00000474       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+ .ARM.attributes
+                0x00000492       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+ .ARM.attributes
+                0x000004b0       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+ .ARM.attributes
+                0x000004ce       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x000004ec       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+ .ARM.attributes
+                0x0000050a       0x2c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .ARM.attributes
+                0x00000536       0x2c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .ARM.attributes
+                0x00000562       0x2c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+ .ARM.attributes
+                0x0000058e       0x1e /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .note.GNU-stack
+                0x00000000        0x0 arch/arm/cpu/arm1176/libarm1176.o
+ .note.GNU-stack
+                0x00000000        0x0 arch/arm/lib/libarm.o
+ .note.GNU-stack
+                0x00000000        0x0 common/libcommon.o
+ .note.GNU-stack
+                0x00000000        0x0 disk/libdisk.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/cnc1800l/crypto/libcrypto.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/cnc1800l/df/libdf.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/gpio/libgpio.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/i2c/libi2c.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/mmc/libmmc.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/mtd/nand/libnand.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/mtd/spi/libspi_flash.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/net/libnet.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/pcmcia/libpcmcia.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/rtc/librtc.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/serial/libserial.o
+ .note.GNU-stack
+                0x00000000        0x0 drivers/usb/host/libusb_host.o
+ .note.GNU-stack
+                0x00000000        0x0 fs/fat/libfat.o
+ .note.GNU-stack
+                0x00000000        0x0 fs/jffs2/libjffs2.o
+ .note.GNU-stack
+                0x00000000        0x0 lib/libgeneric.o
+ .note.GNU-stack
+                0x00000000        0x0 lib/zlib/libz.o
+ .note.GNU-stack
+                0x00000000        0x0 net/libnet.o
+ .note.GNU-stack
+                0x00000000        0x0 board/cavium/cnc1800l/libcnc1800l.o
+ .note.GNU-stack
+                0x00000000        0x0 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_lshrdi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashrdi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_ashldi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_aeabi_uldivmod.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_dvmd_lnx.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+ .note.GNU-stack
+                0x00000000        0x0 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_clzsi2.o)
+
+.comment        0x00000000     0x1580
+ .comment       0x00000000       0x56 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .comment       0x00000056       0x2b arch/arm/cpu/arm1176/libarm1176.o
+ .comment       0x00000081      0x102 arch/arm/lib/libarm.o
+ .comment       0x00000183      0x912 common/libcommon.o
+ .comment       0x00000a95       0x56 disk/libdisk.o
+ .comment       0x00000aeb       0x56 drivers/cnc1800l/crypto/libcrypto.o
+ .comment       0x00000b41       0x2b drivers/cnc1800l/df/libdf.o
+ .comment       0x00000b6c       0x2b drivers/gpio/libgpio.o
+ .comment       0x00000b97       0x2b drivers/i2c/libi2c.o
+ .comment       0x00000bc2       0x56 drivers/mmc/libmmc.o
+ .comment       0x00000c18      0x12d drivers/mtd/nand/libnand.o
+ .comment       0x00000d45       0x2b drivers/mtd/spi/libspi_flash.o
+ .comment       0x00000d70       0x2b drivers/net/libnet.o
+ .comment       0x00000d9b       0x56 drivers/pcmcia/libpcmcia.o
+ .comment       0x00000df1       0x2b drivers/rtc/librtc.o
+ .comment       0x00000e1c       0x56 drivers/serial/libserial.o
+ .comment       0x00000e72       0x56 drivers/usb/host/libusb_host.o
+ .comment       0x00000ec8       0x56 fs/fat/libfat.o
+ .comment       0x00000f1e       0xd7 fs/jffs2/libjffs2.o
+ .comment       0x00000ff5      0x3dd lib/libgeneric.o
+ .comment       0x000013d2       0x2b lib/zlib/libz.o
+ .comment       0x000013fd       0xd7 net/libnet.o
+ .comment       0x000014d4       0x81 board/cavium/cnc1800l/libcnc1800l.o
+ .comment       0x00001555       0x2b /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_line     0x00000000    0x138c4
+ .debug_line    0x00000000       0xc1 arch/arm/cpu/arm1176/start.o
+ .debug_line    0x000000c1      0x187 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_line    0x00000248       0x3f arch/arm/cpu/arm1176/libarm1176.o
+ .debug_line    0x00000287      0xba4 arch/arm/lib/libarm.o
+ .debug_line    0x00000e2b     0x86e6 common/libcommon.o
+ .debug_line    0x00009511      0x492 disk/libdisk.o
+ .debug_line    0x000099a3      0x3d5 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_line    0x00009d78      0x29f drivers/cnc1800l/df/libdf.o
+ .debug_line    0x0000a017       0x6b drivers/gpio/libgpio.o
+ .debug_line    0x0000a082      0x2f8 drivers/i2c/libi2c.o
+ .debug_line    0x0000a37a      0x9d6 drivers/mmc/libmmc.o
+ .debug_line    0x0000ad50     0x1e11 drivers/mtd/nand/libnand.o
+ .debug_line    0x0000cb61      0x572 drivers/mtd/spi/libspi_flash.o
+ .debug_line    0x0000d0d3      0x2ee drivers/net/libnet.o
+ .debug_line    0x0000d3c1       0x3a drivers/pcmcia/libpcmcia.o
+ .debug_line    0x0000d3fb       0x1d drivers/rtc/librtc.o
+ .debug_line    0x0000d418      0x3ce drivers/serial/libserial.o
+ .debug_line    0x0000d7e6      0x58b drivers/usb/host/libusb_host.o
+ .debug_line    0x0000dd71      0x5c0 fs/fat/libfat.o
+ .debug_line    0x0000e331      0xace fs/jffs2/libjffs2.o
+ .debug_line    0x0000edff     0x27be lib/libgeneric.o
+ .debug_line    0x000115bd      0x735 lib/zlib/libz.o
+ .debug_line    0x00011cf2     0x134b net/libnet.o
+ .debug_line    0x0001303d      0x844 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_line    0x00013881       0x43 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_info     0x00000000    0x4816e
+ .debug_info    0x00000000       0xb3 arch/arm/cpu/arm1176/start.o
+ .debug_info    0x000000b3      0x410 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_info    0x000004c3       0xa8 arch/arm/cpu/arm1176/libarm1176.o
+ .debug_info    0x0000056b     0x2244 arch/arm/lib/libarm.o
+ .debug_info    0x000027af    0x1c925 common/libcommon.o
+ .debug_info    0x0001f0d4      0xecc disk/libdisk.o
+ .debug_info    0x0001ffa0      0xfe2 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_info    0x00020f82     0x4b1d drivers/cnc1800l/df/libdf.o
+ .debug_info    0x00025a9f      0x155 drivers/gpio/libgpio.o
+ .debug_info    0x00025bf4     0x1042 drivers/i2c/libi2c.o
+ .debug_info    0x00026c36     0x26a8 drivers/mmc/libmmc.o
+ .debug_info    0x000292de     0xa4f8 drivers/mtd/nand/libnand.o
+ .debug_info    0x000337d6     0x1603 drivers/mtd/spi/libspi_flash.o
+ .debug_info    0x00034dd9      0x70f drivers/net/libnet.o
+ .debug_info    0x000354e8       0xec drivers/pcmcia/libpcmcia.o
+ .debug_info    0x000355d4       0x76 drivers/rtc/librtc.o
+ .debug_info    0x0003564a      0xeca drivers/serial/libserial.o
+ .debug_info    0x00036514     0x212d drivers/usb/host/libusb_host.o
+ .debug_info    0x00038641     0x15fa fs/fat/libfat.o
+ .debug_info    0x00039c3b     0x26dd fs/jffs2/libjffs2.o
+ .debug_info    0x0003c318     0x57e9 lib/libgeneric.o
+ .debug_info    0x00041b01      0xfd8 lib/zlib/libz.o
+ .debug_info    0x00042ad9     0x32ef net/libnet.o
+ .debug_info    0x00045dc8     0x22f4 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_info    0x000480bc       0xb2 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_abbrev   0x00000000     0xef3c
+ .debug_abbrev  0x00000000       0x14 arch/arm/cpu/arm1176/start.o
+ .debug_abbrev  0x00000014      0x223 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_abbrev  0x00000237       0x68 arch/arm/cpu/arm1176/libarm1176.o
+ .debug_abbrev  0x0000029f      0x957 arch/arm/lib/libarm.o
+ .debug_abbrev  0x00000bf6     0x6900 common/libcommon.o
+ .debug_abbrev  0x000074f6      0x445 disk/libdisk.o
+ .debug_abbrev  0x0000793b      0x3be drivers/cnc1800l/crypto/libcrypto.o
+ .debug_abbrev  0x00007cf9      0x39f drivers/cnc1800l/df/libdf.o
+ .debug_abbrev  0x00008098       0xb8 drivers/gpio/libgpio.o
+ .debug_abbrev  0x00008150      0x1e8 drivers/i2c/libi2c.o
+ .debug_abbrev  0x00008338      0x810 drivers/mmc/libmmc.o
+ .debug_abbrev  0x00008b48     0x12a9 drivers/mtd/nand/libnand.o
+ .debug_abbrev  0x00009df1      0x34d drivers/mtd/spi/libspi_flash.o
+ .debug_abbrev  0x0000a13e      0x2e0 drivers/net/libnet.o
+ .debug_abbrev  0x0000a41e       0x66 drivers/pcmcia/libpcmcia.o
+ .debug_abbrev  0x0000a484       0x33 drivers/rtc/librtc.o
+ .debug_abbrev  0x0000a4b7      0x330 drivers/serial/libserial.o
+ .debug_abbrev  0x0000a7e7      0x466 drivers/usb/host/libusb_host.o
+ .debug_abbrev  0x0000ac4d      0x4f6 fs/fat/libfat.o
+ .debug_abbrev  0x0000b143      0x82a fs/jffs2/libjffs2.o
+ .debug_abbrev  0x0000b96d     0x1df4 lib/libgeneric.o
+ .debug_abbrev  0x0000d761      0x311 lib/zlib/libz.o
+ .debug_abbrev  0x0000da72      0xe08 net/libnet.o
+ .debug_abbrev  0x0000e87a      0x654 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_abbrev  0x0000eece       0x6e /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_aranges  0x00000000      0xf20
+ .debug_aranges
+                0x00000000       0x20 arch/arm/cpu/arm1176/start.o
+ .debug_aranges
+                0x00000020       0x60 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_aranges
+                0x00000080       0x20 arch/arm/cpu/arm1176/libarm1176.o
+ .debug_aranges
+                0x000000a0       0xc0 arch/arm/lib/libarm.o
+ .debug_aranges
+                0x00000160      0x640 common/libcommon.o
+ .debug_aranges
+                0x000007a0       0x40 disk/libdisk.o
+ .debug_aranges
+                0x000007e0       0x40 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_aranges
+                0x00000820       0x20 drivers/cnc1800l/df/libdf.o
+ .debug_aranges
+                0x00000840       0x20 drivers/gpio/libgpio.o
+ .debug_aranges
+                0x00000860       0x20 drivers/i2c/libi2c.o
+ .debug_aranges
+                0x00000880       0x40 drivers/mmc/libmmc.o
+ .debug_aranges
+                0x000008c0       0xc0 drivers/mtd/nand/libnand.o
+ .debug_aranges
+                0x00000980       0x20 drivers/mtd/spi/libspi_flash.o
+ .debug_aranges
+                0x000009a0       0x20 drivers/net/libnet.o
+ .debug_aranges
+                0x000009c0       0x40 drivers/serial/libserial.o
+ .debug_aranges
+                0x00000a00       0x40 drivers/usb/host/libusb_host.o
+ .debug_aranges
+                0x00000a40       0x40 fs/fat/libfat.o
+ .debug_aranges
+                0x00000a80       0xa0 fs/jffs2/libjffs2.o
+ .debug_aranges
+                0x00000b20      0x2a0 lib/libgeneric.o
+ .debug_aranges
+                0x00000dc0       0x20 lib/zlib/libz.o
+ .debug_aranges
+                0x00000de0       0xa0 net/libnet.o
+ .debug_aranges
+                0x00000e80       0x80 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_aranges
+                0x00000f00       0x20 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_pubnames
+                0x00000000     0x53ab
+ .debug_pubnames
+                0x00000000       0xe2 arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_pubnames
+                0x000000e2       0x2b arch/arm/cpu/arm1176/libarm1176.o
+ .debug_pubnames
+                0x0000010d      0x34a arch/arm/lib/libarm.o
+ .debug_pubnames
+                0x00000457     0x2803 common/libcommon.o
+ .debug_pubnames
+                0x00002c5a       0xb9 disk/libdisk.o
+ .debug_pubnames
+                0x00002d13      0x309 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_pubnames
+                0x0000301c      0x14e drivers/cnc1800l/df/libdf.o
+ .debug_pubnames
+                0x0000316a       0x4c drivers/gpio/libgpio.o
+ .debug_pubnames
+                0x000031b6       0x97 drivers/i2c/libi2c.o
+ .debug_pubnames
+                0x0000324d      0x258 drivers/mmc/libmmc.o
+ .debug_pubnames
+                0x000034a5      0x2c0 drivers/mtd/nand/libnand.o
+ .debug_pubnames
+                0x00003765      0x14e drivers/mtd/spi/libspi_flash.o
+ .debug_pubnames
+                0x000038b3       0x86 drivers/net/libnet.o
+ .debug_pubnames
+                0x00003939      0x164 drivers/serial/libserial.o
+ .debug_pubnames
+                0x00003a9d      0x15a drivers/usb/host/libusb_host.o
+ .debug_pubnames
+                0x00003bf7      0x123 fs/fat/libfat.o
+ .debug_pubnames
+                0x00003d1a      0x173 fs/jffs2/libjffs2.o
+ .debug_pubnames
+                0x00003e8d      0x8f9 lib/libgeneric.o
+ .debug_pubnames
+                0x00004786       0xb4 lib/zlib/libz.o
+ .debug_pubnames
+                0x0000483a      0x55c net/libnet.o
+ .debug_pubnames
+                0x00004d96      0x5de board/cavium/cnc1800l/libcnc1800l.o
+ .debug_pubnames
+                0x00005374       0x37 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_frame    0x00000000     0x7ca4
+ .debug_frame   0x00000000      0x13c arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_frame   0x0000013c       0x28 arch/arm/cpu/arm1176/libarm1176.o
+ .debug_frame   0x00000164      0x3e0 arch/arm/lib/libarm.o
+ .debug_frame   0x00000544     0x3410 common/libcommon.o
+ .debug_frame   0x00003954      0x170 disk/libdisk.o
+ .debug_frame   0x00003ac4      0x340 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_frame   0x00003e04      0x1b8 drivers/cnc1800l/df/libdf.o
+ .debug_frame   0x00003fbc       0x54 drivers/gpio/libgpio.o
+ .debug_frame   0x00004010       0xd0 drivers/i2c/libi2c.o
+ .debug_frame   0x000040e0      0x474 drivers/mmc/libmmc.o
+ .debug_frame   0x00004554      0xb70 drivers/mtd/nand/libnand.o
+ .debug_frame   0x000050c4      0x1b8 drivers/mtd/spi/libspi_flash.o
+ .debug_frame   0x0000527c       0xe0 drivers/net/libnet.o
+ .debug_frame   0x0000535c      0x188 drivers/serial/libserial.o
+ .debug_frame   0x000054e4      0x248 drivers/usb/host/libusb_host.o
+ .debug_frame   0x0000572c      0x24c fs/fat/libfat.o
+ .debug_frame   0x00005978      0x37c fs/jffs2/libjffs2.o
+ .debug_frame   0x00005cf4     0x10c4 lib/libgeneric.o
+ .debug_frame   0x00006db8      0x11c lib/zlib/libz.o
+ .debug_frame   0x00006ed4      0x834 net/libnet.o
+ .debug_frame   0x00007708      0x454 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_frame   0x00007b5c       0x38 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+ .debug_frame   0x00007b94       0x20 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivsi3.o)
+ .debug_frame   0x00007bb4       0x20 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divsi3.o)
+ .debug_frame   0x00007bd4       0x58 /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(bpabi.o)
+ .debug_frame   0x00007c2c       0x3c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_divdi3.o)
+ .debug_frame   0x00007c68       0x3c /opt/arm-2010q1/bin/../lib/gcc/arm-none-linux-gnueabi/4.4.1/armv4t/libgcc.a(_udivdi3.o)
+
+.debug_str      0x00000000     0xf8e1
+ .debug_str     0x00000000      0x1da arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+                                0x35c (size before relaxing)
+ .debug_str     0x000001da       0xa9 arch/arm/cpu/arm1176/libarm1176.o
+                                0x13e (size before relaxing)
+ .debug_str     0x00000283      0x935 arch/arm/lib/libarm.o
+                               0x1598 (size before relaxing)
+ .debug_str     0x00000bb8     0x4feb common/libcommon.o
+                               0xdb91 (size before relaxing)
+ .debug_str     0x00005ba3      0x281 disk/libdisk.o
+                                0x780 (size before relaxing)
+ .debug_str     0x00005e24      0x5a1 drivers/cnc1800l/crypto/libcrypto.o
+                                0x8a6 (size before relaxing)
+ .debug_str     0x000063c5     0x24f3 drivers/cnc1800l/df/libdf.o
+                               0x264c (size before relaxing)
+ .debug_str     0x000088b8       0xc2 drivers/gpio/libgpio.o
+                                0x16a (size before relaxing)
+ .debug_str     0x0000897a      0x158 drivers/i2c/libi2c.o
+                                0x25f (size before relaxing)
+ .debug_str     0x00008ad2      0x498 drivers/mmc/libmmc.o
+                                0xd38 (size before relaxing)
+ .debug_str     0x00008f6a      0xf76 drivers/mtd/nand/libnand.o
+                               0x3fa3 (size before relaxing)
+ .debug_str     0x00009ee0      0x640 drivers/mtd/spi/libspi_flash.o
+                                0x938 (size before relaxing)
+ .debug_str     0x0000a520      0x276 drivers/net/libnet.o
+                                0x3dc (size before relaxing)
+ .debug_str     0x0000a796       0x99 drivers/pcmcia/libpcmcia.o
+                                0x23f (size before relaxing)
+ .debug_str     0x0000a82f       0x79 drivers/rtc/librtc.o
+                                0x115 (size before relaxing)
+ .debug_str     0x0000a8a8      0x284 drivers/serial/libserial.o
+                                0x7a1 (size before relaxing)
+ .debug_str     0x0000ab2c      0x66d drivers/usb/host/libusb_host.o
+                                0xcde (size before relaxing)
+ .debug_str     0x0000b199      0x572 fs/fat/libfat.o
+                                0x8f1 (size before relaxing)
+ .debug_str     0x0000b70b      0x8e6 fs/jffs2/libjffs2.o
+                                0xff9 (size before relaxing)
+ .debug_str     0x0000bff1      0xab6 lib/libgeneric.o
+                               0x260e (size before relaxing)
+ .debug_str     0x0000caa7      0x31a lib/zlib/libz.o
+                                0x5b9 (size before relaxing)
+ .debug_str     0x0000cdc1      0xc75 net/libnet.o
+                               0x18e6 (size before relaxing)
+ .debug_str     0x0000da36     0x1e79 board/cavium/cnc1800l/libcnc1800l.o
+                               0x253c (size before relaxing)
+ .debug_str     0x0000f8af       0x32 /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+                                0x141 (size before relaxing)
+
+.debug_loc      0x00000000    0x2710c
+ .debug_loc     0x00000000      0x17f arch/arm/cpu/arm1176/cnc1800l/libcnc1800l.o
+ .debug_loc     0x0000017f       0x1f arch/arm/cpu/arm1176/libarm1176.o
+ .debug_loc     0x0000019e      0x60d arch/arm/lib/libarm.o
+ .debug_loc     0x000007ab    0x10c37 common/libcommon.o
+ .debug_loc     0x000113e2      0x551 disk/libdisk.o
+ .debug_loc     0x00011933      0xfc4 drivers/cnc1800l/crypto/libcrypto.o
+ .debug_loc     0x000128f7      0x667 drivers/cnc1800l/df/libdf.o
+ .debug_loc     0x00012f5e      0x134 drivers/gpio/libgpio.o
+ .debug_loc     0x00013092      0x96c drivers/i2c/libi2c.o
+ .debug_loc     0x000139fe     0x12b5 drivers/mmc/libmmc.o
+ .debug_loc     0x00014cb3     0x4b9b drivers/mtd/nand/libnand.o
+ .debug_loc     0x0001984e      0x7e0 drivers/mtd/spi/libspi_flash.o
+ .debug_loc     0x0001a02e      0x222 drivers/net/libnet.o
+ .debug_loc     0x0001a250      0x283 drivers/serial/libserial.o
+ .debug_loc     0x0001a4d3      0xfd7 drivers/usb/host/libusb_host.o
+ .debug_loc     0x0001b4aa      0xecc fs/fat/libfat.o
+ .debug_loc     0x0001c376     0x156c fs/jffs2/libjffs2.o
+ .debug_loc     0x0001d8e2     0x58f7 lib/libgeneric.o
+ .debug_loc     0x000231d9     0x1628 lib/zlib/libz.o
+ .debug_loc     0x00024801     0x1d2e net/libnet.o
+ .debug_loc     0x0002652f      0xba0 board/cavium/cnc1800l/libcnc1800l.o
+ .debug_loc     0x000270cf       0x3d /home/mikko/cavium/wfd/cavium-new4/cavm_dlink_dsm260_svn13186_HDCP/dongle/platform/bootloader/u-boot-2011.06/arch/arm/lib/eabi_compat.o
+
+.debug_ranges   0x00000000     0x18a0
+ .debug_ranges  0x00000000       0xf0 arch/arm/lib/libarm.o
+ .debug_ranges  0x000000f0      0x890 common/libcommon.o
+ .debug_ranges  0x00000980       0x60 drivers/cnc1800l/df/libdf.o
+ .debug_ranges  0x000009e0      0x140 drivers/i2c/libi2c.o
+ .debug_ranges  0x00000b20       0xe0 drivers/mmc/libmmc.o
+ .debug_ranges  0x00000c00      0x348 drivers/mtd/nand/libnand.o
+ .debug_ranges  0x00000f48       0xf0 drivers/mtd/spi/libspi_flash.o
+ .debug_ranges  0x00001038       0x48 drivers/net/libnet.o
+ .debug_ranges  0x00001080       0x60 drivers/serial/libserial.o
+ .debug_ranges  0x000010e0      0x150 drivers/usb/host/libusb_host.o
+ .debug_ranges  0x00001230       0xa8 fs/fat/libfat.o
+ .debug_ranges  0x000012d8      0x2d0 fs/jffs2/libjffs2.o
+ .debug_ranges  0x000015a8      0x178 lib/libgeneric.o
+ .debug_ranges  0x00001720       0x30 lib/zlib/libz.o
+ .debug_ranges  0x00001750      0x120 net/libnet.o
+ .debug_ranges  0x00001870       0x30 board/cavium/cnc1800l/libcnc1800l.o
