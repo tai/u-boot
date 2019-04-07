@@ -98,7 +98,7 @@
 
 env_t environment __PPCENV__ = {
 	ENV_CRC,	/* CRC Sum */
-#ifdef CONFIG_SYS_REDUNDAND_ENVIRONMENT
+#ifdef CONFIG_SYS_REDUNDANT_ENVIRONMENT
 	1,		/* Flags: valid */
 #endif
 	{

@@ -32,7 +32,7 @@
 #include <usb.h>
 
 #ifdef CONFIG_USB_STORAGE
-static int usb_stor_curr_dev = -1; /* current device */
+int usb_stor_curr_dev = -1; /* current device */
 #endif
 #ifdef CONFIG_USB_HOST_ETHER
 static int usb_ether_curr_dev = -1; /* current ethernet device */

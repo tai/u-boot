@@ -541,6 +541,9 @@ int eth_initialize(bd_t *bis)
 #if defined(CONFIG_DRIVER_NS7520_ETHERNET)
 	ns7520_miiphy_initialize(bis);
 #endif
+#if defined(CONFIG_DRIVER_CN100)
+    cn100_eth_readmac(bis);
+#endif
 	return 0;
 }
 #endif

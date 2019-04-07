@@ -61,6 +61,10 @@ static char *nfs_filename;
 static char *nfs_path;
 static char nfs_path_buff[2048];
 
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+extern int check_write_to_code_area (unsigned long addr, unsigned long size);
+#endif
+
 static __inline__ int
 store_block (uchar * src, unsigned offset, unsigned len)
 {
@@ -85,6 +89,10 @@ store_block (uchar * src, unsigned offset, unsigned len)
 	} else
 #endif /* CONFIG_SYS_DIRECT_FLASH_NFS */
 	{
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+		if (check_write_to_code_area ((unsigned long) (load_addr + offset), len))
+			return -1;
+#endif
 		(void)memcpy ((void *)(load_addr + offset), src, len);
 	}
 

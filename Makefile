@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 # MA 02111-1307 USA
 #
-
+export CROSS_COMPILE=arm-none-linux-gnueabi-
 VERSION = 2011
 PATCHLEVEL = 06
 SUBLEVEL =
@@ -273,6 +273,12 @@ LIBS += drivers/usb/musb/libusb_musb.o
 LIBS += drivers/usb/phy/libusb_phy.o
 LIBS += drivers/video/libvideo.o
 LIBS += drivers/watchdog/libwatchdog.o
+ifeq ($(SOC), cnc1800l)
+LIBS += drivers/cnc1800l/xport/libxport.o
+LIBS += drivers/cnc1800l/tuner/libtuner.o
+LIBS += drivers/cnc1800l/df/libdf.o
+LIBS += drivers/cnc1800l/crypto/libcrypto.o
+endif
 LIBS += common/libcommon.o
 LIBS += lib/libfdt/libfdt.o
 LIBS += api/libapi.o
@@ -341,7 +347,7 @@ BOARD_SIZE_CHECK =
 endif
 
 # Always append ALL so that arch config.mk's can add custom ones
-ALL += $(obj)u-boot.srec $(obj)u-boot.bin $(obj)System.map
+ALL += $(obj)u-boot.srec $(obj)u-boot.bin $(obj)System.map $(obj)su-boot.bin
 
 ifeq ($(CONFIG_NAND_U_BOOT),y)
 ALL += $(obj)u-boot-nand.bin
@@ -364,7 +370,14 @@ $(obj)u-boot.hex:	$(obj)u-boot
 $(obj)u-boot.srec:	$(obj)u-boot
 		$(OBJCOPY) -O srec $< $@
 
-$(obj)u-boot.bin:	$(obj)u-boot
+$(obj)su-boot.bin:	$(obj)u-boot.bin
+		make -C ./sldr
+		./sldr/mk_image
+		rm -rf cavm18_bootloader.bin
+		cp su-boot.bin cavm18_bootloader.bin
+		@if [ -n "$(TFTPT)" ]; then cp -v $@ $^ $(TFTPT); fi
+
+$(obj)u-boot.bin:	$(obj)u-boot 
 		$(OBJCOPY) ${OBJCFLAGS} -O binary $< $@
 		$(BOARD_SIZE_CHECK)
 
@@ -470,6 +483,7 @@ depend dep:	$(TIMESTAMP_FILE) $(VERSION_FILE) \
 TAG_SUBDIRS = $(SUBDIRS)
 TAG_SUBDIRS += $(dir $(__LIBS))
 TAG_SUBDIRS += include
+TAG_SUBDIRS += sldr
 
 tags ctags:
 		ctags -w -o $(obj)ctags `find $(TAG_SUBDIRS) \
@@ -479,7 +493,7 @@ etags:
 		etags -a -o $(obj)etags `find $(TAG_SUBDIRS) \
 						-name '*.[chS]' -print`
 cscope:
-		find $(TAG_SUBDIRS) -name '*.[chS]' -print > cscope.files
+		find $(TAG_SUBDIRS) -name '*.[chS]' -print | uniq > cscope.files
 		cscope -b -q -k
 
 SYSTEM_MAP = \
@@ -537,10 +551,10 @@ endif	# config.mk
 
 $(VERSION_FILE):
 		@( localvers='$(shell $(TOPDIR)/tools/setlocalversion $(TOPDIR))' ; \
-		   printf '#define PLAIN_VERSION "%s%s"\n' \
-			"$(U_BOOT_VERSION)" "$${localvers}" ; \
-		   printf '#define U_BOOT_VERSION "U-Boot %s%s"\n' \
-			"$(U_BOOT_VERSION)" "$${localvers}" ; \
+		   printf '#define PLAIN_VERSION "%s%s%s"\n' \
+			"$(CUSTOMER_NAME)" "$(U_BOOT_VERSION)" "$${localvers}" ; \
+		   printf '#define U_BOOT_VERSION "%s_U-Boot %s%s"\n' \
+			"$(CUSTOMER_NAME)" "$(U_BOOT_VERSION)" "$${localvers}" ; \
 		) > $@.tmp
 		@( printf '#define CC_VERSION_STRING "%s"\n' \
 		 '$(shell $(CC) --version | head -n 1)' )>>  $@.tmp
@@ -1104,7 +1118,7 @@ clean:
 		| xargs rm -f
 
 clobber:	clean
-	@find $(OBJTREE) -type f \( -name '*.depend' \
+	@find $(OBJTREE) -type f \( -name '.depend' -o -name '*.depend' \
 		-o -name '*.srec' -o -name '*.bin' -o -name u-boot.img \) \
 		-print0 \
 		| xargs -0 rm -f

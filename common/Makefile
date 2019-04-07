@@ -26,6 +26,7 @@ include $(TOPDIR)/config.mk
 LIB	= $(obj)libcommon.o
 
 # core
+COBJS-$(CONFIG_CNC1800L_TEST) += test.o
 COBJS-y += main.o
 COBJS-y += console.o
 COBJS-y += command.o
@@ -38,13 +39,20 @@ COBJS-y += s_record.o
 COBJS-$(CONFIG_SERIAL_MULTI) += serial.o
 COBJS-y += stdio.o
 COBJS-y += xyzModem.o
+COBJS-y += cmd_upgrade.o
+COBJS-y += cmd_burnsplash.o
 
+COBJS-y += $(CUSTOMER_NAME)_pkey.o
+COBJS-y += $(CUSTOMER_NAME)_blob_pkey.o
 # core command
 COBJS-y += cmd_boot.o
 COBJS-$(CONFIG_CMD_BOOTM) += cmd_bootm.o
 COBJS-y += cmd_help.o
 COBJS-y += cmd_nvedit.o
 COBJS-y += cmd_version.o
+#COBJS-y += cmd_otp.o
+COBJS-y += cmd_otp_ReadId.o
+COBJS-y += cmd_sec_nvedit.o
 
 # environment
 COBJS-y += env_common.o
@@ -142,6 +150,7 @@ COBJS-$(CONFIG_CMD_SATA) += cmd_sata.o
 COBJS-$(CONFIG_CMD_SF) += cmd_sf.o
 COBJS-$(CONFIG_CMD_SCSI) += cmd_scsi.o
 COBJS-$(CONFIG_CMD_SHA1SUM) += cmd_sha1sum.o
+COBJS-$(CONFIG_CMD_BOOTS) += cmd_boots.o
 COBJS-$(CONFIG_CMD_SETEXPR) += cmd_setexpr.o
 COBJS-$(CONFIG_CMD_SPI) += cmd_spi.o
 COBJS-$(CONFIG_CMD_SPIBOOTLDR) += cmd_spibootldr.o
@@ -157,6 +166,7 @@ ifdef CONFIG_CMD_USB
 COBJS-y += cmd_usb.o
 COBJS-y += usb.o
 COBJS-$(CONFIG_USB_STORAGE) += usb_storage.o
+COBJS-$(CONFIG_AUTO_UPDATE) += cmd_update.o
 endif
 COBJS-$(CONFIG_CMD_XIMG) += cmd_ximg.o
 COBJS-$(CONFIG_YAFFS2) += cmd_yaffs2.o
@@ -174,6 +184,8 @@ COBJS-$(CONFIG_MODEM_SUPPORT) += modem.o
 COBJS-$(CONFIG_UPDATE_TFTP) += update.o
 COBJS-$(CONFIG_USB_KEYBOARD) += usb_kbd.o
 
+COBJS-$(CONFIG_CMD_CSLOGO) += cmd_cslogo.o
+COBJS-$(CONFIG_CMD_FPC) += cmd_fpc.o
 
 COBJS	:= $(sort $(COBJS-y))
 XCOBJS	:= $(sort $(XCOBJS-y))

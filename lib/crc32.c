@@ -171,11 +171,23 @@ const uint32_t * ZEXPORT get_crc_table()
 
 /* ========================================================================= */
 
+typedef void(*pt2FuncBootBlinkLedOn)(void);
+typedef void(*pt2FuncBootBlinkLedOff)(void);
+
+pt2FuncBootBlinkLedOn mpt2FuncBootBlinkLedOn=NULL; 
+pt2FuncBootBlinkLedOn mpt2FuncBootBlinkLedOff=NULL; 
+
+int BLINK_COUNT2 = (1024*256);
+
 /* No ones complement version. JFFS2 (and other things ?)
  * don't use ones compliment in their CRC calculations.
  */
 uint32_t ZEXPORT crc32_no_comp(uint32_t crc, const Bytef *buf, uInt len)
 {
+
+	int mBootBlinkLedToggle=0;
+	int blink_cnt=BLINK_COUNT2;
+	
     const uint32_t *tab = crc_table;
     const uint32_t *b =(const uint32_t *)buf;
     size_t rem_len;
@@ -183,18 +195,46 @@ uint32_t ZEXPORT crc32_no_comp(uint32_t crc, const Bytef *buf, uInt len)
     if (crc_table_empty)
       make_crc_table();
 #endif
+
     crc = cpu_to_le32(crc);
     /* Align it */
     if (((long)b) & 3 && len) {
 	 uint8_t *p = (uint8_t *)b;
 	 do {
 	      DO_CRC(*p++);
+
+		blink_cnt--;
+		if ( 0 == blink_cnt)
+		{
+			blink_cnt = BLINK_COUNT2;		
+			mBootBlinkLedToggle++;
+			mBootBlinkLedToggle = mBootBlinkLedToggle & 1;
+			if ( 0 == mBootBlinkLedToggle)
+			{
+				/*printf("+");*/
+				if ( mpt2FuncBootBlinkLedOn != NULL )
+				{
+					/*printf("%d",mBootBlinkLedToggle);*/
+					(*mpt2FuncBootBlinkLedOn)();
+				}
+			}
+			else
+			{
+				/*printf("-");*/
+				if ( mpt2FuncBootBlinkLedOff != NULL )
+				{
+					/*printf("%d",mBootBlinkLedToggle);*/
+					(*mpt2FuncBootBlinkLedOff)();
+				}
+			}
+		}
 	 } while ((--len) && ((long)p)&3);
 	 b = (uint32_t *)p;
     }
 
     rem_len = len & 3;
     len = len >> 2;
+    blink_cnt=BLINK_COUNT2;
     for (--b; len; --len) {
 	 /* load data 32 bits wide, xor data 32 bits wide. */
 	 crc ^= *++b; /* use pre increment for speed */
@@ -202,6 +242,34 @@ uint32_t ZEXPORT crc32_no_comp(uint32_t crc, const Bytef *buf, uInt len)
 	 DO_CRC(0);
 	 DO_CRC(0);
 	 DO_CRC(0);
+
+
+		blink_cnt--;
+		if ( 0 == blink_cnt)
+		{
+			blink_cnt = BLINK_COUNT2;		
+			mBootBlinkLedToggle++;
+			mBootBlinkLedToggle = mBootBlinkLedToggle & 1;
+			if ( 0 == mBootBlinkLedToggle)
+			{
+				/*printf("+");*/
+				if ( mpt2FuncBootBlinkLedOn != NULL )
+				{
+					/*printf("%d",mBootBlinkLedToggle);*/
+					(*mpt2FuncBootBlinkLedOn)();
+				}
+			}
+			else
+			{
+				/*printf("-");*/
+				if ( mpt2FuncBootBlinkLedOff != NULL )
+				{
+				/*printf("%d",mBootBlinkLedToggle);*/
+					(*mpt2FuncBootBlinkLedOff)();
+				}
+			}
+		}
+
     }
     len = rem_len;
     /* And the last few bytes */
@@ -230,6 +298,8 @@ uint32_t ZEXPORT crc32_wd (uint32_t crc,
 			   uInt len, uInt chunk_sz)
 {
 #if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+	int mBootBlinkLedToggle=0;
+	int blink_cnt=BLINK_COUNT2;
 	const unsigned char *end, *curr;
 	int chunk;
 
@@ -242,6 +312,29 @@ uint32_t ZEXPORT crc32_wd (uint32_t crc,
 		crc = crc32 (crc, curr, chunk);
 		curr += chunk;
 		WATCHDOG_RESET ();
+		
+		blink_cnt--;
+		if ( 0 == blink_cnt)
+		{
+			blink_cnt = BLINK_COUNT2;		
+			mBootBlinkLedToggle++;
+			mBootBlinkLedToggle = mBootBlinkLedToggle & 1;
+			if ( 0 == mBootBlinkLedToggle)
+			{
+				if ( mpt2FuncBootBlinkLedOn != NULL )
+				{
+					(*mpt2FuncBootBlinkLedOn)();
+				}
+			}
+			else
+			{
+				if ( mpt2FuncBootBlinkLedOff != NULL )
+				{
+					(*mpt2FuncBootBlinkLedOff)();
+				}
+			}
+		}
+		
 	}
 #else
 	crc = crc32 (crc, buf, len);
@@ -249,3 +342,4 @@ uint32_t ZEXPORT crc32_wd (uint32_t crc,
 
 	return crc;
 }
+

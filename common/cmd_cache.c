@@ -29,6 +29,9 @@
 
 static int on_off (const char *);
 
+extern void debug_disable(void);
+extern void debug_enable(void);
+
 int do_icache ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 	switch (argc) {
@@ -49,6 +52,7 @@ int do_icache ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	}
 	return 0;
 }
+
 
 int do_dcache ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
@@ -83,6 +87,24 @@ static int on_off (const char *s)
 }
 
 
+
+int do_debug ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+	switch (argc) {
+	case 2:			/* on / off	*/
+		switch (on_off(argv[1])) {
+		case 0:	debug_disable();
+			break;
+		case 1:	debug_enable ();
+			break;
+		}
+		break;
+	default:
+		return cmd_usage(cmdtp);
+	}
+	return 0;
+}
+
 U_BOOT_CMD(
 	icache,   2,   1,     do_icache,
 	"enable or disable instruction cache",
@@ -95,4 +117,11 @@ U_BOOT_CMD(
 	"enable or disable data cache",
 	"[on, off]\n"
 	"    - enable or disable data (writethrough) cache"
+);
+
+U_BOOT_CMD(
+	debug,   2,   1,     do_debug,
+	"enable debug",
+	"[on, off]\n"
+	"    - enable or disable debug"
 );

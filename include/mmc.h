@@ -79,6 +79,10 @@
 #define MMC_CMD_SPI_READ_OCR		58
 #define MMC_CMD_SPI_CRC_ON_OFF		59
 
+#define MMC_CMD_ERASE_GROUP_START	35
+#define MMC_CMD_ERASE_GROUP_END	36
+#define MMC_CMD_ERASE			38
+
 #define SD_CMD_SEND_RELATIVE_ADDR	3
 #define SD_CMD_SWITCH_FUNC		6
 #define SD_CMD_SEND_IF_COND		8
@@ -148,6 +152,13 @@
 /*
  * EXT_CSD field definitions
  */
+#define EXT_CSD_REV_1_0		0	/* Revision 1.0 for MMC v4.0 */
+#define EXT_CSD_REV_1_1		1	/* Revision 1.1 for MMC v4.1 */
+#define EXT_CSD_REV_1_2		2	/* Revision 1.2 for MMC v4.2 */
+#define EXT_CSD_REV_1_3		3	/* Revision 1.3 for MMC v4.3 */
+#define EXT_CSD_REV_1_4		4	/* Revision 1.4 (Obsolete) */
+#define EXT_CSD_REV_1_5		5	/* Revision 1.5 for MMC v4.41 */
+
 
 #define EXT_CSD_CMD_SET_NORMAL		(1 << 0)
 #define EXT_CSD_CMD_SET_SECURE		(1 << 1)
@@ -180,6 +191,10 @@
 #define MMC_RSP_R6	(MMC_RSP_PRESENT|MMC_RSP_CRC|MMC_RSP_OPCODE)
 #define MMC_RSP_R7	(MMC_RSP_PRESENT|MMC_RSP_CRC|MMC_RSP_OPCODE)
 
+#define MMC_BUS_WIDTH_1			0
+#define MMC_BUS_WIDTH_4			2
+#define MMC_BUS_WIDTH_8			3
+
 #define MMCPART_NOAVAILABLE	(0xff)
 #define PART_ACCESS_MASK	(0x7)
 #define PART_SUPPORT		(0x1)
@@ -193,54 +208,25 @@ struct mmc_cid {
 	char pnm[7];
 };
 
-/*
- * WARNING!
- *
- * This structure is used by atmel_mci.c only.
- * It works for the AVR32 architecture but NOT
- * for ARM/AT91 architectures.
- * Its use is highly depreciated.
- * After the atmel_mci.c driver for AVR32 has
- * been replaced this structure will be removed.
- */
-struct mmc_csd
-{
-	u8	csd_structure:2,
-		spec_vers:4,
-		rsvd1:2;
-	u8	taac;
-	u8	nsac;
-	u8	tran_speed;
-	u16	ccc:12,
-		read_bl_len:4;
-	u64	read_bl_partial:1,
-		write_blk_misalign:1,
-		read_blk_misalign:1,
-		dsr_imp:1,
-		rsvd2:2,
-		c_size:12,
-		vdd_r_curr_min:3,
-		vdd_r_curr_max:3,
-		vdd_w_curr_min:3,
-		vdd_w_curr_max:3,
-		c_size_mult:3,
-		sector_size:5,
-		erase_grp_size:5,
-		wp_grp_size:5,
-		wp_grp_enable:1,
-		default_ecc:2,
-		r2w_factor:3,
-		write_bl_len:4,
-		write_bl_partial:1,
-		rsvd3:5;
-	u8	file_format_grp:1,
-		copy:1,
-		perm_write_protect:1,
-		tmp_write_protect:1,
-		file_format:2,
-		ecc:2;
-	u8	crc:7;
-	u8	one:1;
+struct mmc_csd {
+	unsigned char		mmca_vsn;
+	unsigned short		cmdclass;
+	unsigned short		tacc_clks;
+	unsigned int		tacc_ns;
+	unsigned int		r2w_factor;
+	unsigned int		max_dtr;
+	unsigned int		read_blkbits;
+	unsigned int		write_blkbits;
+	unsigned int		capacity;
+	unsigned int		read_partial:1,
+				read_misalign:1,
+				write_partial:1,
+				write_misalign:1;
+};
+
+struct mmc_ext_csd {
+	unsigned int		hs_max_dtr;
+	unsigned int		sectors;
 };
 
 struct mmc_cmd {
@@ -285,7 +271,8 @@ struct mmc {
 	uint tran_speed;
 	uint read_bl_len;
 	uint write_bl_len;
-	u64 capacity;
+	u32 capacity;
+	struct mmc_ext_csd ext_csd;	/* mmc v4 extended card specific */
 	block_dev_desc_t block_dev;
 	int (*send_cmd)(struct mmc *mmc,
 			struct mmc_cmd *cmd, struct mmc_data *data);

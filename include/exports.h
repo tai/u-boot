@@ -4,6 +4,11 @@
 #ifndef __ASSEMBLY__
 
 #include <common.h>
+typedef enum _CLOCK_RESET_
+{
+  _do_reset =0,
+  _do_set   =1,
+}CLOCK_RESET;
 
 /* These are declarations of exported functions available in C code */
 unsigned long get_version(void);
@@ -30,10 +35,28 @@ int ustrtoul(const char *cp, char **endp, unsigned int base);
 int i2c_write (uchar, uint, int , uchar* , int);
 int i2c_read (uchar, uint, int , uchar* , int);
 #endif
+int strncmp(const char * cs,const char * ct,size_t count);
+size_t strlen(const char * s);
+int SEC_Reset(void);
+int SEC_init(void);
+int CHL_Init(unsigned int chl);
+int SetCryptoMode(unsigned int chl, int emi, unsigned char *Ivector, int size);
+int SetHostKey(unsigned int chl, int emi, unsigned char * hostkey, int size);
+int CHL_Check_InBuffer_FreeSize(unsigned int chl);
+int Block_CHL_Write_Data(unsigned int chl,  char * buf, unsigned int len);
+int CHL_Start(unsigned int chl);
+int GetCryptoDone(unsigned int chl, unsigned char* status);
+int Block_CHL_Read_Data(unsigned int chl, char* buf, unsigned int len);
+int CHL_Stop(unsigned int chl);
+int Stream_CHL_Write_Data(unsigned int chl, char * buf, unsigned int len);
+int CHL_Check_OutBuffer_DataSize(unsigned int chl);
+int Stream_CHL_Read_Data(unsigned int chl, char * buf, unsigned int len);
+int CHL_Flush(unsigned int chl);
+
 #include <spi.h>
 
 void app_startup(char * const *);
-
+void clock_hdmi_reset(CLOCK_RESET ResetOrSet);
 #endif    /* ifndef __ASSEMBLY__ */
 
 enum {
@@ -44,7 +67,7 @@ enum {
 	XF_MAX
 };
 
-#define XF_VERSION	6
+#define XF_VERSION	7
 
 #if defined(CONFIG_X86)
 extern gd_t *global_data;

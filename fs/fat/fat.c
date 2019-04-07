@@ -312,6 +312,9 @@ get_cluster (fsdata *mydata, __u32 clustnum, __u8 *buffer,
 	return 0;
 }
 
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+extern int check_write_to_code_area (unsigned long addr, unsigned long size);
+#endif
 /*
  * Read at most 'maxsize' bytes from the file associated with 'dentptr'
  * into 'buffer'.
@@ -331,6 +334,11 @@ get_contents (fsdata *mydata, dir_entry *dentptr, __u8 *buffer,
 
 	if (maxsize > 0 && filesize > maxsize)
 		filesize = maxsize;
+
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+	if (check_write_to_code_area ((unsigned long) buffer, filesize))
+		return -1;
+#endif
 
 	debug("%ld bytes\n", filesize);
 

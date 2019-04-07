@@ -165,6 +165,7 @@ static const struct ramtron_spi_fram_params ramtron_spi_fram_table[] = {
 #endif
 };
 
+#if 0
 static int ramtron_common(struct spi_flash *flash,
 		u32 offset, size_t len, void *buf, u8 command)
 {
@@ -239,6 +240,7 @@ static int ramtron_erase(struct spi_flash *flash, u32 offset, size_t len)
 	return -1;
 }
 
+#endif
 /*
  * nore: we are called here with idcode pointing to the first non-0x7f byte
  * already!
@@ -307,9 +309,9 @@ found:
 	sn->flash.spi = spi;
 	sn->flash.name = params->name;
 
-	sn->flash.write = ramtron_write;
-	sn->flash.read = ramtron_read;
-	sn->flash.erase = ramtron_erase;
+	/* sn->flash.write = ramtron_write; */
+	/* sn->flash.read = ramtron_read; */
+	/* sn->flash.erase = ramtron_erase; */
 	sn->flash.size = params->size;
 
 	return &sn->flash;

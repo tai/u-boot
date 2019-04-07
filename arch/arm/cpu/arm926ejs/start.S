@@ -175,6 +175,24 @@ reset:
 	bl	cpu_init_crit
 #endif
 
+#ifdef CONFIG_ARCH_CSM1800
+
+#define PINMUX_UART_ENABLE     0x42110008
+#define PINMUX_ETHER_ENABLE    0x42110020
+
+/* set pinmux to enable uart 0 */
+	ldr  r0,=(PINMUX_UART_ENABLE)
+	mov  r1,#1
+	str  r1,[r0]
+
+/* set pinmux to enable ethernet */
+	ldr  r0,=(PINMUX_ETHER_ENABLE)
+	mov  r1,#0
+	str  r1,[r0]
+
+
+#endif
+
 /* Set stackpointer in internal RAM to call board_init_f */
 call_board_init_f:
 	ldr	sp, =(CONFIG_SYS_INIT_SP_ADDR)
@@ -268,9 +286,10 @@ clbss_l:str	r2, [r0]		/* clear loop...		    */
 	add	r0, r0, #4
 	cmp	r0, r1
 	bne	clbss_l
-
+/*
 	bl coloured_LED_init
 	bl red_LED_on
+*/
 #endif
 
 /*

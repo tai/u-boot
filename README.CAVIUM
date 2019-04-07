@@ -1,0 +1,22 @@
+
+Uboot build for cnc1800l boards:
+============================================
+1. ./build.sh  CUSTOMER_NAME
+e.g. for cavium 
+	./bui.sh cavium
+	
+
+Manual U boot flash procedure for secure boards:
+==================================================
+1. Put CUSTOMER_NAME_signed_uboot_rXXXX.sbin to a USB stick.
+2. Boot the board to u-boot.
+3. 'usb start; fatload usb 0 4000000 CUSTOMER_NAME_signed_uboot_rXXXX.sbin'
+4. 'nand erase 20000 80000'
+5. 'nand erase a0000 80000'
+6. 'nand erase 5b00000 80000'
+7. 'nand write 4000000 20000 80000'
+8. 'nand write 4000000 a0000 80000'
+9. 'nand write 4000000 5b00000 80000'
+
+
+

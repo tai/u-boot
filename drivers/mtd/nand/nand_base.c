@@ -51,6 +51,23 @@
 #include <asm/io.h>
 #include <asm/errno.h>
 
+extern int do_crypto(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv []);
+
+extern uint64_t read_free_running_clock(void);
+extern unsigned measure_time_ms(uint64_t *marker);
+
+unsigned accum_busy_wait_time = 0;
+unsigned accum_page_read_time = 0;
+unsigned accum_pgrd = 0;
+unsigned accum_ecccalc = 0;
+unsigned accum_correct = 0;
+
+struct nandcmd_value_name
+{
+    int value;
+    char *name;
+};
+
 /*
  * CONFIG_SYS_NAND_RESET_CNT is used as a timeout mechanism when resetting
  * a flash.  NAND flash is initialized prior to interrupts so standard timers
@@ -61,6 +78,8 @@
 #ifndef CONFIG_SYS_NAND_RESET_CNT
 #define CONFIG_SYS_NAND_RESET_CNT 200000
 #endif
+
+uint64_t accum_wait = 0ull;
 
 /* Define default oob placement schemes for large and small page devices */
 static struct nand_ecclayout nand_oob_8 = {
@@ -88,8 +107,8 @@ static struct nand_ecclayout nand_oob_64 = {
 		   48, 49, 50, 51, 52, 53, 54, 55,
 		   56, 57, 58, 59, 60, 61, 62, 63},
 	.oobfree = {
-		{.offset = 2,
-		 .length = 38}}
+		{.offset = 0,
+		 .length = 40}}
 };
 
 static struct nand_ecclayout nand_oob_128 = {
@@ -106,6 +125,16 @@ static struct nand_ecclayout nand_oob_128 = {
 		 .length = 78}}
 };
 
+static struct nandcmd_value_name nand_cmds[] = {
+	{ NAND_CMD_READ0, "READ0" }, { NAND_CMD_READ1, "READ1" }, { NAND_CMD_RNDOUT, "RNDOUT" }, { NAND_CMD_PAGEPROG, "PAGEPROG" },
+	{ NAND_CMD_CACHEDPROG, "CACHEDPROG" }, { NAND_CMD_READSTART, "READSTART" }, { NAND_CMD_DEPLETE2, "DEPLETE2" }, { NAND_CMD_READOOB, "READOOB" },
+    { 96, "ERASE1" }, { NAND_CMD_STATUS, "STATUS" }, { NAND_CMD_STATUS_MULTI, "STATUS_MULTI" }, { NAND_CMD_STATUS_ERROR, "STATUS_ERROR" },
+    { NAND_CMD_STATUS_ERROR0, "STATUS_ERROR0" }, { NAND_CMD_STATUS_ERROR1, "STATUS_ERROR1" }, { NAND_CMD_STATUS_ERROR2, "STATUS_ERROR2" }, { NAND_CMD_STATUS_ERROR3, "STATUS_ERROR3" },
+	{ NAND_CMD_STATUS_RESET, "STATUS_RESET" }, { NAND_CMD_SEQIN, "SEQIN" }, { NAND_CMD_RNDIN, "RNDIN" }, { NAND_CMD_READID, "READID" },
+	{ NAND_CMD_ERASE2, "ERASE2" }, { NAND_CMD_RNDOUTSTART, "RNDOUTSTART" }, { NAND_CMD_PARAM, "PARAM" }, { NAND_CMD_RESET, "RESET" }, { NAND_CMD_DEPLETE1, "DEPLETE1" }
+};
+#define NUM_NAND_COMMANDS (sizeof(nand_cmds)/sizeof(nand_cmds[0]))
+
 
 static int nand_get_device(struct nand_chip *chip, struct mtd_info *mtd,
 			   int new_state);
@@ -114,6 +143,30 @@ static int nand_do_write_oob(struct mtd_info *mtd, loff_t to,
 			     struct mtd_oob_ops *ops);
 
 static int nand_wait(struct mtd_info *mtd, struct nand_chip *this);
+
+static const char *find_command_name(int cmd_no);
+
+
+static const char *find_command_name(int cmd_no)
+{
+	static const char *rv = "!NOT FOUND";
+	int l = 0, h = NUM_NAND_COMMANDS, m;
+
+	if (cmd_no <= nand_cmds[NUM_NAND_COMMANDS-1].value) {
+
+		do {
+			m = (l + h) >> 1;
+			if (nand_cmds[m].value <= cmd_no)
+				l = m;
+			else
+				h = m;
+		} while (h - l > 1);
+		if (nand_cmds[l].value == cmd_no)
+            rv = nand_cmds[l].name;
+
+	}
+	return rv;
+}
 
 /**
  * nand_release_device - [GENERIC] release chip
@@ -441,6 +494,11 @@ void nand_wait_ready(struct mtd_info *mtd)
 	u32 timeo = (CONFIG_SYS_HZ * 20) / 1000;
 	u32 time_start;
 
+    unsigned dontcare;
+    uint64_t marker = 0ull;
+
+    dontcare = measure_time_ms(&marker);
+
 	time_start = get_timer(0);
 
 	/* wait until command is processed or timeout occures */
@@ -449,6 +507,9 @@ void nand_wait_ready(struct mtd_info *mtd)
 			if (chip->dev_ready(mtd))
 				break;
 	}
+
+    accum_busy_wait_time += measure_time_ms(&marker);
+    return;
 }
 
 /**
@@ -571,12 +632,15 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
 {
 	register struct nand_chip *chip = mtd->priv;
 	uint32_t rst_sts_cnt = CONFIG_SYS_NAND_RESET_CNT;
+/* const char *zzzw; */
 
 	/* Emulate NAND_CMD_READOOB */
 	if (command == NAND_CMD_READOOB) {
 		column += mtd->writesize;
 		command = NAND_CMD_READ0;
 	}
+/* zzzw = find_command_name(command);
+printf("%s/%d: command %s page_addr %d column %d\n", __func__, __LINE__, zzzw, page_addr, column); */
 
 	/* Command latch cycle */
 	chip->cmd_ctrl(mtd, command & 0xff,
@@ -677,6 +741,64 @@ static void nand_command_lp(struct mtd_info *mtd, unsigned int command,
 
 	nand_wait_ready(mtd);
 }
+
+
+
+
+
+
+static void nand_command_lp_nowait(struct mtd_info *mtd, unsigned int command,
+			    int column, int page_addr)
+{
+	register struct nand_chip *chip = mtd->priv;
+	uint32_t rst_sts_cnt = CONFIG_SYS_NAND_RESET_CNT;
+
+	if (command != NAND_CMD_READ0) {
+		printf("nand_command_lp_nowait called with command other than READ0! Doing nothing! Offending command: %s\n",
+			find_command_name((int)command));
+		return;
+	}
+
+	/* Command latch cycle */
+	chip->cmd_ctrl(mtd, command & 0xff,
+		       NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+
+	if (column != -1 || page_addr != -1) {
+		int ctrl = NAND_CTRL_CHANGE | NAND_NCE | NAND_ALE;
+
+		/* Serially input address */
+		if (column != -1) {
+			/* Adjust columns for 16 bit buswidth */
+			if (chip->options & NAND_BUSWIDTH_16)
+				column >>= 1;
+			chip->cmd_ctrl(mtd, column, ctrl);
+			ctrl &= ~NAND_CTRL_CHANGE;
+			chip->cmd_ctrl(mtd, column >> 8, ctrl);
+		}
+		if (page_addr != -1) {
+			chip->cmd_ctrl(mtd, page_addr, ctrl);
+			chip->cmd_ctrl(mtd, page_addr >> 8,
+				       NAND_NCE | NAND_ALE);
+			/* One more address cycle for devices > 128MiB */
+			if (chip->chipsize > (128 << 20))
+				chip->cmd_ctrl(mtd, page_addr >> 16,
+					       NAND_NCE | NAND_ALE);
+		}
+	}
+	chip->cmd_ctrl(mtd, NAND_CMD_NONE, NAND_NCE | NAND_CTRL_CHANGE);
+
+	chip->cmd_ctrl(mtd, NAND_CMD_READSTART,
+			   NAND_NCE | NAND_CLE | NAND_CTRL_CHANGE);
+	chip->cmd_ctrl(mtd, NAND_CMD_NONE,
+			   NAND_NCE | NAND_CTRL_CHANGE);
+
+	/* This routine returns immediately w/o waiting for ready. */
+	return;
+}
+
+
+
+
 
 /**
  * nand_get_device - [GENERIC] Get chip for selected access
@@ -943,10 +1065,17 @@ static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
 	uint8_t *ecc_code = chip->buffers->ecccode;
 	uint32_t *eccpos = chip->ecc.layout->eccpos;
 
+    uint64_t readmarker = 0ull, calcmarker = 0ull, correctmarker = 0ull;
+    unsigned dontcare;
+
 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
+dontcare = measure_time_ms(&readmarker);
 		chip->ecc.hwctl(mtd, NAND_ECC_READ);
 		chip->read_buf(mtd, p, eccsize);
+accum_pgrd += measure_time_ms(&readmarker);
+dontcare = measure_time_ms(&calcmarker);
 		chip->ecc.calculate(mtd, p, &ecc_calc[i]);
+accum_ecccalc += measure_time_ms(&calcmarker);
 	}
 	chip->read_buf(mtd, chip->oob_poi, mtd->oobsize);
 
@@ -959,7 +1088,9 @@ static int nand_read_page_hwecc(struct mtd_info *mtd, struct nand_chip *chip,
 	for (i = 0 ; eccsteps; eccsteps--, i += eccbytes, p += eccsize) {
 		int stat;
 
+dontcare = measure_time_ms(&correctmarker);
 		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+accum_correct += measure_time_ms(&correctmarker);
 		if (stat < 0)
 			mtd->ecc_stats.failed++;
 		else
@@ -1128,10 +1259,17 @@ static uint8_t *nand_transfer_oob(struct nand_chip *chip, uint8_t *oob,
  * @ops:	oob ops structure
  *
  * Internal function. Called with chip held.
- */
+ */ 
+ 
+int BLINK_COUNT1 = (512);
+ 
 static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
 			    struct mtd_oob_ops *ops)
 {
+
+	int mBootBlinkLedToggle=0;
+	int blink_cnt=BLINK_COUNT1;
+
 	int chipnr, page, realpage, col, bytes, aligned;
 	struct nand_chip *chip = mtd->priv;
 	struct mtd_ecc_stats stats;
@@ -1141,6 +1279,8 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
 	uint32_t readlen = ops->len;
 	uint32_t oobreadlen = ops->ooblen;
 	uint8_t *bufpoi, *oob, *buf;
+    unsigned dontcare;
+    uint64_t marker = 0ull;
 
 	stats = mtd->ecc_stats;
 
@@ -1157,6 +1297,22 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
 
 	while(1) {
 		WATCHDOG_RESET();
+		
+		blink_cnt--;
+		if ( 0 == blink_cnt)
+		{
+			blink_cnt = BLINK_COUNT1;		
+			mBootBlinkLedToggle++;
+			mBootBlinkLedToggle = mBootBlinkLedToggle & 1;
+			if ( 0 == mBootBlinkLedToggle)
+			{
+				BootBlinkLedOn();
+			}
+			else
+			{
+				BootBlinkLedOff();
+			}
+		}		
 
 		bytes = min(mtd->writesize - col, readlen);
 		aligned = (bytes == mtd->writesize);
@@ -1176,9 +1332,12 @@ static int nand_do_read_ops(struct mtd_info *mtd, loff_t from,
 						bufpoi, page);
 			else if (!aligned && NAND_SUBPAGE_READ(chip) && !oob)
 				ret = chip->ecc.read_subpage(mtd, chip, col, bytes, bufpoi);
-			else
+			else {
+                dontcare = measure_time_ms(&marker);
 				ret = chip->ecc.read_page(mtd, chip, bufpoi,
 						page);
+                accum_page_read_time += measure_time_ms(&marker);
+            }
 			if (ret < 0)
 				break;
 
@@ -2800,13 +2959,15 @@ int nand_scan_tail(struct mtd_info *mtd)
 			       "Hardware ECC not possible\n");
 			BUG();
 		}
-		if (!chip->ecc.read_page)
+		if (!chip->ecc.read_page) {
 			chip->ecc.read_page = nand_read_page_hwecc_oob_first;
+        }
 
 	case NAND_ECC_HW:
 		/* Use standard hwecc read page function ? */
-		if (!chip->ecc.read_page)
+		if (!chip->ecc.read_page) {
 			chip->ecc.read_page = nand_read_page_hwecc;
+        }
 		if (!chip->ecc.write_page)
 			chip->ecc.write_page = nand_write_page_hwecc;
 		if (!chip->ecc.read_page_raw)
@@ -2830,8 +2991,10 @@ int nand_scan_tail(struct mtd_info *mtd)
 			BUG();
 		}
 		/* Use standard syndrome read/write page function ? */
-		if (!chip->ecc.read_page)
+		if (!chip->ecc.read_page) {
 			chip->ecc.read_page = nand_read_page_syndrome;
+            printf("assigned nand_read_page_syndrome to chip->ecc.read_page @ %p\n", chip);
+        }
 		if (!chip->ecc.write_page)
 			chip->ecc.write_page = nand_write_page_syndrome;
 		if (!chip->ecc.read_page_raw)
@@ -2854,6 +3017,7 @@ int nand_scan_tail(struct mtd_info *mtd)
 		chip->ecc.calculate = nand_calculate_ecc;
 		chip->ecc.correct = nand_correct_data;
 		chip->ecc.read_page = nand_read_page_swecc;
+        printf("assigned nand_read_page_swecc to chip->ecc.read_page @ %p\n", chip);
 		chip->ecc.read_subpage = nand_read_subpage;
 		chip->ecc.write_page = nand_write_page_swecc;
 		chip->ecc.read_page_raw = nand_read_page_raw;
@@ -2868,6 +3032,7 @@ int nand_scan_tail(struct mtd_info *mtd)
 		printk(KERN_WARNING "NAND_ECC_NONE selected by board driver. "
 		       "This is not recommended !!\n");
 		chip->ecc.read_page = nand_read_page_raw;
+        printf("assigned nand_read_page_raw to chip->ecc.read_page @ %p\n", chip);
 		chip->ecc.write_page = nand_write_page_raw;
 		chip->ecc.read_oob = nand_read_oob_std;
 		chip->ecc.read_page_raw = nand_read_page_raw;
@@ -2998,4 +3163,240 @@ void nand_release(struct mtd_info *mtd)
 	kfree(chip->bbt);
 	if (!(chip->options & NAND_OWN_BUFFERS))
 		kfree(chip->buffers);
+}
+
+/**
+ * nand_parallel_read_decrypt - [Internal] Read data with ECC, while simul-
+ * taneously decrypting the previous page.
+ *
+ * @mtd:	MTD device structure
+ * @from:	offset to read from
+ * @ops:	oob ops structure
+ *
+ * Internal function. Called with chip held.
+ */
+
+/*                                                    mtd          from       chip->ops (len, buf, NULL) */
+int nand_parallel_read_decrypt(struct mtd_info *mtd, loff_t from, struct mtd_oob_ops *ops, uint8_t *decrypt_dest_addr)
+{
+	int chipnr, page, realpage, col, bytes, decr_amt, aligned;
+	struct nand_chip *chip = mtd->priv;
+	struct mtd_ecc_stats stats;
+	int blkcheck = (1 << (chip->phys_erase_shift - chip->page_shift)) - 1;
+	int sndcmd = 1;
+	int ret = 0;
+	uint32_t readlen = ops->len;
+	uint32_t oobreadlen = ops->ooblen;
+	uint8_t *bufpoi, *oob, *buf;
+	char *pcmd_start[8] = { "read_decrypt", "start", "DECRYPT_AES128_CIPlus", "chl1", "B", NULL, NULL, NULL };
+	char *pcmd_cont[6] = { "read_decrypt", "continue", "chl1", NULL, NULL, NULL };
+	char *pcmd_stop[4] = { "read_decrypt", "stop", "chl1", NULL };
+
+    /* We use channel 2, the other streaming channel for the encryption. Channel 1 will be opened and in the
+       middle of a decryption, and we would have to stop it and re-initialize it if we were to use a new
+       cipher or operation mode. Also, we decrypt with key B and encrypt with key A. */
+	char *pcmd2_start[8] = { "read_decrypt", "start", "ENCRYPT_AES128_CIPlus", "chl2", "A", NULL, NULL, NULL };
+	char *pcmd2_cont[6] = { "read_decrypt", "continue", "chl2", NULL, NULL, NULL };
+	char *pcmd2_stop[4] = { "read_decrypt", "stop", "chl2", NULL };
+	char saddr[16], daddr[16], amt[16];
+	char saddr2[16], daddr2[16], amt2[16];
+	unsigned int remaining, status, segment_size, amt_to_read;
+    unsigned int calc_page_count, pg_indx = 1;
+    uint64_t mark, now, total, read_wait;
+
+	stats = mtd->ecc_stats;
+
+	chipnr = (int)(from >> chip->chip_shift);   /* only one NAND chip, so this does nothing */
+	chip->select_chip(mtd, chipnr);
+
+	realpage = (int)(from >> chip->page_shift); /* if more than one chip, this would mask off */
+	page = realpage & chip->pagemask;           /* chip# bits, but only one chip, so  this is same as shift */
+
+	col = (int)(from & (mtd->writesize - 1));   /* always 0; "from" is page-aligned */
+
+	buf = ops->datbuf; /* destination data buffer address */
+	oob = ops->oobbuf; /* will be NULL */
+
+	/* May take a while, so pet the hardware watchdog. */
+	WATCHDOG_RESET();
+
+	/* These can be done outside the loop. */
+	pcmd_start[5] = pcmd_cont[3] = &saddr[0];
+	pcmd_start[6] = pcmd_cont[4] = pcmd_stop[3] = &daddr[0];
+	pcmd_start[7] = pcmd_cont[5] = &amt[0];
+	pcmd2_start[5] = pcmd2_cont[3] = &saddr2[0];
+	pcmd2_start[6] = pcmd2_cont[4] = pcmd2_stop[3] = &daddr2[0];
+	pcmd2_start[7] = pcmd2_cont[5] = &amt2[0];
+    segment_size = 1u << chip->page_shift;
+    remaining = readlen;
+    calc_page_count = (readlen + segment_size - 1)/segment_size;
+
+    total = 0ull;
+    read_wait = 0ull;
+
+// printf("%u pages must be read\n", calc_page_count);
+
+	/* Do the first NAND read operation with wait. We cannot begin decryption
+	   until there is actually data to decrypt. */
+	/*           chip, command, col#, page# */
+// printf("[%u/%u]: SNR 0x%p\n", pg_indx++, calc_page_count, buf);
+	chip->cmdfunc(mtd, NAND_CMD_READ0, 0, page);
+
+	/* May take a while, so pet the hardware watchdog. */
+	WATCHDOG_RESET();
+
+	amt_to_read = (remaining < segment_size)? remaining : segment_size;
+	bytes = min(mtd->writesize - col, amt_to_read);
+	aligned = (bytes == mtd->writesize);
+	bufpoi = aligned ? buf : chip->buffers->databuf;
+
+	/* Read the page into the buffer. */
+// printf("SR 0x%p\n", buf);
+    mark = read_free_running_clock();
+	ret = chip->ecc.read_page(mtd, chip, bufpoi, page);
+    now = read_free_running_clock();
+    now -= mark;
+    read_wait += now;
+
+	if (!aligned) {
+		if (!NAND_SUBPAGE_READ(chip) && !oob)
+			chip->pagebuf = realpage;
+		memcpy(buf, chip->buffers->databuf + col, bytes);
+	}
+
+	/* Get ready to read the next page. */
+	++page;
+	remaining -= bytes;
+
+	/* If there is still data left to be read from the NAND, start the
+	   next read operation without a wait, so that we can also start the
+	   decrypt operation. */
+    decr_amt = bytes;
+	if (remaining != 0) {
+// printf("[%u/%u]: SNR 0x%p ", pg_indx++, calc_page_count, buf + bytes);
+		nand_command_lp_nowait(mtd, NAND_CMD_READ0, 0, page);
+	}
+    else {
+        /* If remaining is 0, then this was the last chunk of data read. That being
+           the case, only decrypt and re-encrypt bytes-32 bytes of data. */
+        decr_amt = bytes - 32;
+    }
+
+
+	/* While this operation starts, start the decrypt operation. */
+    mark = read_free_running_clock();
+	sprintf(saddr, "%p", buf);
+	sprintf(daddr, "%p", decrypt_dest_addr);
+	sprintf(amt, "%x", decr_amt); 
+// printf ("SD 0x%p => 0x%p (0x%x)\n", buf, decrypt_dest_addr, decr_amt);
+	do_crypto(NULL, 0, 8, pcmd_start);
+
+    /* After the first segment of data has been decrypted, re-encrypt it back. */
+	sprintf(saddr2, "%p", decrypt_dest_addr);
+	sprintf(daddr2, "%p", buf);
+	sprintf(amt2, "%x", decr_amt); 
+// printf ("SE 0x%p => 0x%p (0x%x)\n", decrypt_dest_addr, buf, decr_amt);
+	do_crypto(NULL, 0, 8, pcmd2_start);
+    now = read_free_running_clock();
+    now -= mark;
+    total += now;
+
+
+    /* ====================================================================== */
+
+	buf += bytes;
+	decrypt_dest_addr += bytes;
+
+    while (remaining != 0) {
+
+		/* Now that the decrypt is done, we really do have to wait for the NAND
+		   read to complete, so that we won't decrypt garbage. */
+		nand_wait_ready(mtd);
+
+		/* Some period of time may have passed, so pet the hardware watchdog. */
+		WATCHDOG_RESET();
+
+		amt_to_read = (remaining < segment_size)? remaining : segment_size;
+		bytes = min(mtd->writesize - col, amt_to_read);
+		aligned = (bytes == mtd->writesize);
+		bufpoi = aligned ? buf : chip->buffers->databuf;
+
+		/* Read the page into the buffer. */
+// printf("CR 0x%p\n", buf);
+        mark = read_free_running_clock();
+		ret = chip->ecc.read_page(mtd, chip, bufpoi, page);
+        now = read_free_running_clock();
+        now -= mark;
+        read_wait += now;
+		if (ret < 0)
+			return ret;
+
+		if (!aligned) {
+			if (!NAND_SUBPAGE_READ(chip) && !oob)
+				chip->pagebuf = realpage;
+			memcpy(buf, chip->buffers->databuf + col, bytes);
+		}
+
+		/* Get ready to read the next page. */
+		++page;
+		remaining -= bytes;
+
+		/* If there is still data left to be read from the NAND, start the
+		   next read operation without a wait, so that we can also start the
+		   decrypt operation. */
+        decr_amt = bytes;
+		if (remaining != 0) {
+// printf("[%u/%u]: CNR 0x%p ", pg_indx++, calc_page_count, buf + bytes);
+			nand_command_lp_nowait(mtd, NAND_CMD_READ0, 0, page);
+		}
+        else {
+            /* If remaining is 0, then this was the last chunk of data read. That being
+               the case, only decrypt and re-encrypt bytes-32 bytes of data. */
+            decr_amt = bytes - 32;
+        }
+
+		/* While this operation starts, start the decrypt operation. */
+        mark = read_free_running_clock();
+		sprintf(saddr, "%p", buf);
+		sprintf(daddr, "%p", decrypt_dest_addr);
+		sprintf(amt, "%x", decr_amt); 
+// printf ("CD 0x%p => 0x%p (0x%x)\n", buf, decrypt_dest_addr, decr_amt);
+		do_crypto(NULL, 0, 6, pcmd_cont);
+
+        /* Encrypt the decrypted data. */
+        sprintf(saddr2, "%p", decrypt_dest_addr);
+        sprintf(daddr2, "%p", buf);
+        sprintf(amt2, "%x", decr_amt); 
+// printf ("CE 0x%p => 0x%p (0x%x)\n", decrypt_dest_addr, buf, decr_amt);
+        do_crypto(NULL, 0, 6, pcmd2_cont);
+        now = read_free_running_clock();
+        now -= mark;
+        total += now;
+
+		buf += bytes;
+		decrypt_dest_addr += bytes;
+    }
+
+// printf("out of loop, stopping.\n");
+
+	/* Stop the crypto engine, extracting any remaining data. */
+    mark = read_free_running_clock();
+	sprintf(daddr, "%p", decrypt_dest_addr);
+	do_crypto(NULL, 0, 4, pcmd_stop);
+	sprintf(daddr2, "%p", decrypt_dest_addr);
+	do_crypto(NULL, 0, 4, pcmd2_stop);
+    now = read_free_running_clock();
+    now -= mark;
+    total += now;
+
+	/* Just to be safe. */
+	WATCHDOG_RESET();
+
+    printf("\n\n\n *** accum crypto time: %Lx\n", total);
+    printf("\n\n\n *** accum page read time: %Lx\n", read_wait);
+
+	if (mtd->ecc_stats.failed - stats.failed)
+		return -EBADMSG;
+
+	return  mtd->ecc_stats.corrected - stats.corrected ? -EUCLEAN : 0; 
 }

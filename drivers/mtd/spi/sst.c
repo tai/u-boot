@@ -93,6 +93,7 @@ static const struct sst_spi_flash_params sst_spi_flash_table[] = {
 	},
 };
 
+#if 0
 static int
 sst_enable_writing(struct spi_flash *flash)
 {
@@ -229,6 +230,7 @@ sst_unlock(struct spi_flash *flash)
 	return ret;
 }
 
+#endif
 struct spi_flash *
 spi_flash_probe_sst(struct spi_slave *spi, u8 *idcode)
 {
@@ -257,14 +259,14 @@ spi_flash_probe_sst(struct spi_slave *spi, u8 *idcode)
 	stm->flash.spi = spi;
 	stm->flash.name = params->name;
 
-	stm->flash.write = sst_write;
-	stm->flash.erase = sst_erase;
-	stm->flash.read = spi_flash_cmd_read_fast;
+	/* stm->flash.write = sst_write; */
+	/* stm->flash.erase = sst_erase; */
+	/* stm->flash.read = spi_flash_cmd_read_fast; */
 	stm->flash.sector_size = SST_SECTOR_SIZE;
 	stm->flash.size = stm->flash.sector_size * params->nr_sectors;
 
 	/* Flash powers up read-only, so clear BP# bits */
-	sst_unlock(&stm->flash);
+	/* sst_unlock(&stm->flash); */
 
 	return &stm->flash;
 }

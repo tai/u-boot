@@ -48,6 +48,7 @@ COBJS-y += net_utils.o
 COBJS-y += qsort.o
 COBJS-$(CONFIG_SHA1) += sha1.o
 COBJS-$(CONFIG_SHA256) += sha256.o
+COBJS-$(CONFIG_RSAVERIFY) += bignum.o rsa.o rsa_verify.o x_clib.o
 COBJS-y += string.o
 COBJS-y	+= strmhz.o
 COBJS-y += time.o
