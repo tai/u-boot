@@ -1027,6 +1027,10 @@ static void get_user_input(struct in_str *i)
 #endif
 	i->__promptme = 1;
 	if (i->promptmode == 1) {
+#ifdef CONFIG_LED_BLINK
+		gpio_hw_set_direct(CONFIG_LED_BLINK_GPIO, 1);
+		gpio_hw_write(CONFIG_LED_BLINK_GPIO, 1);
+#endif
 		n = readline(CONFIG_SYS_PROMPT);
 	} else {
 		n = readline(CONFIG_SYS_PROMPT_HUSH_PS2);
@@ -1698,6 +1702,10 @@ static int run_pipe_real(struct pipe *pi)
 
 				rcode = (cmdtp->cmd)
 (cmdtp, flag,child->argc-i,&child->argv[i]);
+#ifdef CONFIG_LED_BLINK
+				gpio_hw_set_direct(CONFIG_LED_BLINK_GPIO, 1);
+				gpio_hw_write(CONFIG_LED_BLINK_GPIO, 1);
+#endif
 				if ( !cmdtp->repeatable )
 					flag_repeat = 0;
 

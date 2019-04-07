@@ -21,7 +21,7 @@
 # MA 02111-1307 USA
 #
 
-TOOLSUBDIRS =
+#TOOLSUBDIRS = logos
 
 #
 # Include this after HOSTOS HOSTARCH check

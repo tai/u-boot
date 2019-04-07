@@ -132,6 +132,15 @@ _end_ofs:
 IRQ_STACK_START_IN:
 	.word	0x0badc0de
 
+/* IRQ stack memory (calculated at run-time) */
+.globl IRQ_STACK_START
+IRQ_STACK_START:
+       .word   0x0badc0de
+.globl FIQ_STACK_START
+FIQ_STACK_START:
+        .word 0x0badc0de
+
+
 /*
  * the actual reset code
  */
@@ -223,6 +232,23 @@ skip_tcmdisable:
 	 * Go setup Memory and board specific bits prior to relocation.
 	 */
 	bl	lowlevel_init		/* go setup pll,mux,memory */
+
+	/* 
+	 * The PIC(Position Independent Code) codes such as hdmi or OTA are occupying the BSS segment,
+	 * move them behind the BSS segment.
+	 */
+	adr r3, _start
+	ldr r0, _end_ofs
+	add r0, r0, r3        /* now r0 is equal _end */
+	ldr r1, _bss_end_ofs
+	add r1, r1, r3        /* now r1 is equal __bss_end__ */
+	ldr r2, =(CONFIG_UBOOT_EXTERNAL_PROC_LEN)
+	add r2, r0, r2
+mov_PIC_codes:
+	ldmia	r0!, {r3-r10}		/* copy from source address [r0]    */
+	stmia	r1!, {r3-r10}		/* copy to   target address [r1]    */
+	cmp	r0, r2			/* until source end address [r2]    */
+	blo	mov_PIC_codes
 
 /* Set stackpointer in internal RAM to call board_init_f */
 call_board_init_f:
@@ -531,6 +557,60 @@ phy_last_jump:
 	add	r13, r13, #4
 	.endm
 
+#ifdef CONFIG_USE_IRQ
+        .macro	irq_save_user_regs
+        sub	sp, sp, #S_FRAME_SIZE
+        stmia	sp, {r0 - r12}			@ Calling r0-r12
+        @ !!!! R8 NEEDS to be saved !!!! a reserved stack spot would be good.
+        add	r8, sp, #S_PC
+        stmdb	r8, {sp, lr}^		@ Calling SP, LR
+        str	lr, [r8, #0]		@ Save calling PC
+        mrs	r6, spsr
+        str	r6, [r8, #4]		@ Save CPSR
+        str	r0, [r8, #8]		@ Save OLD_R0
+        mov	r0, sp
+        .endm
+        
+        .macro	irq_restore_user_regs
+        ldmia	sp, {r0 - lr}^			@ Calling r0 - lr
+        mov	r0, r0
+        ldr	lr, [sp, #S_PC]			@ Get PC
+        add	sp, sp, #S_FRAME_SIZE
+        subs	pc, lr, #4		@ return & move spsr_svc into cpsr
+        .endm
+
+
+        .macro get_irq_stack			@ setup IRQ stack
+        ldr	sp, IRQ_STACK_START
+        .endm
+
+        .macro get_fiq_stack			@ setup FIQ stack
+        ldr	sp, FIQ_STACK_START
+        .endm
+#endif
+
+/*add interrupt vector copy*/
+#ifdef CONFIG_USE_IRQ
+        .macro copy_irq_vec
+        ldr     r0, _text_base
+        mov     r1, #0x00000000
+        
+        ldr     r2, _copy_len
+        add     r2, r2, r0
+copy_loop_vec:
+        ldmia	r0!, {r3-r10}		/* copy from source address [r0]    */
+        stmia	r1!, {r3-r10}		/* copy to   target address [r1]    */
+        cmp	r0, r2			/* until source end addreee [r2]    */
+        blt	copy_loop_vec
+        .endm
+
+
+_copy_len:
+        .word 0x3c
+_text_base:
+        .word 0x2000000
+#endif
+/*end of vector copy*/
 /*
  * exception handlers
  */
@@ -564,7 +644,25 @@ not_used:
 	bad_save_user_regs
 	bl	do_not_used
 
-	.align	5
+
+#ifdef CONFIG_USE_IRQ
+        .align  5
+irq:
+        get_irq_stack
+        irq_save_user_regs
+        bl 	do_irq
+        irq_restore_user_regs
+
+        .align  5
+fiq:
+        get_fiq_stack
+        /* someone ought to write a more effiction fiq_save_user_regs */
+        irq_save_user_regs
+        bl 	do_fiq
+        irq_restore_user_regs
+
+#else
+        .align  5
 irq:
 	get_bad_stack
 	bad_save_user_regs
@@ -575,4 +673,5 @@ fiq:
 	get_bad_stack
 	bad_save_user_regs
 	bl	do_fiq
+#endif/*CONFIG_USE_IRQ*/
 #endif /* CONFIG_NAND_SPL */

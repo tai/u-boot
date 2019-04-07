@@ -132,6 +132,7 @@ typedef enum {
 	NAND_ECC_HW,
 	NAND_ECC_HW_SYNDROME,
 	NAND_ECC_HW_OOB_FIRST,
+	NAND_ECC_SOFT_BCH,
 } nand_ecc_modes_t;
 
 /*
@@ -328,6 +329,7 @@ struct nand_ecc_ctrl {
 	int			prepad;
 	int			postpad;
 	struct nand_ecclayout	*layout;
+	void *priv;
 	void			(*hwctl)(struct mtd_info *mtd, int mode);
 	int			(*calculate)(struct mtd_info *mtd,
 					     const uint8_t *dat,
@@ -510,6 +512,8 @@ struct nand_chip {
 #define NAND_MFR_HYNIX		0xad
 #define NAND_MFR_MICRON		0x2c
 #define NAND_MFR_AMD		0x01
+#define NAND_MFR_MACRONIX       0xc2
+#define NAND_MFR_EON            0x92
 
 /**
  * struct nand_flash_dev - NAND Flash Device ID Structure

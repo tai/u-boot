@@ -50,7 +50,8 @@ int interrupt_init (void)
 	IRQ_STACK_START_IN = gd->irq_sp + 8;
 	FIQ_STACK_START = IRQ_STACK_START - CONFIG_STACKSIZE_IRQ;
 
-	return arch_interrupt_init();
+	//return arch_interrupt_init();
+	return 0;
 }
 
 /* enable IRQ interrupts */

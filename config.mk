@@ -46,9 +46,11 @@ PLATFORM_LDFLAGS =
 
 #########################################################################
 
-HOSTCFLAGS	= -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer \
-		  $(HOSTCPPFLAGS)
+HOSTCFLAGS	= -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer 
 HOSTSTRIP	= strip
+
+# append CPPFLAGS even if CFLAGS has been overridden on cmdline
+override HOSTCFLAGS += $(HOSTCPPFLAGS)
 
 #
 # Mac OS X / Darwin's C preprocessor is Apple specific.  It
@@ -152,7 +154,7 @@ ARFLAGS = crv
 endif
 RELFLAGS= $(PLATFORM_RELFLAGS)
 DBGFLAGS= -g # -DDEBUG
-OPTFLAGS= -Os #-fomit-frame-pointer
+OPTFLAGS= -O2 -fomit-frame-pointer
 
 OBJCFLAGS += --gap-fill=0xff
 

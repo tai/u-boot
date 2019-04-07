@@ -86,6 +86,8 @@ static int do_imls (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
 static void fixup_silent_linux (void);
 #endif
 
+static void fixup_bootargs_linux(void);
+
 static image_header_t *image_get_kernel (ulong img_addr, int verify);
 #if defined(CONFIG_FIT)
 static int fit_check_kernel (const void *fit, int os_noffset, int verify);
@@ -684,6 +686,8 @@ int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		fixup_silent_linux();
 #endif
 
+    fixup_bootargs_linux();
+
 	boot_fn = boot_os[images.os.os];
 
 	if (boot_fn == NULL) {
@@ -738,6 +742,11 @@ static image_header_t *image_get_kernel (ulong img_addr, int verify)
 	}
 
 	show_boot_progress (3);
+
+	/* hack to speed up the bootm command by preventing a superfluous memcpy */
+	hdr->ih_load = htonl(img_addr + sizeof (struct image_header));
+	hdr->ih_ep = hdr->ih_load;
+
 	image_print_contents (hdr);
 
 	if (verify) {
@@ -1238,6 +1247,41 @@ static void fixup_silent_linux ()
 }
 #endif /* CONFIG_SILENT_CONSOLE */
 
+static void fixup_bootargs_linux ()
+{
+	char buf[256], *start, *end;
+	char *cmdline = getenv ("bootargs");
+    char ethbuff[17];
+	sprintf(ethbuff, "%02X:%02X:%02X:%02X:%02X:%02X",gd->bd->bi_enetaddr[0],
+       gd->bd->bi_enetaddr[1], gd->bd->bi_enetaddr[2], gd->bd->bi_enetaddr[3],
+       gd->bd->bi_enetaddr[4], gd->bd->bi_enetaddr[5]);
+
+
+	debug ("before add ethaddr fix-up: %s\n", cmdline);
+	if (cmdline) {
+		if ((start = strstr (cmdline, "ethaddr=")) != NULL) {
+			end = strchr (start, ' ');
+			strncpy (buf, cmdline, (start - cmdline + 8));
+			strcat(buf,ethbuff);
+			if (end){
+				strcpy (buf + (start - cmdline + 8+17), end);
+			}
+			else {
+				buf[start - cmdline + 8+17] = '\0';
+			}
+		} else {
+			strcpy (buf, cmdline);
+			strcat (buf, " ethaddr=");
+			strcat (buf, ethbuff);
+		}
+	} else {
+		strcpy (buf, "ethaddr=");
+		strcat(buf,ethbuff);
+	}
+
+	setenv ("bootargs", buf);
+	debug ("after add ethaddr fix-up: %s\n", buf);
+}
 
 /*******************************************************************/
 /* OS booting routines */

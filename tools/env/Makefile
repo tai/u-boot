@@ -40,7 +40,7 @@ all:	$(obj)fw_printenv
 
 # Some files complain if compiled with -pedantic, use HOSTCFLAGS_NOPED
 $(obj)fw_printenv:	$(HOSTSRCS) $(HEADERS)
-	$(HOSTCC) $(HOSTCFLAGS_NOPED) $(HOSTLDFLAGS) -o $@ $(HOSTSRCS)
+	arm-none-linux-gnueabi-gcc $(HOSTCFLAGS_NOPED) $(HOSTLDFLAGS) -o $@ $(HOSTSRCS)
 
 clean:
 	rm -f $(obj)fw_printenv $(obj)crc32.c

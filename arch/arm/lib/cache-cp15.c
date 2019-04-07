@@ -85,13 +85,34 @@ static inline void mmu_setup(void)
 	set_cr(reg | CR_M);
 }
 
+#ifdef CONFIG_MMU_REMAP
+void mmu_remap(u32 phys_addr, u32 virt_addr, u32 size)
+{
+	u32 i, virt_start_idx, virt_end_idx, phys_start_idx, phys_end_idx;
+	u32 *page_table = (u32 *)gd->tlb_addr;
+	virt_start_idx = virt_addr >> 20;
+	virt_end_idx = (virt_addr + size) >> 20;
+	phys_start_idx = phys_addr >> 20;
+	phys_end_idx = (phys_addr + size) >> 20;
+	printf("Mapping physical address 0x%08x - 0x%08x to 0x%08x - %08x\n", 
+		phys_start_idx << 20, phys_end_idx << 20, virt_start_idx << 20, virt_end_idx << 20);
+	for(i = virt_start_idx; i < virt_end_idx; i++)
+		page_table[i] = ((phys_start_idx + i) << 20) | (3 << 10) | CACHE_SETUP;
+	/* flush TLB */
+	asm volatile("mcr p15, 0, %0, c8, c7, 0"
+		     : : "r" (0));
+}
+#endif
+
 /* cache_bit must be either CR_I or CR_C */
 static void cache_enable(uint32_t cache_bit)
 {
 	uint32_t reg;
 
+#ifndef CONFIG_MMU_REMAP
 	/* The data cache is not active unless the mmu is enabled too */
 	if (cache_bit == CR_C)
+#endif
 		mmu_setup();
 	reg = get_cr();	/* get control reg. */
 	cp_delay();
@@ -108,13 +129,20 @@ static void cache_disable(uint32_t cache_bit)
 		reg = get_cr();
 		if ((reg & CR_C) != CR_C)
 			return;
+#ifndef CONFIG_MMU_REMAP
 		/* if disabling data cache, disable mmu too */
 		cache_bit |= CR_M;
+#endif
 		flush_cache(0, ~0);
 	}
 	reg = get_cr();
 	cp_delay();
 	set_cr(reg & ~cache_bit);
+ 
+       /* invalidate both caches and flush btb */
+        asm ("mcr p15, 0, %0, c7, c7, 0": :"r" (0));
+        /* mem barrier to sync things */
+        asm ("mcr p15, 0, %0, c7, c10, 4": :"r" (0));
 }
 #endif
 

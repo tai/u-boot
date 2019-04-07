@@ -32,7 +32,7 @@
 #include <usb.h>
 
 #ifdef CONFIG_USB_STORAGE
-static int usb_stor_curr_dev = -1; /* current device */
+int usb_stor_curr_dev = -1; /* current device */
 #endif
 #ifdef CONFIG_USB_HOST_ETHER
 static int usb_ether_curr_dev = -1; /* current ethernet device */
@@ -189,6 +189,28 @@ void usb_display_desc(struct usb_device *dev)
 	}
 
 }
+const char *test_mode_2_str[] = {"Reserved", "Test_J", "Test_K", "Test_SE0_NAK", "Test_Packet", "Test_Force_Enable"};
+void usb_hub_testmode(struct usb_device *dev, int port, int test_mode)
+{
+	if (dev->descriptor.bDescriptorType == USB_DT_DEVICE) {
+		printf("%d: %s,  USB Revision %x.%x\n", dev->devnum,
+		usb_get_class_desc(dev->config.if_desc[0].desc.bInterfaceClass),
+				   (dev->descriptor.bcdUSB>>8) & 0xff,
+				   dev->descriptor.bcdUSB & 0xff);
+
+		if (dev->descriptor.bDeviceClass == USB_CLASS_HUB) {
+			printf("Setting port %d to test mode %s\n",
+				port,
+				test_mode > 5?"Reserved":test_mode_2_str[test_mode]);
+			usb_set_port_feature(dev, port, USB_PORT_FEAT_SUSPEND);
+			usb_set_port_feature(dev, ((test_mode & 0xFF) << 8) | port, USB_PORT_FEAT_TEST);
+		} else {
+			printf("Device not a HUB\n");
+		}
+	}
+
+}
+
 
 void usb_display_conf_desc(struct usb_configuration_descriptor *config,
 			   struct usb_device *dev)
@@ -597,6 +619,30 @@ int do_usb(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		}
 		return 0;
 	}
+	if (strncmp(argv[1], "test", 4) == 0) {
+		int d, test_port, test_mode;
+		if (argc == 5) {
+
+			i = simple_strtoul(argv[2], NULL, 16);
+			test_port = simple_strtoul(argv[3], NULL, 10);
+			test_mode = simple_strtoul(argv[4], NULL, 10);
+			printf("device %d\n", i);
+			for (d = 0; d < USB_MAX_DEVICE; d++) {
+				dev = usb_get_dev_index(d);
+				if (dev == NULL)
+					break;
+				if (dev->devnum == i)
+					break;
+			}
+			if (dev == NULL) {
+				printf("*** No device available ***\n");
+				return 0;
+			} else {
+				usb_hub_testmode(dev, test_port, test_mode);
+			}
+		}
+		return 0;
+	}
 #ifdef CONFIG_USB_STORAGE
 	if (strncmp(argv[1], "stor", 4) == 0)
 		return usb_stor_info();
@@ -716,6 +762,7 @@ U_BOOT_CMD(
 	"usb info [dev] - show available USB devices\n"
 	"usb storage  - show details of USB storage devices\n"
 	"usb dev [dev] - show or set current USB storage device\n"
+	"usb test dev port tmode - set USB hub device port to testmode\n"
 	"usb part [dev] - print partition table of one or all USB storage"
 	" devices\n"
 	"usb read addr blk# cnt - read `cnt' blocks starting at block `blk#'\n"

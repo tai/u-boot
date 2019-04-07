@@ -839,12 +839,12 @@ static int flash_write_buf (int dev, int fd, void *buf, size_t count,
 		rc = flash_bad_block (fd, mtd_type, &blockstart);
 		if (rc < 0)		/* block test failed */
 			return rc;
-
+#if 0
 		if (blockstart + erasesize > top_of_range) {
 			fprintf (stderr, "End of range reached, aborting\n");
 			return -1;
 		}
-
+#endif
 		if (rc) {		/* block is bad */
 			blockstart += blocklen;
 			continue;

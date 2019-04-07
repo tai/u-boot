@@ -225,7 +225,7 @@ LIBS += arch/arm/cpu/ixp/npe/libnpe.o
 endif
 LIBS += arch/$(ARCH)/lib/lib$(ARCH).o
 LIBS += fs/cramfs/libcramfs.o fs/fat/libfat.o fs/fdos/libfdos.o fs/jffs2/libjffs2.o \
-	fs/reiserfs/libreiserfs.o fs/ext2/libext2fs.o fs/yaffs2/libyaffs2.o \
+	fs/reiserfs/libreiserfs.o fs/ext4/libext4fs.o fs/yaffs2/libyaffs2.o \
 	fs/ubifs/libubifs.o
 LIBS += net/libnet.o
 LIBS += disk/libdisk.o
@@ -273,6 +273,13 @@ LIBS += drivers/usb/musb/libusb_musb.o
 LIBS += drivers/usb/phy/libusb_phy.o
 LIBS += drivers/video/libvideo.o
 LIBS += drivers/watchdog/libwatchdog.o
+ifeq ($(SOC), cnc1800l)
+LIBS += drivers/cnc1800l/xport/libxport.o
+LIBS += drivers/cnc1800l/tuner/libtuner.o
+LIBS += drivers/cnc1800l/df/libdf.o
+LIBS += drivers/cnc1800l/crypto/libcrypto.o
+LIBS += drivers/cnc1800l/cncedid/libedid.o
+endif
 LIBS += common/libcommon.o
 LIBS += lib/libfdt/libfdt.o
 LIBS += api/libapi.o
@@ -364,8 +371,13 @@ $(obj)u-boot.hex:	$(obj)u-boot
 $(obj)u-boot.srec:	$(obj)u-boot
 		$(OBJCOPY) -O srec $< $@
 
-$(obj)u-boot.bin:	$(obj)u-boot
+$(obj)u-boot.bin:	$(obj)u-boot hdmi_pic_bin 
 		$(OBJCOPY) ${OBJCFLAGS} -O binary $< $@
+ifeq ($(SECURE),1)
+		cat hdmi_pic_bin $(CNC_PLATFORM)/bootloader/apps/cuid/cuid.bin $(CNC_PLATFORM)/bootloader/apps/dvu/dvu.bin >> $@
+else
+		cat hdmi_pic_bin cuid_pic_bin dvu_pic_bin>> $@
+endif
 		$(BOARD_SIZE_CHECK)
 
 $(obj)u-boot.ldr:	$(obj)u-boot
@@ -470,6 +482,7 @@ depend dep:	$(TIMESTAMP_FILE) $(VERSION_FILE) \
 TAG_SUBDIRS = $(SUBDIRS)
 TAG_SUBDIRS += $(dir $(__LIBS))
 TAG_SUBDIRS += include
+TAG_SUBDIRS += sldr
 
 tags ctags:
 		ctags -w -o $(obj)ctags `find $(TAG_SUBDIRS) \
@@ -479,7 +492,7 @@ etags:
 		etags -a -o $(obj)etags `find $(TAG_SUBDIRS) \
 						-name '*.[chS]' -print`
 cscope:
-		find $(TAG_SUBDIRS) -name '*.[chS]' -print > cscope.files
+		find $(TAG_SUBDIRS) -name '*.[chS]' -print | uniq > cscope.files
 		cscope -b -q -k
 
 SYSTEM_MAP = \
@@ -546,6 +559,7 @@ $(VERSION_FILE):
 		 '$(shell $(CC) --version | head -n 1)' )>>  $@.tmp
 		@( printf '#define LD_VERSION_STRING "%s"\n' \
 		 '$(shell $(LD) -v | head -n 1)' )>>  $@.tmp
+		@( printf '#define TARGET_CONFIGURATION_NAME $(CONFIG_TARGET_NAME)' )>>  $@.tmp
 		@cmp -s $@ $@.tmp && rm -f $@.tmp || mv -f $@.tmp $@
 
 easylogo env gdb:
@@ -1082,7 +1096,9 @@ clean:
 	       $(obj)tools/gdb/{astest,gdbcont,gdbsend}			  \
 	       $(obj)tools/gen_eth_addr    $(obj)tools/img2srec		  \
 	       $(obj)tools/mkimage	   $(obj)tools/mpc86x_clk	  \
-	       $(obj)tools/ncb		   $(obj)tools/ubsha1
+	       $(obj)tools/ncb		   $(obj)tools/ubsha1             \
+	       $(obj)tools/logos/gen_logo_bin\
+	       $(obj)tools/logos/*.bin.gz\
 	@rm -f $(obj)board/cray/L1/{bootscript.c,bootscript.image}	  \
 	       $(obj)board/matrix_vision/*/bootscript.img		  \
 	       $(obj)board/netstar/{eeprom,crcek,crcit,*.srec,*.bin}	  \
@@ -1097,6 +1113,7 @@ clean:
 	@rm -f $(obj)mmc_spl/{u-boot.lds,u-boot-spl,u-boot-spl.map,u-boot-spl.bin,u-boot-mmc-spl.bin}
 	@rm -f $(ONENAND_BIN)
 	@rm -f $(obj)onenand_ipl/u-boot.lds
+	@rm -f $(src)signing_tool/*.bin
 	@rm -f $(TIMESTAMP_FILE) $(VERSION_FILE)
 	@find $(OBJTREE) -type f \
 		\( -name 'core' -o -name '*.bak' -o -name '*~' \
@@ -1104,7 +1121,7 @@ clean:
 		| xargs rm -f
 
 clobber:	clean
-	@find $(OBJTREE) -type f \( -name '*.depend' \
+	@find $(OBJTREE) -type f \( -name '.depend' -o -name '*.depend' \
 		-o -name '*.srec' -o -name '*.bin' -o -name u-boot.img \) \
 		-print0 \
 		| xargs -0 rm -f

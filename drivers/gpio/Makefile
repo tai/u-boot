@@ -25,6 +25,7 @@ include $(TOPDIR)/config.mk
 
 LIB 	:= $(obj)libgpio.o
 
+COBJS-$(CONFIG_CNC1800L_GPIO)	+= cnc1800l_gpio.o
 COBJS-$(CONFIG_AT91_GPIO)	+= at91_gpio.o
 COBJS-$(CONFIG_KIRKWOOD_GPIO)	+= kw_gpio.o
 COBJS-$(CONFIG_MARVELL_MFP)	+= mvmfp.o

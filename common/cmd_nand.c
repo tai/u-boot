@@ -380,6 +380,7 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 	loff_t off, size;
 	char *cmd, *s;
 	nand_info_t *nand;
+	u32 time_start, time_end;
 #ifdef CONFIG_SYS_NAND_QUIET
 	int quiet = CONFIG_SYS_NAND_QUIET;
 #else
@@ -388,7 +389,6 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 	const char *quiet_str = getenv("quiet");
 	int dev = nand_curr_device;
 	int repeat = flag & CMD_FLAG_REPEAT;
-
 	/* at least two arguments please */
 	if (argc < 2)
 		goto usage;
@@ -566,6 +566,8 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 		nand = &nand_info[dev];
 		rwsize = size;
 
+		time_start = get_timer(0);
+
 		s = strchr(cmd, '.');
 		if (!s || !strcmp(s, ".jffs2") ||
 		    !strcmp(s, ".e") || !strcmp(s, ".i")) {
@@ -599,9 +601,10 @@ int do_nand(cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 			printf("Unknown nand command suffix '%s'.\n", s);
 			return 1;
 		}
+		time_end = get_timer(time_start) / (CONFIG_SYS_HZ / 1000);
 
-		printf(" %zu bytes %s: %s\n", rwsize,
-		       read ? "read" : "written", ret ? "ERROR" : "OK");
+		printf(" %zu bytes %s: %s ; %d msec %d bytes/sec\n", rwsize,
+		       read ? "read" : "written", ret ? "ERROR" : "OK", time_end, rwsize / (time_end / 1000));
 
 		return ret == 0 ? 0 : 1;
 	}

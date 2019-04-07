@@ -1,10 +1,10 @@
 #
-# (C) Copyright 2006
+# (C) Copyright 2000-2004
 # Wolfgang Denk, DENX Software Engineering, wd@denx.de.
 #
-# (C) Copyright 2003
-# Pavel Bartusek, Sysgo Real-Time Solutions AG, pba@sysgo.de
-#
+# (C) Copyright 2004
+# ARM Ltd.
+# Philippe Robin, <philippe.robin@arm.com>
 #
 # See file CREDITS for list of people who contributed to this
 # project.
@@ -27,20 +27,23 @@
 
 include $(TOPDIR)/config.mk
 
-LIB	= $(obj)libext2fs.o
+LIB	= $(obj)lib$(BOARD).o
 
-AOBJS	=
-COBJS-$(CONFIG_CMD_EXT2) := ext2fs.o dev.o
+COBJS	:= orion.o
+SOBJS	:= lowlevel_init.o
 
-SRCS	:= $(AOBJS:.o=.S) $(COBJS-y:.o=.c)
-OBJS	:= $(addprefix $(obj),$(AOBJS) $(COBJS-y))
+SRCS	:= $(SOBJS:.o=.S) $(COBJS:.o=.c)
+OBJS	:= $(addprefix $(obj),$(COBJS))
+SOBJS	:= $(addprefix $(obj),$(SOBJS))
 
-#CPPFLAGS +=
+$(LIB): $(obj).depend $(OBJS) $(SOBJS)
+	$(call cmd_link_o_target, $(OBJS) $(SOBJS))
 
-all:	$(LIB) $(AOBJS)
+clean:
+	rm -f $(SOBJS) $(OBJS)
 
-$(LIB):	$(obj).depend $(OBJS)
-	$(call cmd_link_o_target, $(OBJS))
+distclean:	clean
+	rm -f $(LIB) core *.bak $(obj).depend
 
 #########################################################################
 

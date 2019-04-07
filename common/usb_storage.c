@@ -181,7 +181,7 @@ block_dev_desc_t *usb_stor_get_dev(int index)
 
 void usb_show_progress(void)
 {
-	debug(".");
+	printf(".");
 }
 
 /*******************************************************************************

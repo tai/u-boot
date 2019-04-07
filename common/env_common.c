@@ -48,11 +48,23 @@ static uchar env_get_char_init (int index);
 #define MK_STR(x)	XMK_STR(x)
 
 uchar default_environment[] = {
+#ifdef	CONFIG_DISPLAY_LOGO2
+	"display_logo2="	CONFIG_DISPLAY_LOGO2			"\0"
+#endif
+#ifdef	CONFIG_DISPLAY_LOGO
+	"display_logo="	CONFIG_DISPLAY_LOGO			"\0"
+#endif
 #ifdef	CONFIG_BOOTARGS
 	"bootargs="	CONFIG_BOOTARGS			"\0"
 #endif
 #ifdef	CONFIG_BOOTCOMMAND
 	"bootcmd="	CONFIG_BOOTCOMMAND		"\0"
+#endif
+#if defined(CONFIG_CHECK_IP_KERNEL_UPDATE)
+	"check_ip_kernel_update="	CONFIG_CHECK_IP_KERNEL_UPDATE		"\0"
+#endif
+#if defined(CONFIG_BOOT_IP_KERNEL_UPDATE)
+	"boot_ip_kernel_update="	CONFIG_BOOT_IP_KERNEL_UPDATE		"\0"
 #endif
 #ifdef	CONFIG_RAMBOOTCOMMAND
 	"ramboot="	CONFIG_RAMBOOTCOMMAND		"\0"
@@ -123,6 +135,12 @@ uchar default_environment[] = {
 #if defined(CONFIG_PCI_BOOTDELAY) && (CONFIG_PCI_BOOTDELAY > 0)
 	"pcidelay="	MK_STR(CONFIG_PCI_BOOTDELAY)	"\0"
 #endif
+#if	(CONFIG_TARGET_NAME == CNC1800L_TMS_512_256)
+	"WIFI_MODES=P2P STA\0"
+	"MODE=WFD DLNA\0"
+	"WIFICOUNTRY=US\0"
+	"AVSYNC=1\0"
+#endif	
 #ifdef  CONFIG_EXTRA_ENV_SETTINGS
 	CONFIG_EXTRA_ENV_SETTINGS
 #endif

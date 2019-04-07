@@ -23,6 +23,7 @@
 #define CMD_EN25Q128_DP		0xb9    /* Deep Power-down */
 #define CMD_EN25Q128_RES	0xab    /* Release from DP, and Read Signature */
 
+#define EON_ID_EN25Q64		0x17
 #define EON_ID_EN25Q128		0x18
 
 struct eon_spi_flash_params {
@@ -47,6 +48,14 @@ static inline struct eon_spi_flash *to_eon_spi_flash(struct spi_flash *flash)
 
 static const struct eon_spi_flash_params eon_spi_flash_table[] = {
 	{
+		.idcode1 = EON_ID_EN25Q64,
+		.page_size = 256,
+		.pages_per_sector = 16,
+		.sectors_per_block = 16,
+		.nr_sectors = 2048,
+		.name = "EN25Q64",
+	},
+	{
 		.idcode1 = EON_ID_EN25Q128,
 		.page_size = 256,
 		.pages_per_sector = 16,
@@ -56,6 +65,7 @@ static const struct eon_spi_flash_params eon_spi_flash_table[] = {
 	},
 };
 
+#if 0
 static int eon_write(struct spi_flash *flash,
 		     u32 offset, size_t len, const void *buf)
 {
@@ -124,6 +134,7 @@ static int eon_erase(struct spi_flash *flash, u32 offset, size_t len)
 	return spi_flash_cmd_erase(flash, CMD_EN25Q128_BE, offset, len);
 }
 
+#endif
 struct spi_flash *spi_flash_probe_eon(struct spi_slave *spi, u8 *idcode)
 {
 	const struct eon_spi_flash_params *params;
@@ -151,9 +162,9 @@ struct spi_flash *spi_flash_probe_eon(struct spi_slave *spi, u8 *idcode)
 	eon->flash.spi = spi;
 	eon->flash.name = params->name;
 
-	eon->flash.write = eon_write;
-	eon->flash.erase = eon_erase;
-	eon->flash.read = spi_flash_cmd_read_fast;
+	/* eon->flash.write = eon_write; */
+	/* eon->flash.erase = eon_erase; */
+	/* eon->flash.read = spi_flash_cmd_read_fast; */
 	eon->flash.sector_size = params->page_size * params->pages_per_sector
 	    * params->sectors_per_block;
 	eon->flash.size = params->page_size * params->pages_per_sector

@@ -177,7 +177,12 @@ int var_complete(int argc, char * const argv[], char last_char, int maxv, char *
 }
 
 /*************************************************************************************/
-
+static inline size_t strlen_fix(const char *ptr)
+{
+	size_t count;
+	for(count = 0; *ptr != '\0'; ptr++, count++);
+	return count;
+}
 static int complete_cmdv(int argc, char * const argv[], char last_char, int maxv, char *cmdv[])
 {
 	cmd_tbl_t *cmdtp;
@@ -229,7 +234,7 @@ static int complete_cmdv(int argc, char * const argv[], char last_char, int maxv
 	/* return the partial matches */
 	for (cmdtp = &__u_boot_cmd_start; cmdtp != &__u_boot_cmd_end; cmdtp++) {
 
-		clen = strlen(cmdtp->name);
+		clen = strlen_fix(cmdtp->name);
 		if (clen < len)
 			continue;
 

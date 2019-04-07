@@ -70,6 +70,8 @@ extern int  AT91F_DataflashInit(void);
 extern void dataflash_print_info(void);
 #endif
 
+extern void sec_env_relocate(void);
+
 #ifndef CONFIG_IDENT_STRING
 #define CONFIG_IDENT_STRING ""
 #endif
@@ -137,6 +139,7 @@ static int init_baudrate (void)
 static int display_banner (void)
 {
 	printf ("\n\n%s\n\n", version_string);
+	printf ("configured for target [%s]\n",TARGET_CONFIGURATION_NAME);
 	debug ("U-Boot code: %08lX -> %08lX  BSS: -> %08lX\n",
 	       _TEXT_BASE,
 	       _bss_start_ofs+_TEXT_BASE, _bss_end_ofs+_TEXT_BASE);
@@ -270,7 +273,7 @@ void board_init_f (ulong bootflag)
 	bd_t *bd;
 	init_fnc_t **init_fnc_ptr;
 	gd_t *id;
-	ulong addr, addr_sp;
+	ulong addr, addr_sp, addr_tmp;
 
 	/* Pointer is writable since we allocated a register for it */
 	gd = (gd_t *) ((CONFIG_SYS_INIT_SP_ADDR) & ~0x07);
@@ -351,6 +354,11 @@ void board_init_f (ulong bootflag)
 #endif /* CONFIG_FB_ADDR */
 #endif /* CONFIG_LCD */
 
+  /*
+    * reserve memory for hdmi PIC or OTA PIC code that will be combined after u-boot.bin
+    */
+    addr -= CONFIG_UBOOT_EXTERNAL_PROC_LEN;
+
 	/*
 	 * reserve memory for U-Boot code, data & bss
 	 * round down to next 4 kB limit
@@ -359,6 +367,11 @@ void board_init_f (ulong bootflag)
 	addr &= ~(4096 - 1);
 
 	debug ("Reserving %ldk for U-Boot at: %08lx\n", gd->mon_len >> 10, addr);
+
+    /* Move the PIC codes behind the BSS segment */
+    addr_tmp=addr+gd->mon_len;
+    memcpy(addr_tmp,_TEXT_BASE+_bss_end_ofs,CONFIG_UBOOT_EXTERNAL_PROC_LEN);
+    debug ("\nUboot external codes at: %08lx\n",addr_tmp);
 
 #ifndef CONFIG_PRELOADER
 	/*
@@ -444,6 +457,10 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	ulong flash_size;
 #endif
 
+#ifdef CONFIG_SPI_FLASH_CNC1800L
+    ulong size;
+#endif
+
 	gd = id;
 	bd = gd->bd;
 
@@ -451,13 +468,27 @@ void board_init_r (gd_t *id, ulong dest_addr)
 
 	monitor_flash_len = _end_ofs;
 	debug ("monitor flash len: %08lX\n", monitor_flash_len);
+#ifdef CONFIG_USE_IRQ
+        unsigned int cnt;
+        ulong *dest,*source;
+        dest=(ulong *)0;
+        source=(ulong *)dest_addr;
+        //printf("start vector copy\n");
+        for(cnt=0;cnt<0x3c/4;cnt++)
+            {
+                //printf("%x\n",*source);
+                *dest++=*source++;
+            }
+        //printf("%x,%x,%x,%x,%x,%x,%x,%x\n",*(ulong *)0,*(ulong *)4,*(ulong *)8,*(ulong *)12,*(ulong *)16,*(ulong *)20,*(ulong *)24,*(ulong *)28);
+#endif
 	board_init();	/* Setup chipselects */
 
 #ifdef CONFIG_SERIAL_MULTI
 	serial_initialize();
 #endif
 
-	debug ("Now running in RAM - U-Boot at: %08lx\n", dest_addr);
+	//debug ("Now running in RAM - U-Boot at: %08lx\n", dest_addr);
+	//printf ("Now running in RAM - U-Boot at: %08lx\n", dest_addr);
 
 #ifdef CONFIG_LOGBUFFER
 	logbuff_init_ptrs ();
@@ -469,6 +500,21 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	/* The Malloc area is immediately below the monitor copy in DRAM */
 	malloc_start = dest_addr - TOTAL_MALLOC_LEN;
 	mem_malloc_init (malloc_start, TOTAL_MALLOC_LEN);
+
+#ifdef CONFIG_SPI_FLASH_CNC1800L
+if (seeprom_probe() > 0) {
+		puts("SPI ");
+		if (gd->sf_boot) puts("Booting... ");
+		printf("Speed at [R:%dMHz/W:%dMHz] ", gd->sf_rspd, gd->sf_wspd);
+		size = gd->sf_inf->sector_size*gd->sf_inf->n_sectors;
+
+		if (gd->sf_size % 0x100000){
+			printf("Flash Size: %dKB\n", gd->sf_size/1024);
+		} else {
+			printf("Flash Size: %dMB\n", gd->sf_size/1024/1024);
+		}
+	}
+#endif
 
 #if !defined(CONFIG_SYS_NO_FLASH)
 	puts ("Flash: ");
@@ -518,7 +564,10 @@ void board_init_r (gd_t *id, ulong dest_addr)
 
 	/* initialize environment */
 	env_relocate ();
-
+#if defined(CONFIG_CMD_SEC_NVEDIT)
+    /* Initialize factory default environment. */
+    sec_env_relocate();
+#endif
 #if defined(CONFIG_CMD_PCI) || defined(CONFIG_PCI)
 	arm_pci_init();
 #endif

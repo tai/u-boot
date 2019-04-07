@@ -134,6 +134,7 @@ static const struct stmicro_spi_flash_params stmicro_spi_flash_table[] = {
 	},
 };
 
+#if 0
 static int stmicro_write(struct spi_flash *flash,
 			 u32 offset, size_t len, const void *buf)
 {
@@ -202,13 +203,14 @@ static int stmicro_erase(struct spi_flash *flash, u32 offset, size_t len)
 	return spi_flash_cmd_erase(flash, CMD_M25PXX_SE, offset, len);
 }
 
+#endif
 struct spi_flash *spi_flash_probe_stmicro(struct spi_slave *spi, u8 * idcode)
 {
 	const struct stmicro_spi_flash_params *params;
 	struct stmicro_spi_flash *stm;
 	unsigned int i;
 
-	if (idcode[0] == 0xff) {
+	/* if (idcode[0] == 0xff) {
 		i = spi_flash_cmd(spi, CMD_M25PXX_RES,
 				  idcode, 4);
 		if (i)
@@ -219,7 +221,7 @@ struct spi_flash *spi_flash_probe_stmicro(struct spi_slave *spi, u8 * idcode)
 			idcode[2] = idcode[3] + 1;
 		} else
 			return NULL;
-	}
+	} */
 
 	for (i = 0; i < ARRAY_SIZE(stmicro_spi_flash_table); i++) {
 		params = &stmicro_spi_flash_table[i];
@@ -243,9 +245,9 @@ struct spi_flash *spi_flash_probe_stmicro(struct spi_slave *spi, u8 * idcode)
 	stm->flash.spi = spi;
 	stm->flash.name = params->name;
 
-	stm->flash.write = stmicro_write;
-	stm->flash.erase = stmicro_erase;
-	stm->flash.read = spi_flash_cmd_read_fast;
+	/* stm->flash.write = stmicro_write; */
+	/* stm->flash.erase = stmicro_erase; */
+	/* stm->flash.read = spi_flash_cmd_read_fast; */
 	stm->flash.sector_size = params->page_size * params->pages_per_sector;
 	stm->flash.size = stm->flash.sector_size * params->nr_sectors;
 
