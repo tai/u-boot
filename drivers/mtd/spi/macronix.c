@@ -71,6 +71,30 @@ static inline struct macronix_spi_flash *to_macronix_spi_flash(struct spi_flash
 
 static const struct macronix_spi_flash_params macronix_spi_flash_table[] = {
 	{
+		.idcode = 0x2011,
+		.page_size = 256,
+		.pages_per_sector = 16,
+		.sectors_per_block = 16,
+		.nr_blocks = 2,
+		.name = "MX25L1006E",
+	},
+	{
+		.idcode = 0x2013,
+		.page_size = 256,
+		.pages_per_sector = 16,
+		.sectors_per_block = 16,
+		.nr_blocks = 8,
+		.name = "MX25L4006E",
+	},
+	{
+		.idcode = 0x2014,
+		.page_size = 256,
+		.pages_per_sector = 16,
+		.sectors_per_block = 16,
+		.nr_blocks = 16,
+		.name = "MX25L8006E",
+	},
+	{
 		.idcode = 0x2015,
 		.page_size = 256,
 		.pages_per_sector = 16,
@@ -110,8 +134,17 @@ static const struct macronix_spi_flash_params macronix_spi_flash_table[] = {
 		.nr_blocks = 256,
 		.name = "MX25L12855E",
 	},
+	{
+		.idcode = 0x2010,
+		.page_size = 256,
+		.pages_per_sector = 16,
+		.sectors_per_block = 16,
+		.nr_blocks = 1,
+		.name = "MX25L512E"
+	}
 };
 
+#if 0
 static int macronix_write(struct spi_flash *flash,
 			  u32 offset, size_t len, const void *buf)
 {
@@ -180,6 +213,7 @@ static int macronix_erase(struct spi_flash *flash, u32 offset, size_t len)
 	return spi_flash_cmd_erase(flash, CMD_MX25XX_BE, offset, len);
 }
 
+#endif
 struct spi_flash *spi_flash_probe_macronix(struct spi_slave *spi, u8 *idcode)
 {
 	const struct macronix_spi_flash_params *params;
@@ -194,13 +228,15 @@ struct spi_flash *spi_flash_probe_macronix(struct spi_slave *spi, u8 *idcode)
 	}
 
 	if (i == ARRAY_SIZE(macronix_spi_flash_table)) {
-		debug("SF: Unsupported Macronix ID %04x\n", id);
+		/* debug("SF: Unsupported Macronix ID %04x\n", id); */
+		printf("SF: Unsupported Macronix ID %04x\n", id);
 		return NULL;
 	}
 
 	mcx = malloc(sizeof(*mcx));
 	if (!mcx) {
-		debug("SF: Failed to allocate memory\n");
+		/* debug("SF: Failed to allocate memory\n"); */
+		printf("SF: Failed to allocate memory\n");
 		return NULL;
 	}
 
@@ -208,9 +244,9 @@ struct spi_flash *spi_flash_probe_macronix(struct spi_slave *spi, u8 *idcode)
 	mcx->flash.spi = spi;
 	mcx->flash.name = params->name;
 
-	mcx->flash.write = macronix_write;
-	mcx->flash.erase = macronix_erase;
-	mcx->flash.read = spi_flash_cmd_read_fast;
+	/* mcx->flash.write = macronix_write; */
+	/* mcx->flash.erase = macronix_erase; */
+	/* mcx->flash.read = spi_flash_cmd_read_fast; */
 	mcx->flash.sector_size = params->page_size * params->pages_per_sector
 		* params->sectors_per_block;
 	mcx->flash.size = mcx->flash.sector_size * params->nr_blocks;

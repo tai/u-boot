@@ -112,6 +112,10 @@ typedef volatile unsigned char	vu_char;
 #include <asm/arch/hardware.h>
 #endif
 
+#ifdef CONFIG_SPI_FLASH_CNC1800L
+#include <cnc1800l_spi.h>
+#endif
+
 #include <part.h>
 #include <flash.h>
 #include <image.h>

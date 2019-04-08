@@ -46,8 +46,9 @@ PLATFORM_LDFLAGS =
 
 #########################################################################
 
+EXTRA_CFLAGS	= -DUBOOT_SIZE=512 -DDISABLE_SEC_PROTECT=0
 HOSTCFLAGS	= -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer \
-		  $(HOSTCPPFLAGS)
+		  $(HOSTCPPFLAGS) 
 HOSTSTRIP	= strip
 
 #
@@ -178,9 +179,10 @@ CPPFLAGS += -fno-builtin -ffreestanding -nostdinc	\
 
 ifdef BUILD_TAG
 CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes \
-	-DBUILD_TAG='"$(BUILD_TAG)"'
+	-DBUILD_TAG='"$(BUILD_TAG)"' $(EXTRA_CFLAGS)
+
 else
-CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes
+CFLAGS := $(CPPFLAGS) -Wall -Wstrict-prototypes $(EXTRA_CFLAGS)
 endif
 
 CFLAGS += $(call cc-option,-fno-stack-protector)

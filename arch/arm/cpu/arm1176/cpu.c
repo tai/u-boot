@@ -57,6 +57,8 @@ int cleanup_before_linux (void)
 	return 0;
 }
 
+
+
 /* flush I/D-cache */
 static void cache_flush (void)
 {

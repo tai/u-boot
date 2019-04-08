@@ -1,89 +1,78 @@
 /*
- * Control GPIO pins on the fly
+ * Basic GPIO functions
  *
- * Copyright (c) 2008-2011 Analog Devices Inc.
+ * Copyright (c) 2008 Celestial Semiconductor
  *
- * Licensed under the GPL-2 or later.
+ * This package is free software;  you can redistribute it and/or
+ * modify it under the terms of the license found in the file
+ * named COPYING that should have accompanied this file.
+ *
+ * THIS PACKAGE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+ * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * Author: Tu BaoZhao bz.tu@celestialsemi.com, Celestial Semiconductor
+ *
+ * Copyright (c) 2007 Celestial Semiconductor
+ *
  */
 
 #include <common.h>
 #include <command.h>
 
-#include <asm/gpio.h>
 
-#ifndef name_to_gpio
-#define name_to_gpio(name) simple_strtoul(name, NULL, 10)
-#endif
+extern int gpio_hw_set_direct(int gpio_id, int dir);
+extern unsigned short gpio_hw_read(int gpio_id);
+extern int gpio_hw_write(int gpio_id, unsigned short data);
 
-enum gpio_cmd {
-	GPIO_INPUT,
-	GPIO_SET,
-	GPIO_CLEAR,
-	GPIO_TOGGLE,
-};
-
-static int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+int do_gpio(cmd_tbl_t *cmdtp, int flag, int argc, char *const argv[])
 {
-	int gpio;
-	enum gpio_cmd sub_cmd;
-	ulong value;
-	const char *str_cmd, *str_gpio;
+	int gpio_id;
+	unsigned short data;
 
-#ifdef gpio_status
-	if (argc == 2 && !strcmp(argv[1], "status")) {
-		gpio_status();
-		return 0;
-	}
-#endif
-
-	if (argc != 3)
- show_usage:
-		return cmd_usage(cmdtp);
-	str_cmd = argv[1];
-	str_gpio = argv[2];
-
-	/* parse the behavior */
-	switch (*str_cmd) {
-		case 'i': sub_cmd = GPIO_INPUT;  break;
-		case 's': sub_cmd = GPIO_SET;    break;
-		case 'c': sub_cmd = GPIO_CLEAR;  break;
-		case 't': sub_cmd = GPIO_TOGGLE; break;
-		default:  goto show_usage;
-	}
-
-	/* turn the gpio name into a gpio number */
-	gpio = name_to_gpio(str_gpio);
-	if (gpio < 0)
-		goto show_usage;
-
-	/* grab the pin before we tweak it */
-	if (gpio_request(gpio, "cmd_gpio")) {
-		printf("gpio: requesting pin %u failed\n", gpio);
+	if (argc < 3 || argc > 4) {
+		printf("Usage: %s\n", cmdtp->help);
 		return -1;
 	}
 
-	/* finally, let's do it: set direction and exec command */
-	if (sub_cmd == GPIO_INPUT) {
-		gpio_direction_input(gpio);
-		value = gpio_get_value(gpio);
-	} else {
-		switch (sub_cmd) {
-			case GPIO_SET:    value = 1; break;
-			case GPIO_CLEAR:  value = 0; break;
-			case GPIO_TOGGLE: value = !gpio_get_value(gpio); break;
-			default:          goto show_usage;
-		}
-		gpio_direction_output(gpio, value);
+	gpio_id = simple_strtoul(argv[2], NULL, 0);
+	if (gpio_id < 0 || gpio_id >41) {
+		printf("%s: invalid parameters! at line: %d\n",
+			__FUNCTION__, __LINE__);
+		return -1;
 	}
-	printf("gpio: pin %s (gpio %i) value is %lu\n",
-		str_gpio, gpio, value);
 
-	gpio_free(gpio);
+	if (strcmp(argv[1], "read") == 0) {
+		if (argc > 3) {
+			printf("Usage: %s\n", cmdtp->help);
+			return -1;
+		}
 
-	return value;
+		gpio_hw_set_direct(gpio_id, 0);
+		data = gpio_hw_read(gpio_id);
+		printf("gpio[%d] = %u\n", gpio_id, data);
+	} else if (strcmp(argv[1], "write") == 0) {
+		if (argc < 4) {
+			printf("Usage: %s\n", cmdtp->help);
+			return -1;
+		}
+
+		data = simple_strtoul(argv[3], NULL, 0);
+		gpio_hw_set_direct(gpio_id, 1);
+		gpio_hw_write(gpio_id, data);
+		printf("Write ok!\n");
+	} else {
+		printf("Usage: %s\n", cmdtp->help);
+		return -1;
+	}
+
+	return 0;
 }
 
-U_BOOT_CMD(gpio, 3, 0, do_gpio,
-	"input/set/clear/toggle gpio pins",
-	"<input|set|clear|toggle> <pin>\n"
-	"    - input/set/clear/toggle the specified pin");
+U_BOOT_CMD(
+	gpio,	CONFIG_SYS_MAXARGS/*5*/,	1,	do_gpio,
+	"gpio    - gpio read/write bit\n",
+	"\ngpio <read>  <gpio_id>\n"
+	"gpio <write> <gpio_id> <data>\n"
+	);
+

@@ -70,6 +70,8 @@ extern int  AT91F_DataflashInit(void);
 extern void dataflash_print_info(void);
 #endif
 
+extern void sec_env_relocate(void);
+
 #ifndef CONFIG_IDENT_STRING
 #define CONFIG_IDENT_STRING ""
 #endif
@@ -437,11 +439,16 @@ static char *failed = "*** failed ***\n";
 
 void board_init_r (gd_t *id, ulong dest_addr)
 {
+	extern unsigned config_env_offset;
 	char *s;
 	bd_t *bd;
 	ulong malloc_start;
 #if !defined(CONFIG_SYS_NO_FLASH)
 	ulong flash_size;
+#endif
+
+#ifdef CONFIG_SPI_FLASH_CNC1800L
+    ulong size;
 #endif
 
 	gd = id;
@@ -469,6 +476,23 @@ void board_init_r (gd_t *id, ulong dest_addr)
 	/* The Malloc area is immediately below the monitor copy in DRAM */
 	malloc_start = dest_addr - TOTAL_MALLOC_LEN;
 	mem_malloc_init (malloc_start, TOTAL_MALLOC_LEN);
+
+#ifdef CONFIG_SPI_FLASH_CNC1800L
+if (seeprom_probe() > 0) {
+		puts("SPI ");
+		if (gd->sf_boot) puts("Booting... ");
+		printf("Speed at [R:%dMHz/W:%dMHz] ", gd->sf_rspd, gd->sf_wspd);
+		size = gd->sf_inf->sector_size*gd->sf_inf->n_sectors;
+
+		if (gd->sf_size % 0x100000) {
+			printf("Flash Size: %dKB\n", gd->sf_size/1024);
+			config_env_offset = 0xc000;
+		} else {
+			printf("Flash Size: %dMB\n", gd->sf_size/1024/1024);
+			config_env_offset = 0x60000;
+		}
+	}
+#endif
 
 #if !defined(CONFIG_SYS_NO_FLASH)
 	puts ("Flash: ");
@@ -518,6 +542,9 @@ void board_init_r (gd_t *id, ulong dest_addr)
 
 	/* initialize environment */
 	env_relocate ();
+
+    /* Initialize factory default environment. */
+    sec_env_relocate();
 
 #if defined(CONFIG_CMD_PCI) || defined(CONFIG_PCI)
 	arm_pci_init();
@@ -622,6 +649,15 @@ void board_init_r (gd_t *id, ulong dest_addr)
 		setenv ("mem", (char *)memsz);
 	}
 #endif
+
+    /* 2012 Feb 16 TAC  Configure free-running clock according to Derek C's e-mail */
+    *((volatile uint32_t *)0x8027001c) = 0; /* Disable timers 0 and 1 by clearing bits 0 and 1 */
+    *((volatile uint32_t *)0x80270010) = 8; /* Select 64-bit timer (b3=1), free-running (b2=0) */
+    *((volatile uint32_t *)0x80270000) = 0; /* Load starting value for timer 0 */
+    *((volatile uint32_t *)0x80270004) = 0; /* Load starting value for timer 1 */
+    *((volatile uint32_t *)0x80270008) = 0xffffffff;    /* Load threshold value for timer 0 */
+    *((volatile uint32_t *)0x8027000c) = 0xffffffff;    /* Load threshold value for timer 1 */
+    *((volatile uint32_t *)0x8027001c) = 3; /* Enable timers 0 and 1 by setting bits 0 and 1 */
 
 	/* main_loop() can return to retry autoboot, if so just run it again. */
 	for (;;) {

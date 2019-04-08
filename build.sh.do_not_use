@@ -1,0 +1,146 @@
+#!/bin/sh
+export CROSS_COMPILE=arm-none-linux-gnueabi-
+export MY_WORKING_DIR=${PWD}
+echo "${MY_WORKING_DIR}"
+
+export SVN_REVISION=`svn info | grep '^Revision:' | sed -e 's/^Revision: //'`
+export DEFAULT_CUSTOMER_NAME=cavium
+export HDMIDIR=${MY_WORKING_DIR}/../apps/hdmi
+export CUIDDIR=${MY_WORKING_DIR}/../apps/cuid
+export DVUDIR=${MY_WORKING_DIR}/../apps/dvu
+export DDR_SIZE=256
+export UBOOT_CONFIG=cnc1800l_config
+export RESOURCEDIR=${MY_WORKING_DIR}/../../../resources/${DEFAULT_CUSTOMER_NAME}
+USER_SUPPLIED_RESOURCE_DIR=0
+while getopts "hc:r:m:" opt; do
+	case $opt in
+	c)
+	  	CUSTOMER_NAME=${OPTARG}
+	  	;;
+	r)
+	  	RESOURCEDIR=${OPTARG}
+	  	USER_SUPPLIED_RESOURCE_DIR=1
+	  	;;
+	m)
+	  	DDR_SIZE=${OPTARG}
+	  	;;
+	h)
+		echo "usage ./build.sh -c CUSTOMER_NAME -r CUSTOMER_RESOURCE_PATH -m DDR_SIZE"
+		echo "e.g.  ./build.sh -c cavium -r /path/to/my/resources/folder -m 512"
+	  	exit 1
+	  	;;
+	\?)
+	  	echo "Invalid option: -${OPTARG}"
+	  	echo "usage ./build.sh -c CUSTOMER_NAME -r CUSTOMER_RESOURCE_PATH -m DDR_SIZE"
+	  	echo "e.g.  ./build.sh -c cavium -r /path/to/my/resources/folder  -m 512"
+	  	exit 1
+	  	;;
+	:)
+	  	echo "Option -${OPTARG} requires an argument."
+	  	exit 1
+	  	;;
+  	esac
+done
+###################################################################################################
+if [ "1" = "${USER_SUPPLIED_RESOURCE_DIR}" ]; then
+	if [ -z ${CUSTOMER_NAME} ]; then
+ 		echo "ERROR: Please specify CUSTOMER_NAME using -c option"
+	 	exit 1;
+	fi
+else
+	if [ -z ${CUSTOMER_NAME} ]; then
+		CUSTOMER_NAME=${DEFAULT_CUSTOMER_NAME}
+	fi
+	RESOURCEDIR=${MY_WORKING_DIR}/../../../resources/${CUSTOMER_NAME}	
+fi
+###################################################################################################
+if [ "512" = "${DDR_SIZE}" ]; then
+	UBOOT_CONFIG=cnc1800l_512m_config
+fi
+
+echo "********** Building U-Boot with followin parameters ***************"
+echo "SVN_REVISION=${SVN_REVISION}"
+echo "MY_WORKING_DIR=${MY_WORKING_DIR}"
+echo "CUSTOMER_NAME=${CUSTOMER_NAME}"
+echo "RESOURCEDIR=${RESOURCEDIR}"
+echo "DDR_SIZE=${DDR_SIZE}"
+echo "UBOOT_CONFIG=${UBOOT_CONFIG}"
+echo "HDMIDIR=${HDMIDIR}"
+echo "CUIDDIR=${CUIDDIR}"
+echo "DVUDIR=${DVUDIR}"
+echo "*******************************************************************"
+sleep 1
+
+export UBOOT_UNSIGNED_IAMGE_NAME=${CUSTOMER_NAME}_unsigned_uboot_r${SVN_REVISION}.bin
+export UBOOT_SIGNED_IAMGE_NAME=${CUSTOMER_NAME}_signed_uboot_r${SVN_REVISION}.sbin
+
+if [ ! -f ${RESOURCEDIR}/${CUSTOMER_NAME}_pkey.c ]; then
+	echo "ERROR: ${RESOURCEDIR}/${CUSTOMER_NAME}_pkey.c  file doesn't exist, Make sure resources folder exist and containes all required files. For help please consult Cavium"
+	exit 1
+fi
+if [ ! -f ${RESOURCEDIR}/${CUSTOMER_NAME}_blob_pkey.c ]; then
+	echo "ERROR: ${RESOURCEDIR}/${CUSTOMER_NAME}_blob_pkey.c  file doesn't exist, Make sure resources folder exist and containes all required files. For help please consult Cavium"
+	exit 1
+fi
+if [ ! -f ${RESOURCEDIR}/bootloader/customer_specific_definitions.h ]; then
+	echo "ERROR: ${RESOURCEDIR}/bootloader/customer_specific_definitions.h file doesn't exist, Make sure resources folder exist and containes all required files. For help please consult Cavium"
+	exit 
+fi
+
+
+
+cp ${RESOURCEDIR}/${CUSTOMER_NAME}_pkey.c                        common
+cp ${RESOURCEDIR}/${CUSTOMER_NAME}_blob_pkey.c                   common
+cp -v ${RESOURCEDIR}/bootloader/customer_specific_definitions.h  include
+
+if [ -f ${RESOURCEDIR}/${CUSTOMER_NAME}_dvu.bin ];then 
+	cp ${RESOURCEDIR}/${CUSTOMER_NAME}_dvu.bin ${DVUDIR}/dvu.bin
+fi
+
+if [ -z "${HDMIDIR}" ]; then
+	if [ -f ${HDMIDIR}/hdmi.bin ];then 
+		echo "hdmi.bin file found @ ${HDMIDIR}" 
+	else 
+		echo "hdmi.bin file not found, please contact support@cavium" 
+		exit
+	fi
+fi
+
+if [ -z "${CUIDDIR}" ]; then
+	if [ -f ${CUIDDIR}/cuid.bin ];then 
+		echo "cuid.bin file found @ ${CUIDDIR}" 
+	else 
+		echo "cuid.bin file not found, please contact support@cavium" 
+		exit
+	fi
+fi
+
+if [ -z "${DVUDIR}" ]; then
+	if [ -f ${DVUDIR}/dvu.bin ];then 
+		echo "dvu.bin file found @ ${DVUDIR}" 
+	else 
+		echo "dvu.bin file not found, please contact support@cavium" 
+		exit
+	fi
+fi
+
+
+
+rm -f *.bin *.sbin
+make -s -f Makefile.uboot clean
+make -s -f Makefile.uboot distclean
+make -s -f Makefile.uboot mrproper
+make -s -f Makefile.uboot ${UBOOT_CONFIG}
+make -f Makefile.uboot CUSTOMER_NAME=${CUSTOMER_NAME}
+echo "packaging dvu.bin, hdmi.bin and cuid.bin into u-boot.bin, please wait..."
+cat u-boot.bin ${DVUDIR}/dvu.bin ${HDMIDIR}/hdmi.bin ${CUIDDIR}/cuid.bin > u-boot.bin+dvu.bin+hdmi.bin+cuid.bin
+cp u-boot.bin+dvu.bin+hdmi.bin+cuid.bin ${UBOOT_UNSIGNED_IAMGE_NAME}
+echo "Removing unwanted files..."
+rm -f cavm18_bootloader.bin  su-boot.bin  u-boot.bin  u-boot.bin+dvu.bin+hdmi.bin+cuid.bin
+echo "Done. Final unsigned image - ${UBOOT_UNSIGNED_IAMGE_NAME}  is ready to use"
+
+#developer - please uncomment following line in order to build secure image.
+#Make sure you have tools to create secure image and copied at ${PWD}/CustomerTools folder for a specific customer.
+#./CustomerTools/${CUSTOMER_NAME}_sign_uboot -i ${UBOOT_UNSIGNED_IAMGE_NAME} -o ${UBOOT_SIGNED_IAMGE_NAME}
+#echo "Done. Final signed image - ${UBOOT_SIGNED_IAMGE_NAME}  is ready to use"
+

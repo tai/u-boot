@@ -131,6 +131,8 @@ uchar default_environment[] = {
 
 struct hsearch_data env_htab;
 
+extern int do_set_sec_defaults(void);
+
 static uchar env_get_char_init (int index)
 {
 	uchar c;
@@ -177,20 +179,25 @@ void set_default_env(const char *s)
 		return;
 	}
 
-	if (s) {
-		if (*s == '!') {
-			printf("*** Warning - %s, "
-				"using default environment\n\n",
-				s+1);
-		} else {
+	if (s) 
+	{
+		if (*s == '!') 
+		{
+			printf("*** Warning - %s, using default environment\n\n", s+1);
+			do_set_sec_defaults();
+		}
+		else
+		{
 			puts(s);
 		}
-	} else {
+	}
+	else
+	{
 		puts("Using default environment\n\n");
 	}
 
-	if (himport_r(&env_htab, (char *)default_environment,
-		    sizeof(default_environment), '\0', 0) == 0) {
+	if (himport_r(&env_htab, (char *)default_environment, sizeof(default_environment), '\0', 0) == 0) 
+	{
 		error("Environment import failed: errno = %d\n", errno);
 	}
 	gd->flags |= GD_FLG_ENV_READY;
@@ -203,13 +210,19 @@ void set_default_env(const char *s)
 int env_import(const char *buf, int check)
 {
 	env_t *ep = (env_t *)buf;
-
-	if (check) {
+	
+	if (check) 
+	{
 		uint32_t crc;
 
 		memcpy(&crc, &ep->crc, sizeof(crc));
 
-		if (crc32(0, ep->data, ENV_SIZE) != crc) {
+		if (crc32(0, ep->data, ENV_SIZE) != crc) 
+		{
+			printf("Primary NVRAM parameter is corrupted, Restoring from Factory default secured nvram parameter\n");
+			do_set_sec_defaults();
+			return 0;			
+			
 			set_default_env("!bad CRC");
 			return 0;
 		}

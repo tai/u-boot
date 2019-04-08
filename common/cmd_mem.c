@@ -42,6 +42,11 @@
 
 static int mod_mem(cmd_tbl_t *, int, int, int, char * const []);
 
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+extern int check_write_to_code_area (unsigned long addr, unsigned long size);
+#endif
+
+
 /* Display values from last command.
  * Memory modify remembered values are different from display memory.
  */
@@ -180,6 +185,10 @@ int do_mem_mw ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	addr = simple_strtoul(argv[1], NULL, 16);
 	addr += base_address;
 
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+	if (check_write_to_code_area (addr, size))
+		return -1;
+#endif
 	/* Get the value to write.
 	*/
 	writeval = simple_strtoul(argv[2], NULL, 16);
@@ -409,6 +418,11 @@ int do_mem_cp ( cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 		puts ("done\n");
 		return 0;
 	}
+
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+	if (check_write_to_code_area (dest, count*size))
+		return -1;
+#endif
 
 	/* Check if we are copying from DataFlash to RAM */
 	if (addr_dataflash(addr) && !addr_dataflash(dest)
@@ -1022,6 +1036,10 @@ mod_mem(cmd_tbl_t *cmdtp, int incrflag, int flag, int argc, char * const argv[])
 	 * the next value.  A non-converted value exits.
 	 */
 	do {
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+	        if (check_write_to_code_area (addr, size))
+	        	return -1;
+#endif
 		printf("%08lx:", addr);
 		if (size == 4)
 			printf(" %08x", *((uint   *)addr));

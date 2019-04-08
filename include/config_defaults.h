@@ -16,5 +16,8 @@
 
 #define CONFIG_GZIP 1
 #define CONFIG_ZLIB 1
+#define CONFIG_SHA256 1
+#define CONFIG_RSAVERIFY 1
+#define CONFIG_MD5 1
 
 #endif

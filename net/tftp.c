@@ -150,6 +150,10 @@ mcast_cleanup(void)
 
 #endif	/* CONFIG_MCAST_TFTP */
 
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+extern int check_write_to_code_area (unsigned long addr, unsigned long size);
+#endif
+
 static __inline__ void
 store_block(unsigned block, uchar *src, unsigned len)
 {
@@ -179,6 +183,12 @@ store_block(unsigned block, uchar *src, unsigned len)
 	else
 #endif /* CONFIG_SYS_DIRECT_FLASH_TFTP */
 	{
+#ifdef CONFIG_CMD_SEC1800L_MEM_PROTECT
+		if (check_write_to_code_area ((unsigned long) (load_addr + offset), len)) {
+			NetState = NETLOOP_FAIL;
+			return;
+		}
+#endif
 		(void)memcpy((void *)(load_addr + offset), src, len);
 	}
 #ifdef CONFIG_MCAST_TFTP

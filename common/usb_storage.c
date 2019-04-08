@@ -179,9 +179,37 @@ block_dev_desc_t *usb_stor_get_dev(int index)
 }
 
 
+extern void BootBlinkLedOn(void);
+extern void BootBlinkLedOff(void);
+
+
+
+int BLINK_COUNT3 = 1;
+int gBlinkCount3 ;
+
+
 void usb_show_progress(void)
 {
-	debug(".");
+	static int mBootBlinkLedToggle=0;
+	printf(".");
+	
+	if (gBlinkCount3 > 0 )
+	{
+		gBlinkCount3--;
+		return;
+	}
+	gBlinkCount3 = BLINK_COUNT3;
+	
+	mBootBlinkLedToggle++;
+	mBootBlinkLedToggle = mBootBlinkLedToggle & 1;
+	if ( 0 == mBootBlinkLedToggle)
+	{
+		BootBlinkLedOn();
+	}
+	else
+	{
+		BootBlinkLedOff();
+	}	
 }
 
 /*******************************************************************************

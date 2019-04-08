@@ -1,0 +1,14 @@
+#DVU_BIN_IS_THERE := $(shell perl -e 'if (-e "../../security/dvu/dvu.bin") { print "yes\n"; } else { print "no\n"; }')
+#ifeq ($(DVU_BIN_IS_THERE), no)
+#$(error Please build ../../security/dvu/dvu.bin first)
+#endif
+
+all:
+	rm -f su-boot.bin cavm18_bootloader.bin
+	$(MAKE) -s -f Makefile.uboot clean
+	$(MAKE) -s -f Makefile.uboot distclean
+	$(MAKE) -s -f Makefile.uboot mrproper
+	$(MAKE) -s -f Makefile.uboot cnc1800l_config
+	$(MAKE) -s -f Makefile.uboot
+	rm -f su-boot.bin
+	cat u-boot.bin ../apps/dvu.bin ../apps/hdmi/hdmi.bin ../apps/cuid/cuid.bin > u-boot.bin+dvu.bin+hdmi.bin+cuid.bin

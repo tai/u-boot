@@ -65,7 +65,7 @@
 #  define ENV_IS_EMBEDDED	1
 # endif
 # if defined(CONFIG_ENV_ADDR_REDUND) || defined(CONFIG_ENV_OFFSET_REDUND)
-#  define CONFIG_SYS_REDUNDAND_ENVIRONMENT	1
+#  define CONFIG_SYS_REDUNDANT_ENVIRONMENT	1
 # endif
 # ifdef CONFIG_ENV_IS_EMBEDDED
 #  error "do not define CONFIG_ENV_IS_EMBEDDED in your board config"
@@ -86,7 +86,7 @@ extern unsigned long nand_env_oob_offset;
 #   error "Need to define CONFIG_ENV_OFFSET when using CONFIG_ENV_IS_IN_NAND"
 #  endif
 #  ifdef CONFIG_ENV_OFFSET_REDUND
-#   define CONFIG_SYS_REDUNDAND_ENVIRONMENT
+#   define CONFIG_SYS_REDUNDANT_ENVIRONMENT
 #  endif
 # endif /* CONFIG_ENV_OFFSET_OOB */
 # ifndef CONFIG_ENV_SIZE
@@ -130,7 +130,7 @@ extern unsigned long nand_env_oob_offset;
 
 #include "compiler.h"
 
-#ifdef CONFIG_SYS_REDUNDAND_ENVIRONMENT
+#ifdef CONFIG_SYS_REDUNDANT_ENVIRONMENT
 # define ENV_HEADER_SIZE	(sizeof(uint32_t) + 1)
 
 # define ACTIVE_FLAG   1
@@ -144,7 +144,7 @@ extern unsigned long nand_env_oob_offset;
 
 typedef	struct environment_s {
 	uint32_t	crc;		/* CRC32 over data bytes	*/
-#ifdef CONFIG_SYS_REDUNDAND_ENVIRONMENT
+#ifdef CONFIG_SYS_REDUNDANT_ENVIRONMENT
 	unsigned char	flags;		/* active/obsolete flags	*/
 #endif
 	unsigned char	data[ENV_SIZE]; /* Environment data		*/

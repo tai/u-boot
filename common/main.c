@@ -40,6 +40,8 @@
 
 #include <post.h>
 
+extern int AutoFirmwareUpgrade(void);
+
 #if defined(CONFIG_SILENT_CONSOLE) || defined(CONFIG_POST) || defined(CONFIG_CMDLINE_EDITING)
 DECLARE_GLOBAL_DATA_PTR;
 #endif
@@ -264,7 +266,66 @@ static __inline__ int abortboot(int bootdelay)
 #endif	/* CONFIG_BOOTDELAY >= 0  */
 
 /****************************************************************************/
+int mBootBlinkLed=-1;
 
+void SetGpioPinInInputMode(int aGpioPinNo)
+{
+	if (-1 == mBootBlinkLed ) return;
+	volatile unsigned int * p = (unsigned int*)0x80260024;
+	unsigned int data = *p;
+	data = data | ( 1 << aGpioPinNo);
+	*p = data;
+}
+void SetGpioPinInOutputMode(int aGpioPinNo)
+{
+	volatile unsigned int * p = (unsigned int*)0x80260024;
+	unsigned int data = *p;
+	if (-1 == mBootBlinkLed ) return;
+	data = data & ( ~( 1 << aGpioPinNo) );
+	*p = data;	
+} 
+void GpioHigh(int aGpioPinNo)
+{
+	volatile unsigned int * p = (unsigned int*)0x80260020;
+	unsigned int data = *p;
+	if (-1 == mBootBlinkLed ) return;
+	data = data | ( 1 << aGpioPinNo);
+	*p = data;
+}
+void GpioLow(int aGpioPinNo)
+{
+	volatile unsigned int * p = (unsigned int*)0x80260020;
+	unsigned int data = *p;
+	if (-1 == mBootBlinkLed ) return;
+	data = data & ( ~(1 << aGpioPinNo) );
+	*p = data;	
+}
+void BootBlinkLedOn(void)
+{
+	GpioHigh(mBootBlinkLed);
+}
+void BootBlinkLedOff(void)
+{
+	GpioLow(mBootBlinkLed);
+}
+void BootBlinkLedSetGpioMode(void)
+{
+	SetGpioPinInOutputMode(mBootBlinkLed);
+}
+
+typedef void(*pt2FuncBootBlinkLedOn)(void);
+typedef void(*pt2FuncBootBlinkLedOff)(void);
+	
+extern pt2FuncBootBlinkLedOn 	mpt2FuncBootBlinkLedOn; 
+extern pt2FuncBootBlinkLedOff 	mpt2FuncBootBlinkLedOff; 
+
+extern int BLINK_COUNT1 ;	/* used by nand flash - default 512 will give approxi. 500msec */
+extern int BLINK_COUNT2 ;	/* used by CRC32 - default (1024*256) will give approxi. 500msec */
+
+extern int BLINK_COUNT3 ;	/* used by USB */
+extern int gBlinkCount3 ;	/* used by USB */
+
+		
 void main_loop (void)
 {
 #ifndef CONFIG_SYS_HUSH_PARSER
@@ -287,6 +348,39 @@ void main_loop (void)
 	char *bcs;
 	char bcs_set[16];
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
+
+	const char *boot_blink_led = getenv("BOOT_BLINK_LED");
+	if ( boot_blink_led != NULL)
+	{
+		mBootBlinkLed = simple_strtoul(boot_blink_led,NULL,0);
+		BootBlinkLedSetGpioMode();
+		BootBlinkLedOn();
+	}	
+	
+	const char *boot_blink_cnt1 = getenv("UBOOT_BLINK_COUNT1");
+	if ( boot_blink_cnt1 != NULL)
+	{
+		BLINK_COUNT1 = simple_strtoul(boot_blink_cnt1,NULL,0);	
+	}
+
+	
+	const char *boot_blink_cnt2 = getenv("UBOOT_BLINK_COUNT2");
+	if ( boot_blink_cnt2 != NULL)
+	{
+		BLINK_COUNT2 = simple_strtoul(boot_blink_cnt2,NULL,0);	
+	}
+	
+	const char *boot_blink_cnt3 = getenv("UBOOT_BLINK_COUNT3");
+	if ( boot_blink_cnt3 != NULL)
+	{
+		BLINK_COUNT3 = simple_strtoul(boot_blink_cnt3,NULL,0);	
+	}
+	gBlinkCount3 = BLINK_COUNT3 ;
+	
+	
+
+	mpt2FuncBootBlinkLedOn = & BootBlinkLedOn; 
+	mpt2FuncBootBlinkLedOff = & BootBlinkLedOff; 
 
 #ifdef CONFIG_BOOTCOUNT_LIMIT
 	bootcount = bootcount_load();
@@ -372,6 +466,18 @@ void main_loop (void)
 	}
 	else
 #endif /* CONFIG_BOOTCOUNT_LIMIT */
+
+
+//Check for USB_UPDATES2.
+
+    s = getenv ("USB_UPDATES2");
+    if ( 0 == strcmp ( s , "1" ) )
+    {
+        AutoFirmwareUpgrade();
+    }
+
+
+
 		s = getenv ("bootcmd");
 
 	debug ("### main_loop: bootcmd=\"%s\"\n", s ? s : "<UNDEFINED>");
